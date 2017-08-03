@@ -6,16 +6,17 @@ app.config(function($stateProvider, $urlRouterProvider) {
       templateUrl: 'views/login.html',
       url: '/login',
 	   controller:'LoginCtrl',
-      //resolve: {
-        //loggedout: checkLoggedin
-      //}
+      resolve: {
+        loggedout: checkLoggedin
+      }
   })
   .state('dashboard', {
     templateUrl: 'views/dashboard.html',
-    url: '/dashboard',
-    //resolve: {
-      //loggedout: checkLoggedout
-    //}
+    url: '/dash',
+    controller:'LoginCtrl',
+    resolve: {
+      loggedout: checkLoggedout
+    }
   })
  .state('client-list', {
     templateUrl: 'views/client/client_list.html',
@@ -32,7 +33,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	  //resolve:{
 		  //loggedout:checkLoggedout
 	  //}
-	  
+
   })
   .state('client-details',{
 	  templateUrl:'views/client/client_details.html',
@@ -41,7 +42,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	  //resolve:{
 		  //loggedout:checkLoggedout
 	  //}
-	  
+
   })
   .state('client-update',{
 	  templateUrl:'views/client/client_update.html',
@@ -50,7 +51,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	  //resolve:{
 		  //loggedout:checkLoggedout
 	  //}
-	  
+
   })
   .state('new-client', {
     templateUrl: 'views/client/new_client.html',
@@ -64,11 +65,11 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	  templateUrl:'views/user/userlist.html',
 	  url:'/user-list',
 	  controller:'Main_Controller'
-	  
+
 	  //resolve:{
 		  //loggedout:checkLoggedout
 	  //}
-	  
+
   } )
   .state('new-user',{
 	  templateUrl:'views/user/new_user.html',
@@ -98,7 +99,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	  //resolve:{
 		  //loggedout:checkLoggedout
 	  //}
-	  
+
   })
   .state('forgot-password',{
 	  templateUrl:'views/resetpassword.html',
@@ -106,9 +107,9 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	  //resolve:{
 		  //loggedout:checkLoggedout
 	  //}
-  
+
   })
-  
+
   .state('ca-firm',{
 	  templateUrl:'views/ca_firm_details.html',
 	  url:'/ca-firm',
@@ -125,10 +126,10 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		  //loggedout:checkLoggedout
 	  //}
   })
-  
+
   function checkLoggedout($q, $timeout, $rootScope, $state, $localStorage) {
     var deferred = $q.defer();
-    accessToken = localStorage.getItem('accessToken')
+    accessToken = $rootScope.is_loggedin ;//localStorage.getItem('accessToken')
     $timeout(function(){
       if(accessToken){
         deferred.resolve();
@@ -141,7 +142,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
   }
   function checkLoggedin($q, $timeout, $rootScope, $state, $localStorage) {
     var deferred = $q.defer();
-    accessToken = localStorage.getItem('accessToken')
+    accessToken = $rootScope.is_loggedin ;//localStorage.getItem('accessToken')
     $timeout(function(){
       if(accessToken){
         deferred.resolve();

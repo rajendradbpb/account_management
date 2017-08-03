@@ -12,4 +12,9 @@ app.controller("Main_Controller",function($scope,$rootScope,$state,$localStorage
   $scope.userData.settings({
 	dataset: $scope.user_list
   })
+
+  $scope.signOut = function(){
+		 $rootScope.is_loggedin = false;
+		 $state.go('login');
+	 }
 });

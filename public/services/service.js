@@ -16,7 +16,7 @@ app.service('LoginService',function($q,$http){
 				console.log(response);
 				angular.forEach(response.data.user,function(item){
 					console.log(item);
-					if(item.user_name == user.username && item.password == user.password){
+					if(item.username == user.username && item.password == user.password){
 						deffered.resolve(item);
 					}
 				})
