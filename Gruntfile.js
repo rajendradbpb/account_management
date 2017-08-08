@@ -8,7 +8,7 @@ module.exports = function(grunt) {
     },
     watch: {
       scripts: {
-        files: ['app.js'],
+        files: ['app.js','server/*.js','server/**/*.js'],
         tasks: ['jshint'],
         options: {
           livereload: true,
@@ -38,25 +38,10 @@ module.exports = function(grunt) {
       dist: {
         src: [
           "public/main_app.js",
-          "public/controllers/commons/MainController.js",
-          "public/controllers/commons/signInController.js",
-          "public/controllers/commons/userController.js",
-          "public/controllers/commons/customerController.js",
-          "public/controllers/commons/guestHouseController.js",
-          "public/controllers/transactionController.js",
-          "public/services/commons/commonService.js",
-          "public/services/commons/userService.js",
-          "public/services/commons/customerService.js",
-          "public/services/commons/guestHouseService.js",
-          "public/services/commons/utilityService.js",
-          "public/services/transactionService.js",
-          "public/config/constants.js",
-          "public/directives/transaction-details.js",
-          "public/directives/roomFilter.js",
-          "public/directives/dateViewer.js",
-          "public/directives/report-details-directive.js",
-          "public/filters/datefilter.js",
-          "public/directives/roomStyle.js"
+          "public/directive/*.js",
+          "public/controller/*.js",
+          "public/services/*.js",
+
 
         ],
         dest: 'public/built.js',
