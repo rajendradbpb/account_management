@@ -1,4 +1,4 @@
-/*! account_management - v0.0.0 - Wed Aug 09 2017 02:55:58 */
+/*! account_management - v0.0.0 - Wed Aug 09 2017 10:40:50 */
 var app = angular.module("acc_app", ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate','datePicker','ngTable']);
 app.config(function($stateProvider, $urlRouterProvider) {
   $urlRouterProvider.otherwise('/login');

@@ -21,6 +21,10 @@ exports.getRole = function(req,res){
   var params = {
     isDelete:false
   };
+  console.log("req.query.id   "+req.query._id);
+  if(req.query.id){
+    params['_id'] = req.query._id
+  }
   roleModel.find(params,function(err,data){
     response.sendResponse(res,200,"success",constants.messages.success.fetchRoles,data);
   })
