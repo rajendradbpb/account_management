@@ -1,4 +1,4 @@
-var app = angular.module("acc_app", ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate','datePicker','ngTable','angular-js-xlsx']);
+var app = angular.module("acc_app", ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate','datePicker','ngTable','angular-js-xlsx','WebService']);
 app.config(function($stateProvider, $urlRouterProvider) {
   $urlRouterProvider.otherwise('/login');
   $stateProvider
@@ -32,7 +32,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	  resolve:{
 		  loggedout:checkLoggedout
 	  }
-	  
+
   })
   .state('client-details',{
 	  templateUrl:'views/client/client_details.html',
@@ -41,7 +41,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	  //resolve:{
 		  //loggedout:checkLoggedout
 	  //}
-	  
+
   })
   .state('client-update',{
 	  templateUrl:'views/client/client_update.html',
@@ -50,7 +50,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	  //resolve:{
 		  //loggedout:checkLoggedout
 	  //}
-	  
+
   })
   .state('new-client', {
     templateUrl: 'views/client/new_client.html',
@@ -64,11 +64,11 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	  templateUrl:'views/user/userlist.html',
 	  url:'/user-list',
 	  controller:'User_Controller'
-	  
+
 	  //resolve:{
 		  //loggedout:checkLoggedout
 	  //}
-	  
+
   } )
   .state('new-user',{
 	  templateUrl:'views/user/new_user.html',
@@ -84,7 +84,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		  //loggedout:checkLoggedout
 	  //}
   })
-  
+
   .state('trail-balance',{
 	  templateUrl:'views/trail.html',
 	  url:'/trail-balance',
@@ -92,7 +92,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	  //resolve:{
 		  //loggedout:checkLoggedout
 	  //}
-	  
+
   })
   .state('forgot-password',{
 	  templateUrl:'views/resetpassword.html',
@@ -100,9 +100,9 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	  //resolve:{
 		  //loggedout:checkLoggedout
 	  //}
-  
+
   })
-  
+
   .state('ca-firm',{
 	  templateUrl:'views/ca_firm_details.html',
 	  url:'/ca-firm',
@@ -127,7 +127,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
       //loggedout:checkLoggedout
     //}
   })
-  
+
   function checkLoggedout($q, $timeout, $rootScope, $state, $localStorage) {
     var deferred = $q.defer();
     //accessToken = localStorage.getItem('accessToken')
@@ -158,10 +158,11 @@ app.config(function($stateProvider, $urlRouterProvider) {
 app.constant('CONFIG', {
   'HTTP_HOST': 'server/api.php'
 })
-app.run(function($http,$rootScope,$localStorage,$timeout){
+app.run(function($http,$rootScope,$localStorage,$timeout,EnvService,Constants){
   $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams){
     $rootScope.stateName = toState.name;
   })
+  EnvService.setSettings(Constants);
 });
 app.factory('Util', ['$rootScope',  '$timeout' , function( $rootScope, $timeout){
     var Util = {};

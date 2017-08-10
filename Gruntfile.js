@@ -7,9 +7,17 @@ module.exports = function(grunt) {
       all: ['app.js']
     },
     watch: {
-      scripts: {
+      server: {
         files: ['app.js','server/*.js','server/**/*.js'],
         tasks: ['jshint'],
+        options: {
+          livereload: true,
+          spawn: false,
+        },
+      },
+      client: {
+        files: ['public/*.js','public/**/*.js'],
+        tasks: ['concat:client'],
         options: {
           livereload: true,
           spawn: false,
@@ -23,9 +31,13 @@ module.exports = function(grunt) {
       },
     },
     nodemon: {
-      dev: {
+      start: {
         script: './bin/www',
-        tasks: ['watch']
+        tasks: ["concat:client","watch:client"]
+      },
+      watch: {
+        script: './bin/www',
+        tasks: ['watch:server']
       }
     },
     concat: {
@@ -35,16 +47,22 @@ module.exports = function(grunt) {
         banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
         '<%= grunt.template.today() %> */\n',
       },
-      dist: {
+      client: {
         src: [
+
+          "public/main_app.js",
+          "public/constants.js",
+          "public/modules/*.js",
+          "public/modules/**/.js",
           "public/main_app.js",
           "public/directive/*.js",
+          "public/directive/**/*.js",
           "public/controller/*.js",
+          "public/controller/**/*.js",
           "public/services/*.js",
-
-
+          "public/services/**/*.js",
         ],
-        dest: 'public/built.js',
+        dest: 'public/dist/built.js',
       },
     },
 
@@ -59,6 +77,8 @@ module.exports = function(grunt) {
 
 
   // registerTask
-  grunt.registerTask("default", ["concat","nodemon:dev"]);
+  grunt.registerTask("serverwatch", ["concat:client","nodemon:dev"]);
+  grunt.registerTask("start", ["nodemon:start"]);
+  grunt.registerTask("client", ["concat:client","watch:client"]);
   grunt.registerTask("con", ['concat']);
 };

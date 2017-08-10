@@ -1,0 +1,48 @@
+<section class="content-header m-b-40">
+  <h1>
+    Role 
+    <small>Control panel</small>
+  </h1>
+ <button type="button" ui-sref="new-role" class="btn btn-primary pull-right">
+    <i class="fa fa-plus"></i> Create New role</button>
+</section>
+<section class="content" ng-init="getRoleList()">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="box">
+        <div class="box-header">
+          <div class="col-md-3">
+            <h3 class="box-title ">Users Roles</h3>
+          </div>
+        </div>
+        <div class="box-body over-x-sc">
+			<div class="table-responsive">
+				<table ng-table="role" class="table table-bordered table-hover">
+					<tr ng-repeat="row in $data">
+					  <td data-title="'Sl No'" >{{ $index + 1}}</td>
+					  <td data-title="'Role Type'" sortable="'name'">{{row.type}}</td>
+					  <td data-title="'Description'" >{{row.desc}}</td>
+					  <td data-title="'No.of users assigned this role'" sortable="'email'">{{row.nos}}</td>
+					 
+					 
+					  <td data-title="'Action'" >
+						
+						<div class="btn-group">
+						  <button type="button" class="btn btn-warning"><a href="" class="option-btn" ui-sref="user-update"><i class="fa fa-edit"></i></a></button>
+						</div>
+						<div class="btn-group">
+						  <button type="button" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+						</div>
+						<div class="btn-group">
+						  <button type="button" class="btn btn-danger">Deactivate</button>
+						</div>
+						
+					  </td>
+					</tr>
+				  </table>
+		  </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

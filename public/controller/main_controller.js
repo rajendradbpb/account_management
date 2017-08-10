@@ -2,7 +2,7 @@ app.controller("Main_Controller",function($scope,$rootScope,$state,$localStorage
   /*******************************************************/
   /*************This is use for check user login**********/
   /*******************************************************/
-  
+
   $rootScope.$on('Login_success',function(){
     $scope.getUserDetails();
   })
@@ -41,34 +41,3 @@ app.controller("ProfileController",function($scope,$rootScope,$state,$localStora
   /*******************************************************/
 /*----------------------------------------------------------------------------------------------------------------------------------*/
                         /*-------------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------------------------------------------------------------*/
- /*******************************************************/
-  /******Role controller Starts here*****/
-  /*******************************************************/
-
-
-
-app.controller("role_controller",function($scope,$rootScope,$state,$localStorage,NgTableParams,RoleService){
-  /*******************************************************/
-  /******This is used for user role*****/
-  /*******************************************************/
-  $scope.roles = {};
-  $scope.getRoleList = function(){
-    RoleService.role().then(function(response){
-      console.log(response);
-      $scope.roles = response.data.role;
-      $scope.role = new NgTableParams;
-      $scope.role.settings({
-        dataset : $scope.roles
-      })
-    },function(error){
-                 $rootScope.showPreloader = false;
-              })
-  }
-  
-});
-
- /*******************************************************/
-  /******Role controller ends here*****/
-  /*******************************************************/
-
