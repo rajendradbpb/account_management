@@ -1,22 +1,21 @@
-var app = angular.module("acc_app", ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate','datePicker','ngTable']);
+var app = angular.module("acc_app", ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate','datePicker','ngTable','angular-js-xlsx']);
 app.config(function($stateProvider, $urlRouterProvider) {
   $urlRouterProvider.otherwise('/login');
   $stateProvider
   .state('login', {
       templateUrl: 'views/login.html',
       url: '/login',
-	   controller:'LoginCtrl',
+	    controller:'LoginCtrl',
       resolve: {
         loggedout: checkLoggedin
       }
   })
   .state('dashboard', {
     templateUrl: 'views/dashboard.html',
-    url: '/dash',
-    controller:'LoginCtrl',
-    resolve: {
-      loggedout: checkLoggedout
-    }
+    url: '/dashboard',
+    //resolve: {
+      //loggedout: checkLoggedout
+    //}
   })
  .state('client-list', {
     templateUrl: 'views/client/client_list.html',
@@ -29,11 +28,11 @@ app.config(function($stateProvider, $urlRouterProvider) {
   .state('user-profile',{
 	  templateUrl:'views/user/user_profile.html',
 	  url:'/user-profile',
-	  //controller:'TrailController',
-	  //resolve:{
-		  //loggedout:checkLoggedout
-	  //}
-
+	  controller:'ProfileController',
+	  resolve:{
+		  loggedout:checkLoggedout
+	  }
+	  
   })
   .state('client-details',{
 	  templateUrl:'views/client/client_details.html',
@@ -42,7 +41,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	  //resolve:{
 		  //loggedout:checkLoggedout
 	  //}
-
+	  
   })
   .state('client-update',{
 	  templateUrl:'views/client/client_update.html',
@@ -51,7 +50,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	  //resolve:{
 		  //loggedout:checkLoggedout
 	  //}
-
+	  
   })
   .state('new-client', {
     templateUrl: 'views/client/new_client.html',
@@ -64,12 +63,12 @@ app.config(function($stateProvider, $urlRouterProvider) {
   .state('user-list',{
 	  templateUrl:'views/user/userlist.html',
 	  url:'/user-list',
-	  controller:'Main_Controller'
-
+	  controller:'User_Controller'
+	  
 	  //resolve:{
 		  //loggedout:checkLoggedout
 	  //}
-
+	  
   } )
   .state('new-user',{
 	  templateUrl:'views/user/new_user.html',
@@ -85,13 +84,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		  //loggedout:checkLoggedout
 	  //}
   })
-  .state('user-details',{
-	  templateUrl:'views/user/user_details.html',
-	  url:'/user-details',
-	  //resolve:{
-		  //loggedout:checkLoggedout
-	  //}
-  })
+  
   .state('trail-balance',{
 	  templateUrl:'views/trail.html',
 	  url:'/trail-balance',
@@ -99,7 +92,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	  //resolve:{
 		  //loggedout:checkLoggedout
 	  //}
-
+	  
   })
   .state('forgot-password',{
 	  templateUrl:'views/resetpassword.html',
@@ -107,9 +100,9 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	  //resolve:{
 		  //loggedout:checkLoggedout
 	  //}
-
+  
   })
-
+  
   .state('ca-firm',{
 	  templateUrl:'views/ca_firm_details.html',
 	  url:'/ca-firm',
@@ -126,12 +119,20 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		  //loggedout:checkLoggedout
 	  //}
   })
-
+  .state('role',{
+    templateUrl:'views/role_management.html',
+    url:'/role-management',
+    controller:'role_controller',
+    //resolve:{
+      //loggedout:checkLoggedout
+    //}
+  })
+  
   function checkLoggedout($q, $timeout, $rootScope, $state, $localStorage) {
     var deferred = $q.defer();
-    accessToken = $rootScope.is_loggedin ;//localStorage.getItem('accessToken')
+    //accessToken = localStorage.getItem('accessToken')
     $timeout(function(){
-      if(accessToken){
+      if($localStorage.user){
         deferred.resolve();
       }
       else{
@@ -142,9 +143,9 @@ app.config(function($stateProvider, $urlRouterProvider) {
   }
   function checkLoggedin($q, $timeout, $rootScope, $state, $localStorage) {
     var deferred = $q.defer();
-    accessToken = $rootScope.is_loggedin ;//localStorage.getItem('accessToken')
+    // accessToken = localStorage.getItem('accessToken')
     $timeout(function(){
-      if(accessToken){
+      if($localStorage.user){
         deferred.resolve();
         $state.go('dashboard');
       }

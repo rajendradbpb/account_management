@@ -1,85 +1,90 @@
-app.controller('ClientController',function($scope,$rootScope,Util,$uibModal,$stateParams,NgTableParams){
+app.controller('ClientController',function($scope,$rootScope,Util,$uibModal,$stateParams,NgTableParams,ClientService){
 	
-	$scope.emp = {};	
-	$scope.emp.add=[
-	{
-		       'name':'',
-		'designation':'',
-		         'id':'',
-			   'pan' :'',
-	    	
-	}
-	];	
-	$scope.removeEmp=function($index){
-		$scope.emp.add.splice($index,1);
-		
-	}
-	$scope.updateEmployee = function(){
-		var obj = {name:'' ,designation:'', id:'', pan:'' };
-		$scope.emp.add.push(obj);
-	}
-	$scope.client_update = {};	
-	$scope.client_update.director=[
-	{'name':'',
-		'designation':'',
-		         'id':'',
-			   'pan' :'',
-	    	
-	    	
-	}
-	];	
-	$scope.removeDirector=function($index){
-		$scope.client_update.director.splice($index,1);
-		
-	}
-	$scope.updateDirector = function(){
-		var obj = {name:'' ,designation:'', id:'', pan:''  };
-		$scope.client_update.director.push(obj);
-	}
+	/*FOR DIRECTOR INCREMENT STARTS HERE*/
+				$scope.emp = {};	
+				$scope.emp.add=[
+				{
+					       'name':'',
+					'designation':'',
+					         'id':'',
+						   'pan' :'',
+				    	
+				}
+			];	
+				$scope.removeEmp=function($index){
+					$scope.emp.add.splice($index,1);
+					
+				}
+				$scope.updateEmployee = function(){
+					var obj = {name:'' ,designation:'', id:'', pan:'' };
+					$scope.emp.add.push(obj);
+				}
+					
+
+/*FOR DIRECTOR INCREMENT ENDS HERE*/
+
+
+/*FOR SHARE HOLDERS INCREMENT startS HERE*/
+				$scope.shares = {};
+				$scope.shares.list=[
+				{
+					       'name':'',
+					'designation':'',
+					         'id':'',
+						   'pan' :'',
+				    	
+				}
+			];	
+				$scope.removeShare=function($index){
+					$scope.shares.list.splice($index,1);
+					
+					
+				}
+				$scope.newShare = function(){
+					var obj = {name:'' ,designation:'', id:'', pan:'' };
+					$scope.shares.list.push(obj);
+				}
 	
-	$scope.client_list=[
-	{
-		"firm_name":"BBM & co",
-		"firm_type":"Chartard Accountants",
-		"date_inc" :"20-7-2017",
-             "gst" :"5744877",
-		"is_active":true
-	},
-	{
-		"firm_name":"Go Apps Solutions",
-		"firm_type":"Software",
-		"date_inc" :"20-7-2017",
-             "gst" :"5744627",
-		"is_active":true
-	},
-	{
-		"firm_name":"Fincrony",
-		"firm_type":"Chartard Accountants",
-		"date_inc" :"20-7-2017",
-             "gst" :"5744877",
-		"is_active":false
-			
-		
-	},
-	{
-		"firm_name":"Google ",
-		"firm_type":"Search Engine",
-		"date_inc" :"20-7-2017",
-             "gst" :"5747677",
-		"is_active":true
-			
-		
-	},
-	{
-		"firm_name":"Snapdeal",
-		"firm_type":"Ecommerce",
-		"date_inc" :"20-7-2017",
-             "gst" :"574656797",
-		"is_active":false
-	}],
-	$scope.clientData = new NgTableParams();
-	$scope.clientData.settings({dataset:$scope.client_list})
+
+	/*FOR SHARE HOLDERS INCREMENT ends HERE*/
 	
+	/*FOR SHARE Capital INCREMENT startS HERE*/
+				$scope.capital = {};
+				$scope.capital.list=[
+				{
+					       'amount':'',
+						   	 'year':'',
+					   
+				    	
+				}
+			];	
+				$scope.removeCapital=function($index){
+					$scope.capital.list.splice($index,1);
+					
+					
+				}
+				$scope.newCapital = function(){
+					var obj = {name:'' ,designation:'', id:'', pan:'' };
+					$scope.capital.list.push(obj);
+				}
 	
+
+	/*FOR SHARE Capital INCREMENT ends HERE*/
+	
+	/*Clientlist table view code starts here*/
+				$scope.clientList={};
+			    $scope.getClientList = function(){
+			    		ClientService.clientList().then(function(response){
+			    			console.log(response);
+			    			$scope.clientList=response.data.client;
+			    			$scope.clientData = new NgTableParams();
+			    			$scope.clientData.settings({
+			    				dataset : $scope.clientList
+			    			})
+			    		},function(error){
+			    			 $rootScope.showPreloader = false;
+			    		})
+			    }
+    /*Clientlist table view code ends here*/
 	
 })

@@ -5,7 +5,7 @@
   <button type="button" ui-sref="new-user" class="btn btn-primary pull-right">
     <i class="fa fa-plus"></i> Add A New User</button>
 </section>
-<section class="content">
+<section class="content" ng-init="getUserList()">
   <div class="row">
     <div class="col-xs-12">
       <div class="box">
@@ -19,17 +19,17 @@
 				<table ng-table="userData" class="table table-bordered table-hover">
 					<tr ng-repeat="row in $data">
 					  <td data-title="'Sl No'" >{{ $index + 1}}</td>
-					  <td data-title="'Name'" sortable="'name'">{{row.name}}</td>
-					  <td data-title="'Mobile'" sortable="'mobile'">{{row.mobile}}</td>
+					  <td data-title="'Name'" sortable="'name'">{{row.first_name}}</td>
+					  <td data-title="'Mobile'" sortable="'mobile'">{{row.last_name}}</td>
 					  <td data-title="'Email'" sortable="'email'">{{row.email}}</td>
 					  <td data-title="'User Role'" sortable="'user_role'">{{row.user_role}}</td>
-					  <td>
+					  <td data-title="'status'">
 						<span ng-if="row.is_active" class="label label-success">Active</span>
 						<span ng-if="!row.is_active" class="label label-danger">InActive</span>
 					  </td>
 					  <td data-title="'Action'" >
 						<div class="btn-group">
-						  <button type="button" class="btn btn-success"><a href="" class="option-btn" ui-sref="user-details"><i class="fa fa-eye"></i></a></button>
+						  <button type="button" class="btn btn-success"><a href="" class="option-btn" ui-sref="user-profile"><i class="fa fa-eye"></i></a></button>
 						</div>
 						<div class="btn-group">
 						  <button type="button" class="btn btn-warning"><a href="" class="option-btn" ui-sref="user-update"><i class="fa fa-edit"></i></a></button>

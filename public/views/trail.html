@@ -50,10 +50,11 @@
 					</div>
 					<div class="row">	
 						<div class="col-sm-4">
-							<div class="form-group" ng-class="{'has-error':trailSheet.trail_file.$touched && trailSheet.trail_file.$invalid}">
+							<div class="form-group">
 								<label for="lname" class="control-label">Trail Balance File:</label>
 								<div class="clearfix">
-									<input type="file" value="upload" name="trail_file" ng-model="trail.file"  required>
+								<js-xls onread="read" onerror="error"></js-xls>
+									<!-- <input type="file" value="upload" name="file" ng-model="trail.file"  ng-change="loadFile()" required> -->
 									
 								</div>
 							</div>
@@ -130,7 +131,7 @@
 				<div class="clear-fix">
 					<div class="col-sm-12">
 					<div class="row">
-						<div class="col-sm-5">
+						<div class="col-sm-6">
 							<div class="box box-info">
 								 <div class="box-header with-border">
 									<h3 class="box-title">Old Trail Sheet</h3>
@@ -180,9 +181,9 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-sm-2">
-							</div>
-							<div class="col-sm-5">
+						
+						
+							<div class="col-sm-6">
 								<div class="box box-info">
 									 <div class="box-header with-border">
 										<h3 class="box-title">New Trail Sheet</h3>

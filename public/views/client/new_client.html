@@ -186,9 +186,9 @@
                                         </div>
                                         <div class="col-sm-2" ng-class="{'has-error':addEmp.director_desig_{{$index}}.$touched && addEmp.director_desig_{{$index}}.$invalid}">
                                             <select class="form-control" name="director_desig_{{$index}}" ng-model="items.designation" required >
-											<option><i class="fa fa-sort-desc"></i>Designation</option>
-											<option>a</option>
-											<option>b</option>
+											<option value><i class="fa fa-sort-desc"></i>Designation</option>
+											<option vlaue="2">a</option>
+											<option value="3">b</option>
 											</select>
 											<span class="help-block" ng-show="addEmp.director_desig_{{$index}}.$error.required && addEmp.director_desig_{{$index}}.$touched">Designation is required</span>
                                         </div>
@@ -219,6 +219,7 @@
 				</div>
 		</div>
 				<!--row ended-->
+
 				<!--row started-->
 				<div class="row"> 
 					<div class="col-xs-6">
@@ -238,19 +239,7 @@
 														<span class="help-block" ng-show="addEmp.paid_cap.$error.pattern && addEmp.paid_cap.$touched">Invalid amount</span>
 													</div>		
 								   </div>
-					
-					</div>
 
-					<div class="col-xs-6">
-							
-					 <div class="form-group has-feedback"  ng-class="{'has-error':addEmp.comp_share_cap.$touched && addEmp.comp_share_cap.$invalid}">
-			          	<label for="mobile" class="col-sm-3 control-label">Authorized Shared Capital:</label>
-						<div class="col-sm-9">
-							<input type="text" name="comp_share_cap" ng-model="company.share.capital" class="form-control" placeholder="Authorized Shared Capital" required ng-pattern="/^[0-9]{10,10}$/">
-							<span class="help-block" ng-show="addEmp.comp_share_cap.$error.required && addEmp.comp_share_cap.$touched">Authorized shared capital is required</span>
-							<span class="help-block" ng-show="addEmp.comp_share_cap.$error.pattern && addEmp.comp_share_cap.$touched">Invalid Share Capital</span>
-						</div>		
-		          	</div>
 					<div class="form-group has-feedback" ng-class="{'has-error':addEmp.comp_audit.$touched && addEmp.comp_audit.$invalid}">
 									<label for="pass" class="col-sm-3 control-label">Assign Auditor:</label>
 								<div class="col-sm-9">
@@ -265,6 +254,49 @@
 								</div>		
 						</div>
 					
+					</div>
+
+					<div class="col-xs-6">
+					
+							<div class="box box-success">
+				                    <div class="box-header">
+				                          <h3 class="box-title">Authorized Share Capital</h3>
+				                    </div>
+				                    <div class="box-body">								
+				                    	 <div class="row" ng-repeat="x in capital.list">
+				                                <div class="col-sm-6" ng-class="{'has-error':addEmp.share_amount_{{$index}}.$touched && addEmp.share_amount_{{$index}}.$invalid}">
+				                                   <input type="text" class="form-control" placeholder="Amount " name="share_amount_{{$index}}" ng-model="x.amount" required >
+													<span class="help-block" ng-show="addEmp.share_amount_{{$index}}.$error.required && addEmp.share_amount_{{$index}}.$touched">Please Enter an amount</span>
+													
+				                               	 </div>
+				                               	 <div class="col-sm-4" ng-class="{'has-error':addEmp.share_year_{{$index}}.$touched && addEmp.share_year_{{$index}}.$invalid}">
+				                                            <select class="form-control" name="share_year_{{$index}}" ng-model="x.year" required >
+															<option value><i class="fa fa-sort-desc"></i>Year</option>
+															<option value="2">2017</option>
+															<option value="3">2016</option>
+															<option value="2">2015</option>
+															<option value="3">2014</option>
+															<option value="2">2013</option>
+															<option value="3">2012</option>
+															</select>
+															<span class="help-block" ng-show="addEmp.share_year_{{$index}}.$error.required && addEmp.share_year_{{$index}}.$touched">Please Enter The Year</span>
+				                               </div>
+				                          
+												<div class="col-sm-2">
+				                                   <button type="button"  ng-if="capital.list.length > 1" ng-click="removeCapital($index)" class="btn btn-danger btn-sm">
+				              							<i class="fa fa-minus"></i>
+				              						</button>
+				                                   <button type="button" ng-if="$last" ng-click="newCapital()" class="btn btn-info btn-sm">
+				              							<i class="fa fa-plus"></i>
+				              						</button>
+				                                </div>
+				                        </div>
+				                   </div>
+
+            				 </div>
+				
+
+					
 					
 					</div>
 				
@@ -272,6 +304,52 @@
 				
 				</div>
 				<!-- row ended -->
+				<!--row started here-->
+
+				<!-- row ended -->
+
+				<!--row started here-->
+				<div class="box box-info">
+                    <div class="box-header">
+                          <h3 class="box-title">Share Holders holding more than 5% Share</h3>
+                    </div>
+                    <div class="box-body">								
+                    	 <div class="row" ng-repeat="share in shares.list">
+                                <div class="col-sm-4" ng-class="{'has-error':addEmp.share_name_{{$index}}.$touched && addEmp.share_name_{{$index}}.$invalid}">
+                                   <input type="text" class="form-control" placeholder="Name " name="share_name_{{$index}}" ng-model="share.name" required ng-pattern="/^(\D)+$/">
+									<span class="help-block" ng-show="addEmp.share_name_{{$index}}.$error.required && addEmp.share_name_{{$index}}.$touched">Please Enter Share holders's Name</span>
+									<span class="help-block" ng-show="addEmp.share_name_{{$index}}.$error.pattern && addEmp.share_name_{{$index}}.$touched">Numeric not allowed</span>
+                                </div>
+                                <div class="col-sm-2" ng-class="{'has-error':addEmp.share_desig_{{$index}}.$touched && addEmp.share_desig_{{$index}}.$invalid}">
+                                            <select class="form-control" name="share_desig_{{$index}}" ng-model="share.designation" required >
+											<option value><i class="fa fa-sort-desc"></i>Designation</option>
+											<option value="2">a</option>
+											<option value="3">b</option>
+											</select>
+											<span class="help-block" ng-show="addEmp.share_desig_{{$index}}.$error.required && addEmp.share_desig_{{$index}}.$touched">Designation is required</span>
+                               </div>
+                                <div class="col-sm-2"  ng-class="{'has-error':addEmp.share_per_{{$index}}.$touched && addEmp.share_per_{{$index}}.$invalid}">
+                                    <input type="text" class="form-control" placeholder="Percentage" name="share_per_{{$index}}" ng-model="share.id" required>
+									<span class="help-block" ng-show="addEmp.share_per_{{$index}}.$error.required && addEmp.share_per_{{$index}}.$touched">Please enter the share amount</span>
+                                </div>
+								<div class="col-sm-2" ng-class="{'has-error':addEmp.share_pan_{{$index}}.$touched && addEmp.share_pan_{{$index}}.$invalid}">
+                                    <input type="text" class="form-control" placeholder="PAN" name="share_pan_{{$index}}" ng-model="share.pan" required>
+									<span class="help-block" ng-show="addEmp.share_pan_{{$index}}.$error.required && addEmp.share_pan_{{$index}}.$touched">PAN is required</span>
+                                </div>
+								<div class="col-sm-2">
+                                   <button type="button"  ng-if="shares.list.length > 1" ng-click="removeShare($index)" class="btn btn-danger btn-sm">
+              							<i class="fa fa-minus"></i>
+              						</button>
+                                   <button type="button" ng-if="$last" ng-click="newShare()" class="btn btn-info btn-sm">
+              							<i class="fa fa-plus"></i>
+              						</button>
+                                </div>
+                        </div>
+                   </div>
+
+            	 </div>
+				
+				<!--row ended-->
 				<div class="row">
 					<div class="col-sm-12">
 						<div class="box box-success">
