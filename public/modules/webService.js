@@ -14,6 +14,14 @@ angular.module('WebService', [])
                     'Accept': 'application/json'
                 },
             },
+            deleteRole: {
+                url: "/role/:_id",
+                method: "DELETE",
+                "headers": {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+            },
 
         }
     })
@@ -33,6 +41,7 @@ angular.module('WebService', [])
           return $resource('/',null, {
             getRole: ApiGenerator.getApi('getRole'),
             postRole: ApiGenerator.getApi('postRole'),
+            deleteRole: ApiGenerator.getApi('deleteRole'),
 
           });
 

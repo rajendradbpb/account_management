@@ -1,4 +1,4 @@
-/*! account_management - v0.0.0 - Fri Aug 11 2017 01:32:24 */
+/*! account_management - v0.0.0 - Sun Aug 13 2017 00:07:32 */
 var app = angular.module("acc_app", ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate','datePicker','ngTable','angular-js-xlsx','WebService']);
 app.config(function($stateProvider, $urlRouterProvider) {
   $urlRouterProvider.otherwise('/login');
@@ -241,6 +241,14 @@ app.directive('fileModel', ['$parse', function ($parse) {
                     'Accept': 'application/json'
                 },
             },
+            deleteRole: {
+                url: "/role/:_id",
+                method: "DELETE",
+                "headers": {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+            },
 
         }
     })
@@ -260,6 +268,7 @@ app.directive('fileModel', ['$parse', function ($parse) {
           return $resource('/',null, {
             getRole: ApiGenerator.getApi('getRole'),
             postRole: ApiGenerator.getApi('postRole'),
+            deleteRole: ApiGenerator.getApi('deleteRole'),
 
           });
 
@@ -485,28 +494,34 @@ app.controller("ProfileController",function($scope,$rootScope,$state,$localStora
   /*******************************************************/
 /*----------------------------------------------------------------------------------------------------------------------------------*/
                         /*-------------------------------------------------------------------------------*/
-;app.controller("role_controller", function($scope, $rootScope, $state, $localStorage,ApiCall, NgTableParams, RoleService) {
+;app.controller("role_controller", function($scope, $rootScope, $state, $localStorage, ApiCall, NgTableParams, RoleService) {
   $scope.roles = {};
-  $scope.getRoleList = function() {
-    // RoleService.role().then(function(response) {
-    //   console.log(response);
-    //   $scope.roles = response.data.role;
-    //   $scope.role = new NgTableParams;
-    //   $scope.role.settings({
-    //     dataset: $scope.roles
-    //   })
-    // }, function(error) {
-    //   $rootScope.showPreloader = false;
-    // })
-    ApiCall.getRole(function(res) {
-      $scope.roles = res.data;
-      $scope.role = new NgTableParams;
-        $scope.role.settings({
-          dataset: $scope.roles
+  $scope.crudRole = function(method, data) {
+    switch (method) {
+      case 'get':
+        ApiCall.getRole(function(res) {
+          $scope.roles = res.data;
+          $scope.role = new NgTableParams;
+          $scope.role.settings({
+            dataset: $scope.roles
+          })
+        }, function(error) {
+          console.log(err);
         })
-    },function(error){
-      console.log(err);
-    })
+        break;
+      case 'delete':
+        ApiCall.deleteRole({
+          _id: data._id
+        }, function(res) {
+          $scope.crudRole('get');
+        }, function(error) {
+          console.log(err);
+        })
+        break;
+      default:
+
+    }
+
   }
 
 });

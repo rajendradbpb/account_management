@@ -7,8 +7,13 @@ var bodyParser = require('body-parser');
 var db = require('./server/db.js');
 // initilising routes
 var routes = require('./server/routes/index');
-
+// swagger integration
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json');
 var app = express();
+
+// swagger
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.all('/*', function (req, res, next) {
     // CORS headers
     res.header("Access-Control-Allow-Origin", "*"); // restrict it to the required domain
