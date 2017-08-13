@@ -1,0 +1,75 @@
+Contents
+1.	Roles
+a.	Create role
+b.	Fetch roles
+c.	Update role
+d.	Delete role
+
+Create role :
+url  : http://localhost:3000/role
+request : {
+    "type"             : "role2",
+    "desc"       :"des2" 
+}
+Method : POST
+fetch role :
+1.	url  : http://localhost:3000/role
+Method : GET
+2.	http://localhost:3000/role?_id=598a361ac9ef9e1b404b0e83
+Method: GET
+This is used to get the single role info based on the id
+Update Role :
+url  : http://localhost:3000/role
+request : {
+            "_id": "598a29ebce48dc04d45b43c6",
+            "type": "role11",
+            "desc": "des11"
+            
+        }
+Method : PUT
+
+Delete Role :
+http://localhost:3000/role/598a3610c9ef9e1b404b0e82     
+
+
+*************************************************************** User operation **********************************
+1. create User POST
+url - http://localhost:3000/user
+request : {
+	"role":"598f74a1ef61c91e206826a7",
+	"username":"user13",
+	"password":"user13",
+	"email":"user10gmail.com"
+}
+2. user listing GET
+url - http://localhost:3000/user
+3. User details GET
+url - http://localhost:3000/user?_id=598f7dda25e2db15ec426ad6
+
+4. Delete User DELETE
+url - http://localhost:3000/user/598f7dda25e2db15ec426ad6
+5. Update User PUT
+url - http://localhost:3000/user
+request - {
+        "_id": "598f7dda25e2db15ec426ad6",
+        "role": "598f74a1ef61c91e206826a7",
+        "username": "user10",
+        "password": "user10",
+        "email": "user10gmail.com",
+        
+    }
+	
+6. User login POST
+
+url - http://localhost:3000/user/login
+request - {
+
+	"username":"user13",
+	"password":"user13"
+	
+}
+
+
+
+
+
