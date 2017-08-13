@@ -30,12 +30,12 @@
     <script src="directive/directive.js"></script>
     <script src="controller/user_controller.js"></script>
     <script src="controller/main_controller.js"></script>
-	 <script src="controller/trail.js"></script>
-	 <script src="controller/client_Controller.js"></script>
-   <script src="controller/role_Controller.js"></script>
-	 <script src="controller/firm_controller.js"></script>
-	 	 <script src="services/service.js"></script>
-	  <script src="controller/login_controller.js"></script>
+	<script src="controller/trail.js"></script>
+	<script src="controller/client_Controller.js"></script>
+    <script src="controller/role_Controller.js"></script>
+	<script src="controller/firm_controller.js"></script>
+	<script src="services/service.js"></script>
+	<script src="controller/login_controller.js"></script>
     <script src="filter.js"></script>
     <script src="modules/webService.js"></script>
 
@@ -55,12 +55,12 @@
     </div>
     <div class="" ng-if="is_loggedin">
       <div class="wrapper" >
-        <div ng-include="'views/header.html'"></div>
-        <div ng-include="'views/sidebar.html'"></div>
+        <div ng-include="'views/common/header.html'"></div>
+        <div ng-include="'views/common/sidebar.html'"></div>
         <div class="content-wrapper" update-height>
           <div ui-view></div>
         </div>
-        <div ng-include="'views/footer.html'"></div>
+        <div ng-include="'views/common/footer.html'"></div>
       </div>
     </div>
     <script src="plugins/jQuery/jQuery-2.2.0.min.js"></script>

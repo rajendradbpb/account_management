@@ -1,4 +1,4 @@
-/*! account_management - v0.0.0 - Sun Aug 13 2017 06:35:16 */
+/*! account_management - v0.0.0 - Sun Aug 13 2017 17:12:22 */
 var app = angular.module("acc_app", ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate','datePicker','ngTable','angular-js-xlsx','WebService']);
 app.config(function($stateProvider, $urlRouterProvider) {
   $urlRouterProvider.otherwise('/login');
@@ -119,9 +119,9 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	  //}
     
   })
-  .state('role',{
+  .state('test',{
     templateUrl:'views/role_management.html',
-    url:'/role-management',
+    url:'/test',
     controller:'role_controller',
     //resolve:{
       //loggedout:checkLoggedout
@@ -227,50 +227,51 @@ app.directive('fileModel', ['$parse', function ($parse) {
 ;angular.module('WebService', [])
     .factory('API', function($http, $resource, EnvService) {
         return {
-            getRole: {
-                "url": "/role",
-                "method": "GET",
-                // "isArray" : true
+          getRole: {
+            "url": "/role",
+            "method": "GET",
+            // "isArray" : true
+          },
+          postRole: {
+            url: "/role",
+            method: "POST",
+            "headers": {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
             },
-            postRole: {
-                url: "/role",
-                method: "POST",
-                "headers": {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
+          },
+          deleteRole: {
+            url: "/role/:_id",
+            method: "DELETE",
+            "headers": {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
             },
-            deleteRole: {
-                url: "/role/:_id",
-                method: "DELETE",
-                "headers": {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-            },
-
+          },
+          userLogin : {
+            url : "/user/login",
+            method : "POST"
+          }
         }
     })
     .factory('ApiGenerator', function($http, $resource, API, EnvService) {
         return {
-            getApi: function(api) {
-                var obj = {};
-                obj = angular.copy(API[api]);
-                // console.log("obj  ",obj,api);
-                obj.url = EnvService.getBasePath() + obj.url; // prefix the base path
-                return obj;
-            }
+          getApi: function(api) {
+            var obj = {};
+            obj = angular.copy(API[api]);
+            // console.log("obj  ",obj,api);
+            obj.url = EnvService.getBasePath() + obj.url; // prefix the base path
+            return obj;
+          }
         }
     })
     .factory('ApiCall', function($http, $resource, API, EnvService,ApiGenerator) {
-
-          return $resource('/',null, {
-            getRole: ApiGenerator.getApi('getRole'),
-            postRole: ApiGenerator.getApi('postRole'),
-            deleteRole: ApiGenerator.getApi('deleteRole'),
-
-          });
-
+      return $resource('/',null, {
+        getRole: ApiGenerator.getApi('getRole'),
+        postRole: ApiGenerator.getApi('postRole'),
+        deleteRole: ApiGenerator.getApi('deleteRole'),
+        userLogin : ApiGenerator.getApi('userLogin')
+      });
     })
     .factory('EnvService',function($http,$localStorage){
       var envData = env = {};
@@ -439,10 +440,11 @@ app.directive('updateHeight',function () {
 		$scope.partner.list.push(obj);
 	}
 	
-});app.controller('LoginCtrl',function($scope,$rootScope,LoginService,$state,$window,$localStorage){
+});app.controller('LoginCtrl',function($scope,$rootScope,LoginService,$state,$window,$localStorage, ApiCall){
 	$scope.user = {};
 	$scope.userLogin = function(){
-		 LoginService.jsonLogin($scope.user).then(function(response){
+		ApiCall.userLogin($scope.user, function(response){
+			console.log(response)
 		 	$localStorage.user = response;
 		 	$scope.$emit("Login_success");
 		  	$state.go('dashboard');

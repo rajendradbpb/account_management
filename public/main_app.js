@@ -3,7 +3,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
   $urlRouterProvider.otherwise('/login');
   $stateProvider
   .state('login', {
-      templateUrl: 'views/login.html',
+      templateUrl: 'views/common/login.html',
       url: '/login',
 	    controller:'LoginCtrl',
       resolve: {
@@ -217,3 +217,13 @@ app.directive('fileModel', ['$parse', function ($parse) {
        }
      };
  });
+app.config(['$httpProvider', function ($httpProvider) {
+    $httpProvider.interceptors.push('AuthRequestInterceptor');
+}]);
+app.factory('AuthRequestInterceptor', function($rootScope, $q, $localStorage){
+  return {
+    // 'request': function (config) {
+    //   console.log("interceptors",config);
+    // }
+  }
+});

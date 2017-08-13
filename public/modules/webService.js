@@ -1,59 +1,60 @@
 angular.module('WebService', [])
     .factory('API', function($http, $resource, EnvService) {
         return {
-            getRole: {
-                "url": "/role",
-                "method": "GET",
-                // "isArray" : true
+          getRole: {
+            "url": "/role",
+            "method": "GET",
+            // "isArray" : true
+          },
+          postRole: {
+            url: "/role",
+            method: "POST",
+            "headers": {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
             },
-            postRole: {
-                url: "/role",
-                method: "POST",
-                "headers": {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-            },
-            updateRole: {
-                url: "/role/",
-                method: "PUT",
-                "headers": {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-            },
-            deleteRole: {
-                url: "/role/:_id",
-                method: "DELETE",
-                "headers": {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-            },
-
+          },
+          updateRole: {
+              url: "/role/",
+              method: "PUT",
+              "headers": {
+                  'Content-Type': 'application/json',
+                  'Accept': 'application/json'
+              },
+          },
+          deleteRole: {
+              url: "/role/:_id",
+              method: "DELETE",
+              "headers": {
+                  'Content-Type': 'application/json',
+                  'Accept': 'application/json'
+              },
+          },
+          userLogin : {
+            url : "/user/login",
+            method : "POST"
+          }
         }
     })
     .factory('ApiGenerator', function($http, $resource, API, EnvService) {
         return {
-            getApi: function(api) {
-                var obj = {};
-                obj = angular.copy(API[api]);
-                // console.log("obj  ",obj,api);
-                obj.url = EnvService.getBasePath() + obj.url; // prefix the base path
-                return obj;
-            }
+          getApi: function(api) {
+            var obj = {};
+            obj = angular.copy(API[api]);
+            // console.log("obj  ",obj,api);
+            obj.url = EnvService.getBasePath() + obj.url; // prefix the base path
+            return obj;
+          }
         }
     })
     .factory('ApiCall', function($http, $resource, API, EnvService,ApiGenerator) {
-
-          return $resource('/',null, {
-            getRole: ApiGenerator.getApi('getRole'),
-            postRole: ApiGenerator.getApi('postRole'),
-            deleteRole: ApiGenerator.getApi('deleteRole'),
-            updateRole: ApiGenerator.getApi('updateRole'),
-
-          });
-
+      return $resource('/',null, {
+        getRole: ApiGenerator.getApi('getRole'),
+        postRole: ApiGenerator.getApi('postRole'),
+        deleteRole: ApiGenerator.getApi('deleteRole'),
+        updateRole: ApiGenerator.getApi('updateRole'),
+        userLogin : ApiGenerator.getApi('userLogin')
+      })
     })
     .factory('EnvService',function($http,$localStorage){
       var envData = env = {};
