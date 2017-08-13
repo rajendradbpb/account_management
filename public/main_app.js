@@ -1,5 +1,22 @@
 var app = angular.module("acc_app", ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate','datePicker','ngTable','angular-js-xlsx','WebService']);
-app.config(function($stateProvider, $urlRouterProvider) {
+app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
+  //adding http intercepter
+  $httpProvider.interceptors.push(function ($q, $location, $window,$localStorage) {
+      return {
+          request: function (config) {
+              config.headers = config.headers || {};
+              config.headers['Authorization'] = 'bearer '+localStorage.token;
+              return config;
+          },
+          response: function (response) {
+              if (response.status === 401) {
+                  // handle the case where the user is not authenticated
+                  $location.path('/');
+              }
+              return response || $q.when(response);
+          }
+      };
+  });
   $urlRouterProvider.otherwise('/login');
   $stateProvider
   .state('login', {
@@ -116,7 +133,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	  //resolve:{
 		  //loggedout:checkLoggedout
 	  //}
-    
+
   })
   .state('role-create',{
     templateUrl:'views/role_create.html',
@@ -143,30 +160,50 @@ app.config(function($stateProvider, $urlRouterProvider) {
     //}
   })
 
-  function checkLoggedout($q, $timeout, $rootScope, $state, $localStorage) {
+  function checkLoggedout($q, $timeout, $rootScope, $state,$http, $localStorage) {
     var deferred = $q.defer();
     //accessToken = localStorage.getItem('accessToken')
     $timeout(function(){
-      if($localStorage.user){
-        deferred.resolve();
-      }
-      else{
-        deferred.resolve();
-        $state.go('login');
-      }
+        $http.get('/user/loggedin')
+        .success(function (response) {
+          if($localStorage.user){
+            deferred.resolve();
+            $state.go('dashboard');
+          }
+
+        })
+        .error(function (error) {
+          deferred.resolve();
+          $state.go('login');
+        })
+      // if($localStorage.user){
+      //   deferred.resolve();
+      // }
+      // else{
+      //   deferred.resolve();
+      //   $state.go('login');
+      // }
     },100)
   }
-  function checkLoggedin($q, $timeout, $rootScope, $state, $localStorage) {
+  function checkLoggedin($q, $timeout, $rootScope, $state,$http, $localStorage) {
     var deferred = $q.defer();
     // accessToken = localStorage.getItem('accessToken')
     $timeout(function(){
-      if($localStorage.user){
+      $http.get('/user/loggedin')
+      .success(function(response) {
         deferred.resolve();
         $state.go('dashboard');
-      }
-      else{
+      })
+      .error(function(error){
         deferred.resolve();
-      }
+      })
+      // if($localStorage.user){
+      //   deferred.resolve();
+      //   $state.go('dashboard');
+      // }
+      // else{
+      //   deferred.resolve();
+      // }
     },100)
   }
 });

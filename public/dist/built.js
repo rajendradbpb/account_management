@@ -1,10 +1,27 @@
-/*! account_management - v0.0.0 - Sun Aug 13 2017 17:12:22 */
+/*! account_management - v0.0.0 - Mon Aug 14 2017 02:07:43 */
 var app = angular.module("acc_app", ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate','datePicker','ngTable','angular-js-xlsx','WebService']);
-app.config(function($stateProvider, $urlRouterProvider) {
+app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
+  //adding http intercepter
+  $httpProvider.interceptors.push(function ($q, $location, $window,$localStorage) {
+      return {
+          request: function (config) {
+              config.headers = config.headers || {};
+              config.headers['Authorization'] = 'bearer '+localStorage.token;
+              return config;
+          },
+          response: function (response) {
+              if (response.status === 401) {
+                  // handle the case where the user is not authenticated
+                  $location.path('/');
+              }
+              return response || $q.when(response);
+          }
+      };
+  });
   $urlRouterProvider.otherwise('/login');
   $stateProvider
   .state('login', {
-      templateUrl: 'views/login.html',
+      templateUrl: 'views/common/login.html',
       url: '/login',
 	    controller:'LoginCtrl',
       resolve: {
@@ -117,41 +134,77 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	  //resolve:{
 		  //loggedout:checkLoggedout
 	  //}
-    
+
   })
-  .state('test',{
+  .state('role-create',{
+    templateUrl:'views/role_create.html',
+    url:'/role-create',
+    controller:'role_controller',
+   // resolve:{
+     // loggedout:checkLoggedout
+   // }
+  })
+  //.state('role-update',{
+    //templateUrl:'views/role_update.html',
+    //url:'/role-update',
+    //controller:'role_controller',
+    //resolve:{
+      //loggedout:checkLoggedout
+    //}
+  //})
+  .state('role-list',{
     templateUrl:'views/role_management.html',
-    url:'/test',
+    url:'/role-list',
     controller:'role_controller',
     //resolve:{
       //loggedout:checkLoggedout
     //}
   })
 
-  function checkLoggedout($q, $timeout, $rootScope, $state, $localStorage) {
+  function checkLoggedout($q, $timeout, $rootScope, $state,$http, $localStorage) {
     var deferred = $q.defer();
     //accessToken = localStorage.getItem('accessToken')
     $timeout(function(){
-      if($localStorage.user){
-        deferred.resolve();
-      }
-      else{
-        deferred.resolve();
-        $state.go('login');
-      }
+        $http.get('/user/loggedin')
+        .success(function (response) {
+          if($localStorage.user){
+            deferred.resolve();
+            $state.go('dashboard');
+          }
+
+        })
+        .error(function (error) {
+          deferred.resolve();
+          $state.go('login');
+        })
+      // if($localStorage.user){
+      //   deferred.resolve();
+      // }
+      // else{
+      //   deferred.resolve();
+      //   $state.go('login');
+      // }
     },100)
   }
-  function checkLoggedin($q, $timeout, $rootScope, $state, $localStorage) {
+  function checkLoggedin($q, $timeout, $rootScope, $state,$http, $localStorage) {
     var deferred = $q.defer();
     // accessToken = localStorage.getItem('accessToken')
     $timeout(function(){
-      if($localStorage.user){
+      $http.get('/user/loggedin')
+      .success(function(response) {
         deferred.resolve();
         $state.go('dashboard');
-      }
-      else{
+      })
+      .error(function(error){
         deferred.resolve();
-      }
+      })
+      // if($localStorage.user){
+      //   deferred.resolve();
+      //   $state.go('dashboard');
+      // }
+      // else{
+      //   deferred.resolve();
+      // }
     },100)
   }
 });
@@ -202,6 +255,16 @@ app.directive('fileModel', ['$parse', function ($parse) {
        }
      };
  });
+app.config(['$httpProvider', function ($httpProvider) {
+    $httpProvider.interceptors.push('AuthRequestInterceptor');
+}]);
+app.factory('AuthRequestInterceptor', function($rootScope, $q, $localStorage){
+  return {
+    // 'request': function (config) {
+    //   console.log("interceptors",config);
+    // }
+  }
+});
 ;app.constant("Constants", {
         "debug":true,
         "storagePrefix": "goAppAccount$",
@@ -240,13 +303,21 @@ app.directive('fileModel', ['$parse', function ($parse) {
                 'Accept': 'application/json'
             },
           },
+          updateRole: {
+              url: "/role/",
+              method: "PUT",
+              "headers": {
+                  'Content-Type': 'application/json',
+                  'Accept': 'application/json'
+              },
+          },
           deleteRole: {
-            url: "/role/:_id",
-            method: "DELETE",
-            "headers": {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
+              url: "/role/:_id",
+              method: "DELETE",
+              "headers": {
+                  'Content-Type': 'application/json',
+                  'Accept': 'application/json'
+              },
           },
           userLogin : {
             url : "/user/login",
@@ -270,8 +341,9 @@ app.directive('fileModel', ['$parse', function ($parse) {
         getRole: ApiGenerator.getApi('getRole'),
         postRole: ApiGenerator.getApi('postRole'),
         deleteRole: ApiGenerator.getApi('deleteRole'),
+        updateRole: ApiGenerator.getApi('updateRole'),
         userLogin : ApiGenerator.getApi('userLogin')
-      });
+      })
     })
     .factory('EnvService',function($http,$localStorage){
       var envData = env = {};
@@ -443,13 +515,16 @@ app.directive('updateHeight',function () {
 });app.controller('LoginCtrl',function($scope,$rootScope,LoginService,$state,$window,$localStorage, ApiCall){
 	$scope.user = {};
 	$scope.userLogin = function(){
+		$rootScope.showPreloader = true;
 		ApiCall.userLogin($scope.user, function(response){
-			console.log(response)
-		 	$localStorage.user = response;
+			$rootScope.showPreloader = false;
+		 	$localStorage.user = {
+		 		"token": response.data.token
+		 	};
 		 	$scope.$emit("Login_success");
 		  	$state.go('dashboard');
 		},function(error){
-		 	$window.alert('wrong he');
+			$rootScope.showPreloader = false;
 		})
 	}
 });app.controller("Main_Controller",function($scope,$rootScope,$state,$localStorage,NgTableParams){
@@ -495,36 +570,110 @@ app.controller("ProfileController",function($scope,$rootScope,$state,$localStora
   /*******************************************************/
 /*----------------------------------------------------------------------------------------------------------------------------------*/
                         /*-------------------------------------------------------------------------------*/
-;app.controller("role_controller", function($scope, $rootScope, $state, $localStorage, ApiCall, NgTableParams, RoleService) {
+;app.controller("role_controller", function($scope, $rootScope, $state, $localStorage, ApiCall, NgTableParams, RoleService,$uibModal,Util) {
   $scope.roles = {};
   $scope.crudRole = function(method, data) {
     switch (method) {
       case 'get':
         ApiCall.getRole(function(res) {
-          $scope.roles = res.data;
+          $scope.roleList = res.data;
           $scope.role = new NgTableParams;
           $scope.role.settings({
-            dataset: $scope.roles
+            dataset: $scope.roleList
           })
         }, function(error) {
           console.log(err);
         })
         break;
       case 'delete':
-        ApiCall.deleteRole({
-          _id: data._id
-        }, function(res) {
-          $scope.crudRole('get');
-        }, function(error) {
-          console.log(err);
+        $scope.deleteId = data._id;
+        $scope.modalInstance = $uibModal.open({
+         animation: true,
+         templateUrl: 'views/modals/role-delete-modal.html',
+         controller: 'RoleModalCtrl',
+         size: 'md',
+         resolve: {
+           deleteRole: function () {
+             return $scope.deleteRole;
+           }
+         }
         })
         break;
+      case 'create' :
+        $rootScope.showPreloader = true;
+        ApiCall.postRole($scope.roles, function(response){
+          if(response.statusCode == 200){
+            $rootScope.showPreloader = false;
+            Util.alertMessage('success',response.message);
+            $state.go('role-list');
+          }
+        },function(error){
+          $rootScope.showPreloader = false;
+        })
+        break;
+      case 'update' :
+         $scope.updateId = data._id;
+         $scope.modalInstance = $uibModal.open({
+          animation : true,
+          templateUrl: 'views/modals/role-update-modal.html',
+          controller: 'RoleUpdateModalCtrl',
+          size: 'md',
+          resolve:{
+            updateRole : function(){
+              return $scope.updateRole;
+            },
+            role : function(){
+              return data;
+            }
+          }
+         })
+         break;
+
+         
       default:
 
+    }
+    $scope.deleteRole = function(){
+      ApiCall.deleteRole({
+        _id: $scope.deleteId
+      }, function(res) {
+        $scope.crudRole('get');
+      }, function(error) {
+        console.log(err);
+      })
+    }
+    $scope.updateRole = function(role){
+      ApiCall.updateRole(role,function(res) {
+        $scope.crudRole('get');
+      }, function(error) {
+        console.log(err);
+      }
+      )
     }
 
   }
 
+});
+app.controller('RoleModalCtrl', function ($scope, $uibModalInstance,deleteRole) {
+    $scope.ok = function () {
+        deleteRole();
+        $uibModalInstance.close();
+    };
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
+   
+});
+app.controller('RoleUpdateModalCtrl', function ($scope, $uibModalInstance,updateRole,role) {
+  $scope.role = role;
+    $scope.update = function () {
+        updateRole($scope.role);
+        $uibModalInstance.close();
+    };
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
+   
 });
 ;app.controller('TrailController',function($scope,$http,$rootScope,Util,$uibModal,$stateParams){
 	$scope.trail = {};	
