@@ -2,6 +2,7 @@ var config = require('config');
 var constants = {
   messages:{
     errors:{
+      "verified"                    :"Error in token verification",
       "auth"                        :"Authentication Error",
       "getData"                     :"get Data Error",
       "saveData"                    :"save Data Error",
@@ -74,6 +75,7 @@ var constants = {
         "invalidPriceQuery"                 :   "Invalid Price in Query",
     },
     success:{
+      "verified":"verified",
       "getData"   :"get Data Success",
       "saveData"   :"save Data Success",
       "saveUser"                 : "Success in saving user",

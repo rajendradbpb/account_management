@@ -1,4 +1,4 @@
-/*! account_management - v0.0.0 - Sun Aug 13 2017 00:07:32 */
+/*! account_management - v0.0.0 - Sun Aug 13 2017 06:35:16 */
 var app = angular.module("acc_app", ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate','datePicker','ngTable','angular-js-xlsx','WebService']);
 app.config(function($stateProvider, $urlRouterProvider) {
   $urlRouterProvider.otherwise('/login');
@@ -33,7 +33,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	  resolve:{
 		  loggedout:checkLoggedout
 	  }
-
   })
   .state('client-details',{
 	  templateUrl:'views/client/client_details.html',
@@ -65,7 +64,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	  templateUrl:'views/user/userlist.html',
 	  url:'/user-list',
 	  controller:'User_Controller'
-
 	  //resolve:{
 		  //loggedout:checkLoggedout
 	  //}
@@ -119,6 +117,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	  //resolve:{
 		  //loggedout:checkLoggedout
 	  //}
+    
   })
   .state('role',{
     templateUrl:'views/role_management.html',

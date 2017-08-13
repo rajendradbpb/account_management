@@ -6,6 +6,24 @@ module.exports = function(grunt) {
     jshint: {
       all: ['app.js']
     },
+    notify: {
+    task_name: {
+      options: {
+        // Task-specific options go here.
+      }
+    },
+    watch: {
+      options: {
+        title: '"Task Complete"',  // optional
+        message: '"SASS and Uglify finished running"', //required
+      }
+    },
+    server: {
+      options: {
+        message: '"Server is ready!"'
+      }
+    }
+  },
     watch: {
       server: {
         files: ['app.js','server/*.js','server/**/*.js'],
@@ -35,7 +53,7 @@ module.exports = function(grunt) {
         script: './bin/www',
         tasks: ["concat:client","watch:client"]
       },
-      watch: {
+      server: {
         script: './bin/www',
         tasks: ['watch:server']
       }
@@ -62,6 +80,7 @@ module.exports = function(grunt) {
           "public/services/*.js",
           "public/services/**/*.js",
         ],
+        tasks:['notify:server'],
         dest: 'public/dist/built.js',
       },
     },
@@ -74,11 +93,12 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-nodemon');
   grunt.loadNpmTasks('grunt-contrib-concat');
   // grunt.loadNpmTasks("grunt-concurrent")
-
-
+grunt.loadNpmTasks('grunt-notify');
+grunt.task.run('notify_hooks');
   // registerTask
-  grunt.registerTask("serverwatch", ["concat:client","nodemon:dev"]);
+  grunt.registerTask("watch", ["concat:client","nodemon:server"]);
   grunt.registerTask("start", ["nodemon:start"]);
   grunt.registerTask("client", ["concat:client","watch:client"]);
-  grunt.registerTask("con", ['concat']);
+  grunt.registerTask("con", ['concat','watch:client']);
+  grunt.registerTask("notify", ['notify:server'] );
 };

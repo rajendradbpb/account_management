@@ -32,7 +32,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	  resolve:{
 		  loggedout:checkLoggedout
 	  }
-
   })
   .state('client-details',{
 	  templateUrl:'views/client/client_details.html',
@@ -64,7 +63,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	  templateUrl:'views/user/userlist.html',
 	  url:'/user-list',
 	  controller:'User_Controller'
-
 	  //resolve:{
 		  //loggedout:checkLoggedout
 	  //}
@@ -118,6 +116,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	  //resolve:{
 		  //loggedout:checkLoggedout
 	  //}
+    
   })
   .state('role',{
     templateUrl:'views/role_management.html',
