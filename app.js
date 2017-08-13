@@ -11,9 +11,9 @@ var passwordHash = require('password-hash-and-salt');
 // initilising routes
 var routes = require('./server/routes/index');
 // swagger integration
-const swaggerUi = require('swagger-ui-express');
+//const swaggerUi = require('swagger-ui-express');
 // const swaggerDocument = require('./temp/swagger-sample.json');
-const swaggerDocument = require('./swagger.json');
+//const swaggerDocument = require('./swagger.json');
 
 
 // custom files starts
@@ -25,7 +25,7 @@ var config = require("config")
 var app = express();
 
 // swagger
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+//app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.all('/*', function (req, res, next) {
     // CORS headers
     res.header("Access-Control-Allow-Origin", "*"); // restrict it to the required domain

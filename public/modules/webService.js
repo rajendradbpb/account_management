@@ -14,6 +14,14 @@ angular.module('WebService', [])
                     'Accept': 'application/json'
                 },
             },
+            updateRole: {
+                url: "/role/",
+                method: "PUT",
+                "headers": {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+            },
             deleteRole: {
                 url: "/role/:_id",
                 method: "DELETE",
@@ -42,6 +50,7 @@ angular.module('WebService', [])
             getRole: ApiGenerator.getApi('getRole'),
             postRole: ApiGenerator.getApi('postRole'),
             deleteRole: ApiGenerator.getApi('deleteRole'),
+            updateRole: ApiGenerator.getApi('updateRole'),
 
           });
 

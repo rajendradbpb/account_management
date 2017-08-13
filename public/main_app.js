@@ -118,9 +118,25 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	  //}
     
   })
-  .state('role',{
+  .state('role-create',{
+    templateUrl:'views/role_create.html',
+    url:'/role-create',
+    controller:'role_controller',
+   // resolve:{
+     // loggedout:checkLoggedout
+   // }
+  })
+  //.state('role-update',{
+    //templateUrl:'views/role_update.html',
+    //url:'/role-update',
+    //controller:'role_controller',
+    //resolve:{
+      //loggedout:checkLoggedout
+    //}
+  //})
+  .state('role-list',{
     templateUrl:'views/role_management.html',
-    url:'/role-management',
+    url:'/role-list',
     controller:'role_controller',
     //resolve:{
       //loggedout:checkLoggedout
