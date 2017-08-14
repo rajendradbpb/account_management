@@ -63,10 +63,8 @@
 			          	<label for="role" class="col-sm-3 control-label">User Role:</label>
 						<div class="col-sm-8" style="padding-bottom:5px;">
 							<select class="form-control" name="us_role" ng-model="user.role" required>
-								<option value>User Role</option>
-								<option value="2">Enterer</option>
-								<option value="3">Verifier</option>
-								<option value="4">Auditor</option>
+								<option value="" ng-selected>User Role</option>
+								<option ng-value="role._id" ng-repeat="role in roleList">{{role.type}}</option>
 							</select>
 							<span class="help-block" ng-show="addUser.us_role.$error.required && addUser.us_role.$touched">User Role is required</span>
 						</div>		

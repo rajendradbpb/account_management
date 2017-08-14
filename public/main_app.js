@@ -4,13 +4,15 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
   $httpProvider.interceptors.push(function ($q, $location, $window,$localStorage) {
       return {
           request: function (config) {
-              config.headers = config.headers || {};
-              config.headers['Authorization'] = 'bearer '+localStorage.token;
+              var isSignInUrl = config.url.indexOf('login') > -1 ? true : false;
+              if(!isSignInUrl && $localStorage.user){
+                config.headers = config.headers || {};
+                config.headers['Authorization'] = 'bearer '+$localStorage.user.token;
+              }
               return config;
           },
           response: function (response) {
               if (response.status === 401) {
-                  // handle the case where the user is not authenticated
                   $location.path('/');
               }
               return response || $q.when(response);
@@ -254,13 +256,4 @@ app.directive('fileModel', ['$parse', function ($parse) {
        }
      };
  });
-app.config(['$httpProvider', function ($httpProvider) {
-    $httpProvider.interceptors.push('AuthRequestInterceptor');
-}]);
-app.factory('AuthRequestInterceptor', function($rootScope, $q, $localStorage){
-  return {
-    // 'request': function (config) {
-    //   console.log("interceptors",config);
-    // }
-  }
-});
+
