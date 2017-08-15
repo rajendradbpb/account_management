@@ -6,7 +6,7 @@ var bodyParser = require('body-parser');
 var LOG = require('./../component/LOG');
 var response = require("./../component/response");
 var constants = require("./../../config/constants");
-var userModel = require("./../models/userModel");
+var models = require("./../models/index");
 var password = require('password-hash-and-salt');
 var jwt     = require('jsonwebtoken');
 var config     = require('config');
@@ -51,7 +51,7 @@ exports.addUser = function(req,res){
   LOG.info("add user");
   password(req.body.password).hash(function(error, hash) {
     req.body.password = hash; // encrypting the password
-    new userModel(req.body).save(function (err) {
+    new models.userModel(req.body).save(function (err) {
       if(err){
         LOG.error(err.message);
         response.sendResponse(res,500,"error",constants.messages.errors.saveUser,err);
@@ -71,7 +71,7 @@ exports.getUser = function(req,res){
   if(req.query._id){
     params['_id'] = req.query._id
   }
-  userModel.findOne(params,function(err,data){
+  models.userModel.findOne(params,function(err,data){
     response.sendResponse(res,200,"success",constants.messages.success.fetchRoles,data);
   })
 }
@@ -81,7 +81,7 @@ exports.udpateUser = function(req,res){
   }
   delete req.body['_id'];
   var options = {new:true};
-  userModel.findOneAndUpdate(query, req.body,options).exec()
+  models.userModel.findOneAndUpdate(query, req.body,options).exec()
   .then(function(data) {
     response.sendResponse(res,200,"success",constants.messages.success.udpateRole,data);
   })
@@ -94,7 +94,7 @@ exports.deleteUser = function(req,res){
     "_id":req.params.id
   }
   delete req.body['_id'];
-  userModel.findOneAndUpdate(query,{"isDelete":true},{"new" :true},function(err,data) {
+  models.userModel.findOneAndUpdate(query,{"isDelete":true},{"new" :true},function(err,data) {
     if(err)
       response.sendResponse(res,500,"error",constants.messages.errors.deleteRole,err);
     else

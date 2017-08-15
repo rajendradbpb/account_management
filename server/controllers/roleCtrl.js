@@ -5,11 +5,11 @@ var router = express.Router();
 var bodyParser = require('body-parser');
 var colors = require('colors');
 var response = require("./../component/response");
-var roleModel = require("./../models/roleModel");
+var models = require("./../models/index");
 var constants = require("./../../config/constants");
 
 exports.addRole = function(req,res){
-  new roleModel(req.body).save(function (err) {
+  new models.roleModel(req.body).save(function (err) {
     if(err)
       response.sendResponse(res,500,"error",constants.messages.errors.saveRole,err);
       else {
@@ -25,7 +25,7 @@ exports.getRole = function(req,res){
   if(req.query.id){
     params['_id'] = req.query._id
   }
-  roleModel.find(params,function(err,data){
+  models.roleModel.find(params,function(err,data){
     response.sendResponse(res,200,"success",constants.messages.success.fetchRoles,data);
   })
 }
@@ -35,7 +35,7 @@ exports.udpateRole = function(req,res){
   }
   delete req.body['_id'];
   var options = {new:true};
-  roleModel.findOneAndUpdate(query, req.body,options).exec()
+  models.roleModel.findOneAndUpdate(query, req.body,options).exec()
   .then(function(data) {
     response.sendResponse(res,200,"success",constants.messages.success.udpateRole,data);
   })
@@ -48,7 +48,7 @@ exports.deleteRole = function(req,res){
     "_id":req.params.id
   }
   delete req.body['_id'];
-  roleModel.findOneAndUpdate(query,{"isDelete":true},{"new" :true},function(err,data) {
+  models.roleModel.findOneAndUpdate(query,{"isDelete":true},{"new" :true},function(err,data) {
     if(err)
       response.sendResponse(res,500,"error",constants.messages.errors.deleteRole,err);
     else
