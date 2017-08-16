@@ -124,7 +124,16 @@ app.controller('daleteUserModalCtrl',function($scope, $uibModalInstance,userDele
         $uibModalInstance.dismiss('cancel');
     };
 });
-app.controller('updateUserModalCtrl',function($scope, $uibModalInstance,userUpdate,users){
+app.controller('updateUserModalCtrl',function($scope, ApiCall,$uibModalInstance,userUpdate,users){
+  $scope.getRolesList = function(){
+     ApiCall.getRole(function(response){
+      $scope.roleList = response.data;
+     },function(error){
+
+     })
+  }
+
+  $scope.users = users;
   $scope.update = function () {
         userUpdate($scope.users);
         $uibModalInstance.close();

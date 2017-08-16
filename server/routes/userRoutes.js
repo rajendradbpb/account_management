@@ -6,22 +6,22 @@ var passport = require('passport');
 
 // custom files
 response = require("./../component/response");
-var userCtrl = require("./../controllers/userCtrl");
+var controllers = require("./../controllers/index");
 router.post('/',function(req, res, next) {
-  userCtrl.addUser(req, res);
+  controllers.userCtrl.addUser(req, res);
 });
 router.get('/', function(req, res, next) {
-  userCtrl.getUser(req, res);
+  controllers.userCtrl.getUser(req, res);
 });
 router.put('/', function(req, res, next) {
-  userCtrl.udpateUser(req, res);
+  controllers.userCtrl.udpateUser(req, res);
 });
 router.delete('/:id', function(req, res, next) {
-  userCtrl.deleteUser(req, res);
+  controllers.userCtrl.deleteUser(req, res);
 });
 
 // token authentication
-router.post('/login', passport.authenticate('login', {session:false}) ,userCtrl.login);
+router.post('/login', passport.authenticate('login', {session:false}) ,controllers.userCtrl.login);
 router.get('/token', passport.authenticate('token', {session:false}) ,function(req,res) {
   console.log(">>>>>>>>   verify user" , req.user._doc);
 });
