@@ -33,7 +33,35 @@ angular.module('WebService', [])
           userLogin : {
             url : "/user/login",
             method : "POST"
-          }
+          },
+          getUser : {
+            url:"/user/",
+            method: "GET"
+          },
+           postUser: {
+            url: "/user",
+            method: "POST",
+            "headers": {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+          },
+           deleteUser: {
+              url: "/user/:_id",
+              method: "DELETE",
+              "headers": {
+                  'Content-Type': 'application/json',
+                  'Accept': 'application/json'
+              },
+          },
+          updateUser: {
+              url: "/user/",
+              method: "PUT",
+              "headers": {
+                  'Content-Type': 'application/json',
+                  'Accept': 'application/json'
+              },
+          },
         }
     })
     .factory('ApiGenerator', function($http, $resource, API, EnvService) {
@@ -53,7 +81,12 @@ angular.module('WebService', [])
         postRole: ApiGenerator.getApi('postRole'),
         deleteRole: ApiGenerator.getApi('deleteRole'),
         updateRole: ApiGenerator.getApi('updateRole'),
-        userLogin : ApiGenerator.getApi('userLogin')
+        userLogin : ApiGenerator.getApi('userLogin'),
+        getUser: ApiGenerator.getApi('getUser'),
+        postUser: ApiGenerator.getApi('postUser'),
+        deleteUser: ApiGenerator.getApi('deleteUser'),
+        updateUser: ApiGenerator.getApi('updateUser'),
+
       })
     })
     .factory('EnvService',function($http,$localStorage){

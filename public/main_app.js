@@ -90,6 +90,7 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
   .state('new-user',{
 	  templateUrl:'views/user/new_user.html',
 	  url:'/new-user',
+    controller:'User_Controller'
 	  //resolve:{
 		  //loggedout:checkLoggedout
 	  //}

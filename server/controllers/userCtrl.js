@@ -71,7 +71,7 @@ exports.getUser = function(req,res){
   if(req.query._id){
     params['_id'] = req.query._id
   }
-  userModel.findOne(params,function(err,data){
+  userModel.find(params,function(err,data){
     response.sendResponse(res,200,"success",constants.messages.success.fetchRoles,data);
   })
 }
