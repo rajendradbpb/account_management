@@ -3,6 +3,7 @@ var path = require('path');
 var router = express.Router();
 var roleRoutes = require('./roleRoutes');
 var userRoutes = require('./userRoutes');
+var clientRoutes = require('./clientRoutes');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -11,4 +12,6 @@ router.get('/', function(req, res, next) {
 });
 router.use('/role', roleRoutes);
 router.use('/user', userRoutes);
+router.use('/client', clientRoutes);
+
 module.exports = router;

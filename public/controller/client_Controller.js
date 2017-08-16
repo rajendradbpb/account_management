@@ -74,16 +74,17 @@ app.controller('ClientController',function($scope,$rootScope,Util,$uibModal,$sta
 	/*Clientlist table view code starts here*/
 				$scope.clientList={};
 			    $scope.getClientList = function(){
-			    		ClientService.clientList().then(function(response){
-			    			console.log(response);
-			    			$scope.clientList=response.data.client;
-			    			$scope.clientData = new NgTableParams();
-			    			$scope.clientData.settings({
-			    				dataset : $scope.clientList
-			    			})
-			    		},function(error){
-			    			 $rootScope.showPreloader = false;
+			    	ApiCall.getClient(function(response){
+			    		console.log(response);
+			    		$scope.clientList = response.data;
+			    		$scope.clientData = new NgTableParams();
+			    		$scope.clientData.settings({
+			    			dataset: $scope.clientList
 			    		})
+
+			    	},function(error){
+
+			    	})	
 			    }
     /*Clientlist table view code ends here*/
 	
