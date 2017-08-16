@@ -22,8 +22,11 @@ exports.getRole = function(req,res){
     isDelete:false
   };
   console.log("req.query.id   "+req.query._id);
-  if(req.query.id){
+  if(req.query._id){
     params['_id'] = req.query._id
+  }
+  if(req.query.caFirm){
+    params['caFirm'] = mongoose.Types.ObjectId(req.query.caFirm);
   }
   models.roleModel.find(params,function(err,data){
     response.sendResponse(res,200,"success",constants.messages.success.fetchRoles,data);

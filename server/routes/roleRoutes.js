@@ -3,7 +3,7 @@ var path = require('path');
 var router = express.Router();
 var controllers = require("./../controllers/index");
 router.post('/',function(req, res, next) {
-  roleCtrl.addRole(req, res);
+  controllers.roleCtrl.addRole(req, res);
 });
 router.get('/', function(req, res, next) {
   controllers.roleCtrl.getRole(req, res);
