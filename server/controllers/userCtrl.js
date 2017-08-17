@@ -37,7 +37,7 @@ exports.login = function (req, res) {
       function(token) {
         console.log("login  2222");
         var data = {
-          role:req.user.role,
+          user:req.user,
           token:token
         }
         response.sendResponse(res,200,"success",constants.messages.success.login,data);

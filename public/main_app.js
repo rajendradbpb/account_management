@@ -73,7 +73,7 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
   .state('new-client', {
     templateUrl: 'views/client/new_client.html',
     url: '/new-client',
-	controller:'ClientController',
+	  controller:'ClientController',
     //resolve: {
       //loggedout: checkLoggedout
     //}

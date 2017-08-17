@@ -15,20 +15,20 @@ angular.module('WebService', [])
             },
           },
           updateRole: {
-              url: "/role/",
-              method: "PUT",
-              "headers": {
-                  'Content-Type': 'application/json',
-                  'Accept': 'application/json'
-              },
+            url: "/role/",
+            method: "PUT",
+            "headers": {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
           },
           deleteRole: {
-              url: "/role/:_id",
-              method: "DELETE",
-              "headers": {
-                  'Content-Type': 'application/json',
-                  'Accept': 'application/json'
-              },
+            url: "/role/:_id",
+            method: "DELETE",
+            "headers": {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
           },
           userLogin : {
             url : "/user/login",
@@ -38,7 +38,7 @@ angular.module('WebService', [])
             url:"/user/",
             method: "GET"
           },
-           postUser: {
+          postUser: {
             url: "/user",
             method: "POST",
             "headers": {
@@ -46,7 +46,7 @@ angular.module('WebService', [])
                 'Accept': 'application/json'
             },
           },
-           deleteUser: {
+          deleteUser: {
               url: "/user/:_id",
               method: "DELETE",
               "headers": {
@@ -98,7 +98,7 @@ angular.module('WebService', [])
         postUser: ApiGenerator.getApi('postUser'),
         deleteUser: ApiGenerator.getApi('deleteUser'),
         updateUser: ApiGenerator.getApi('updateUser'),
-        getClient: ApiGenerator.getApi('getClient'),
+        // getClient: ApiGenerator.getApi('getClient'),
         postClient: ApiGenerator.getApi('postClient'),
       })
     })

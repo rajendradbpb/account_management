@@ -1,4 +1,4 @@
-app.controller('ClientController',function($scope,$rootScope,Util,$uibModal,$stateParams,NgTableParams,ClientService){
+app.controller('ClientController',function($scope,$rootScope,Util,$uibModal,$stateParams,NgTableParams,ClientService,ApiCall){
 	
 	/*FOR DIRECTOR INCREMENT STARTS HERE*/
 				$scope.emp = {};	
