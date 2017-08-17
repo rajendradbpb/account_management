@@ -1,4 +1,4 @@
-/*! account_management - v0.0.0 - Thu Aug 17 2017 03:11:46 */
+/*! account_management - v0.0.0 - Thu Aug 17 2017 10:17:28 */
 var app = angular.module("acc_app", ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate','datePicker','ngTable','angular-js-xlsx','WebService']);
 app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
   //adding http intercepter
@@ -91,6 +91,7 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
   .state('new-user',{
 	  templateUrl:'views/user/new_user.html',
 	  url:'/new-user',
+    controller:'User_Controller'
 	  //resolve:{
 		  //loggedout:checkLoggedout
 	  //}
@@ -315,7 +316,47 @@ app.directive('fileModel', ['$parse', function ($parse) {
           userLogin : {
             url : "/user/login",
             method : "POST"
-          }
+          },
+          getUser : {
+            url:"/user/",
+            method: "GET"
+          },
+           postUser: {
+            url: "/user",
+            method: "POST",
+            "headers": {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+          },
+           deleteUser: {
+              url: "/user/:_id",
+              method: "DELETE",
+              "headers": {
+                  'Content-Type': 'application/json',
+                  'Accept': 'application/json'
+              },
+          },
+          updateUser: {
+              url: "/user/",
+              method: "PUT",
+              "headers": {
+                  'Content-Type': 'application/json',
+                  'Accept': 'application/json'
+              },
+          },
+          getUser : {
+            url:"/client/",
+            method: "GET"
+          },
+          postClient: {
+            url: "/client",
+            method: "POST",
+            "headers": {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+          },
         }
     })
     .factory('ApiGenerator', function($http, $resource, API, EnvService) {
@@ -335,7 +376,13 @@ app.directive('fileModel', ['$parse', function ($parse) {
         postRole: ApiGenerator.getApi('postRole'),
         deleteRole: ApiGenerator.getApi('deleteRole'),
         updateRole: ApiGenerator.getApi('updateRole'),
-        userLogin : ApiGenerator.getApi('userLogin')
+        userLogin : ApiGenerator.getApi('userLogin'),
+        getUser: ApiGenerator.getApi('getUser'),
+        postUser: ApiGenerator.getApi('postUser'),
+        deleteUser: ApiGenerator.getApi('deleteUser'),
+        updateUser: ApiGenerator.getApi('updateUser'),
+        getClient: ApiGenerator.getApi('getClient'),
+        postClient: ApiGenerator.getApi('postClient'),
       })
     })
     .factory('EnvService',function($http,$localStorage){
@@ -471,16 +518,17 @@ app.directive('updateHeight',function () {
 	/*Clientlist table view code starts here*/
 				$scope.clientList={};
 			    $scope.getClientList = function(){
-			    		ClientService.clientList().then(function(response){
-			    			console.log(response);
-			    			$scope.clientList=response.data.client;
-			    			$scope.clientData = new NgTableParams();
-			    			$scope.clientData.settings({
-			    				dataset : $scope.clientList
-			    			})
-			    		},function(error){
-			    			 $rootScope.showPreloader = false;
+			    	ApiCall.getClient(function(response){
+			    		console.log(response);
+			    		$scope.clientList = response.data;
+			    		$scope.clientData = new NgTableParams();
+			    		$scope.clientData.settings({
+			    			dataset: $scope.clientList
 			    		})
+
+			    	},function(error){
+
+			    	})	
 			    }
     /*Clientlist table view code ends here*/
 	
@@ -675,47 +723,152 @@ app.controller('RoleUpdateModalCtrl', function ($scope, $uibModalInstance,update
 	$scope.read= function(workbook){
 		console.log(workbook);
 	} 
-});app.controller("User_Controller",function($scope,$rootScope,$state,$localStorage,NgTableParams,UserService){
+});app.controller("User_Controller",function($scope,$rootScope,$state,$localStorage,NgTableParams,ApiCall,Util,$uibModal){
   /*******************************************************/
   /*************This is use for check user login**********/
-  /******************************************************
+  /******************************************************/
 
-  $scope.user_list = [
-    {"name":"Santosh Majhi","mobile":"9438753143","email":"santosh@gmail.com","user_role":"Enterer","is_active":true},
-    {"name":"Santosh Shann","mobile":"978640778","email":"santoshmajhi@gmail.com","user_role":"Verifier","is_active":false},
-     {"name":"Subhra Kanta Patra","mobile":"9438753143","email":"subhra@gmail.com","user_role":"Enterer","is_active":true},
-    {"name":"Amaresh Nayak","mobile":"9456453786","email":"Amareshnaik@gmail.com","user_role":"Verifier","is_active":false}
-  ];
-  $scope.userData = new NgTableParams();
-  $scope.userData.settings({
-  dataset: $scope.user_list
-  })
-  $rootScope.$on('Login_success',function(){
-    $scope.getUserDetails();
-  })
-*/
-$scope.userlist = {};
-$scope.getUserList = function(){
-  UserService.userList().then(function(response){
-    console.log(response);
-    console.log(response.status);
-  
-          $scope.userlist = response.data.user;
-          console.log( $scope.userlist);
-          $scope.userData = new NgTableParams();
-          $scope.userData.settings({
-              dataset: $scope.userlist
-          })
-        
-      },function(error){
-        $rootScope.showPreloader = false;
+ 
+
+  $scope.userlist = {};
+  $scope.getUserList = function(){
+    ApiCall.getUser(function(response){
+      $scope.userlist = response.data;
+      $scope.userData = new NgTableParams();
+      $scope.userData.settings({
+          dataset: $scope.userlist
       })
+    },function(error){
+
+    })
+  }
+  /*****************************************************************/
+  /*This is used for getting the rolelist for user role dropdown****/
+  /*****************************************************************/
+
+  
+  $scope.getRoleList = function(){
+     ApiCall.getRole(function(response){
+      $scope.roleList = response.data;
+     },function(error){
+
+     })
   }
 
+  /*************************************************************************************************************************/
+
+   /*******************************************************/
+  /*************This is used for creating a new user****/
+  /******************************************************/
+   $scope.user = {};
+  $scope.createUser = function(){
+    //$rootScope.showPreloader = true;
+    ApiCall.postUser($scope.user, function(response){
+      if(response.statusCode == 200){
+        Util.alertMessage('success', response.message);
+        $state.go('user-list');
+      }
+    },function(error){
+        console.log(error);
+         $rootScope.showPreloader = false;
+    })
+  }
+  /*************************************************************************************************************************/
+
+   /*******************************************************/
+  /*************This is used for deleting a  user****/
+  /******************************************************/
+  $scope.deleteUser = function(data){
+    console.log(data);
+   $scope.deleteUserId = data._id;
+   $scope.modalInstance = $uibModal.open({
+      animation : true,
+      templateUrl : 'views/modals/user-delete-modal.html',
+      controller : 'daleteUserModalCtrl',
+      size: 'md',
+      resolve:{
+            userDelete : function(){
+               return $scope.userDelete;
+            }
+      }
+
+   })
+  }
+  $scope.userDelete = function(){
+      ApiCall.deleteUser({
+        _id: $scope.deleteUserId
+      }, function(res) {
+        Util.alertMessage('success', res.message);
+        $scope.getUserList();
+      }, function(error) {
+        console.log(err);
+      })
+    }
+    /*************************************************************************************************************************/
+  
+
+   /*******************************************************/
+  /*************This is used for updating a  user****/
+  /******************************************************/ 
+  $scope.updateUser = function(data){
+    $scope.updateUserId = data._id;
+    $scope.modalInstance = $uibModal.open({
+      animation : true,
+      templateUrl : 'views/modals/user-update-modal.html',
+      controller : 'updateUserModalCtrl',
+      size : 'md',
+      resolve:{
+        userUpdate : function(){
+          return $scope.userUpdate;
+        },
+        users : function(){
+          return data;
+        }
+      }
+    })
+  }
+  $scope.userUpdate = function(users){
+    ApiCall.updateUser(users,function(response){
+              console.log(123454);
+              $scope.getUserList();
+           },function(error){
+              console.log(error);
+         }
+       )
+     }
+});
 
 
 
-});app.service('LoginService',function($q,$http){
+app.controller('daleteUserModalCtrl',function($scope, $uibModalInstance,userDelete){
+  $scope.ok = function () {
+        userDelete();
+        $uibModalInstance.close();
+    };
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
+});
+app.controller('updateUserModalCtrl',function($scope, ApiCall,$uibModalInstance,userUpdate,users){
+  $scope.getRolesList = function(){
+     ApiCall.getRole(function(response){
+      $scope.roleList = response.data;
+     },function(error){
+
+     })
+  }
+
+  $scope.users = users;
+  $scope.update = function () {
+        userUpdate($scope.users);
+        $uibModalInstance.close();
+    };
+    $scope.cancel = function () {
+        $uibModalInstance.dismiss('cancel');
+    };
+
+
+});;app.service('LoginService',function($q,$http){
 	return{
 		
 		jsonLogin : function(user){

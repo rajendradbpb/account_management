@@ -18,7 +18,6 @@ var routes = require('./server/routes/index');
 
 // custom files starts
 var userModel = require('./server/models/userModel');
-var clientModel = require('./server/models/clientModel');
 var response = require("./server/component/response")
 var config = require("config")
 

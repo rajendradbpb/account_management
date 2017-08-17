@@ -6,32 +6,32 @@ var caFirmSchema = new mongoose.Schema({
   superAdmin                            {type: Schema.Types.ObjectId, ref: 'user',required: true,unique:true},
   firmType                              :{type: String},
   firmName                              :{type: String},
-  incorporationDate:                    :{type: String},
+  incorporationDate                  :{type: String},
   tan                                   :{type: String},
   tel                                   :{type: String},
   mob                                   :{type: String},
-  regAddress {
-    plotNo                              :{type: String},
-    lane                                :{type: String},
-    city                                :{type: String},
-    state                               :{type: String},
-    country                             :{type: String},
-  }
-  businessAddress {
-    plot No                             :{type: String},
-    lane                                :{type: String},
-    city                               :{type: String},
-    state                               :{type: String},
-    country                             :{type: String},
-  }
-  Partners[{
-    name                                :{type: String},
-    designation                         :{type: String},
-    membership                           :{type: String},
-  }]
+  // regAddress :{
+  //   plotNo                              :{type: String},
+  //   lane                                :{type: String},
+  //   city                                :{type: String},
+  //   state                               :{type: String},
+  //   country                             :{type: String},
+  // }
+  // businessAddress :{
+  //   plot No                             :{type: String},
+  //   lane                                :{type: String},
+  //   city                               :{type: String},
+  //   state                               :{type: String},
+  //   country                             :{type: String},
+  // }
+  // Partners:[{
+  //   name                                :{type: String},
+  //   designation                         :{type: String},
+  //   membership                           :{type: String},
+  // }]
 });
-roleSchema.plugin(uniqueValidator, {
+caFirmSchema.plugin(uniqueValidator, {
   message: "Firm admin already registered"
 });
-var roleModel = mongoose.model('caFirm', roleSchema);
-module.exports = roleModel;
+var caFirmModel = mongoose.model('caFirm', caFirmSchema);
+module.exports = caFirmModel;
