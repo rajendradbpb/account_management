@@ -3,6 +3,7 @@ var path = require('path');
 var router = express.Router();
 var roleRoutes = require('./roleRoutes');
 var userRoutes = require('./userRoutes');
+var caFirmRoutes = require('./caFirmRoutes');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -11,5 +12,6 @@ router.get('/', function(req, res, next) {
 });
 router.use('/role', roleRoutes);
 router.use('/user', userRoutes);
+router.use('/caFirm',caFirmRoutes);
 
 module.exports = router;

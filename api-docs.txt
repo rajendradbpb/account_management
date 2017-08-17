@@ -8,14 +8,17 @@ d.	Delete role
 Create role :
 url  : http://localhost:3000/role
 request : {
-    "type"             : "role2",
-    "desc"       :"des2" 
+    "type"             : "client1",
+    "desc"       :"client1",
+    "caFirm":"5994bc801673f817483651c6" // optional
+    
 }
 Method : POST
 fetch role :
 1.	url  : http://localhost:3000/role
 Method : GET
-2.	http://localhost:3000/role?_id=598a361ac9ef9e1b404b0e83
+2.	http://localhost:3000/role?_id=598a361ac9ef9e1b404b0e83 // get particular role details
+3. http://localhost:3000/role?caFirm=5994bc801673f817483651c6 // to get the array of role specific to caFirm
 Method: GET
 This is used to get the single role info based on the id
 Update Role :
@@ -67,6 +70,39 @@ request - {
 	"username":"user13",
 	"password":"user13"
 	
+}
+
+
+
+// ******************************* Ca firm starts ***********************************************///
+url - http://localhost:3000/caFirm     [POST]
+{
+  "admin"                           :"599523fbbaf17308304ba1d4", // user id created as cafirm 
+  firmType                              :"firmType",
+  firmName                              :"firmName",
+  incorporationDate                  :"incorporationDate",
+  tan                                   :"tan",
+  tel                                   :"tel",
+  mob                                   :"mob",
+  regAddress :{
+    plotNo                              :"plotNo",
+    lane                                :"lane",
+    city                                :"city",
+    state                               :"state",
+    country                             :"country",
+  },
+  businessAddress :{
+   plotNo                              :"plotNo",
+    lane                                :"lane",
+    city                                :"city",
+    state                               :"state",
+    country                             :"country",
+  },
+  Partners:[{
+    name                                :"name",
+    designation                         :"designation",
+    membership                           :"membership",
+  }]
 }
 
 

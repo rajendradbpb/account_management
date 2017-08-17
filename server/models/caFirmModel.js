@@ -3,32 +3,32 @@ var uniqueValidator = require('mongoose-unique-validator');
 var Schema = mongoose.Schema;
 var constants = require("./../../config/constants")
 var caFirmSchema = new mongoose.Schema({
-  superAdmin                            {type: Schema.Types.ObjectId, ref: 'user',required: true,unique:true},
+  admin                            :{type: Schema.Types.ObjectId, ref: 'user',required: true,unique:true},
   firmType                              :{type: String},
   firmName                              :{type: String},
   incorporationDate                  :{type: String},
   tan                                   :{type: String},
   tel                                   :{type: String},
   mob                                   :{type: String},
-  // regAddress :{
-  //   plotNo                              :{type: String},
-  //   lane                                :{type: String},
-  //   city                                :{type: String},
-  //   state                               :{type: String},
-  //   country                             :{type: String},
-  // }
-  // businessAddress :{
-  //   plot No                             :{type: String},
-  //   lane                                :{type: String},
-  //   city                               :{type: String},
-  //   state                               :{type: String},
-  //   country                             :{type: String},
-  // }
-  // Partners:[{
-  //   name                                :{type: String},
-  //   designation                         :{type: String},
-  //   membership                           :{type: String},
-  // }]
+  regAddress :{
+    plotNo                              :{type: String},
+    lane                                :{type: String},
+    city                                :{type: String},
+    state                               :{type: String},
+    country                             :{type: String},
+  },
+  businessAddress :{
+    plotNo                             :{type: String},
+    lane                                :{type: String},
+    city                               :{type: String},
+    state                               :{type: String},
+    country                             :{type: String},
+  },
+  Partners:[{
+    name                                :{type: String},
+    designation                         :{type: String},
+    membership                           :{type: String},
+  }]
 });
 caFirmSchema.plugin(uniqueValidator, {
   message: "Firm admin already registered"
