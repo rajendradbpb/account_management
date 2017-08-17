@@ -9,13 +9,29 @@ var models = require("./../models/index");
 var constants = require("./../../config/constants");
 
 exports.add = function(req,res){
-  new models.caFirmModel(req.body).save(function (err) {
+  new models.caFirmModel(req.body).save(function (err,data) {
     if(err)
       response.sendResponse(res,500,"error",constants.messages.errors.saveRole,err);
       else {
         // assign cafirm to user mark as admin
-        
-        response.sendResponse(res,200,"success",constants.messages.success.saveRole);
+        var conditions = {
+          _id:mongoose.Types.ObjectId(req.body.admin)
+        },
+        update = {
+          caFirm : data
+        },
+        options = {
+          new : true
+        };
+        models.userModel.findOneAndUpdate(conditions, update, options, function(err,user) {
+            if(err) {
+                response.sendResponse(res,500,"error",constants.messages.errors.saveCafirm,err);
+            }
+            else{
+              response.sendResponse(res,200,"success",constants.messages.success.saveCafirm);
+            }
+        })
+
       }
   })
 }

@@ -1,4 +1,4 @@
-/*! account_management - v0.0.0 - Thu Aug 17 2017 10:17:28 */
+/*! account_management - v0.0.0 - Fri Aug 18 2017 01:54:49 */
 var app = angular.module("acc_app", ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate','datePicker','ngTable','angular-js-xlsx','WebService']);
 app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
   //adding http intercepter
@@ -6,9 +6,9 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
       return {
           request: function (config) {
               var isSignInUrl = config.url.indexOf('login') > -1 ? true : false;
-              if(!isSignInUrl && $localStorage.user){
+              if(!isSignInUrl && $localStorage.token){
                 config.headers = config.headers || {};
-                config.headers['Authorization'] = 'bearer '+$localStorage.user.token;
+                config.headers['Authorization'] = 'bearer '+$localStorage.token;
               }
               return config;
           },
@@ -33,17 +33,17 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
   .state('dashboard', {
     templateUrl: 'views/dashboard.html',
     url: '/dashboard',
-    //resolve: {
-      //loggedout: checkLoggedout
-    //}
+    resolve: {
+      loggedout: checkLoggedout
+    }
   })
  .state('client-list', {
     templateUrl: 'views/client/client_list.html',
     url: '/client-list',
 	controller:'ClientController',
-    //resolve: {
-      //loggedout: checkLoggedout
-    //}
+    resolve: {
+      loggedout: checkLoggedout
+    }
   })
   .state('user-profile',{
 	  templateUrl:'views/user/user_profile.html',
@@ -74,18 +74,18 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
   .state('new-client', {
     templateUrl: 'views/client/new_client.html',
     url: '/new-client',
-	controller:'ClientController',
-    //resolve: {
-      //loggedout: checkLoggedout
-    //}
+	  controller:'ClientController',
+    resolve: {
+      loggedout: checkLoggedout
+    }
   })
   .state('user-list',{
 	  templateUrl:'views/user/userlist.html',
 	  url:'/user-list',
-	  controller:'User_Controller'
-	  //resolve:{
-		  //loggedout:checkLoggedout
-	  //}
+	  controller:'User_Controller',
+	  resolve:{
+		  loggedout:checkLoggedout
+	  }
 
   } )
   .state('new-user',{
@@ -164,20 +164,21 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
     //}
   })
 
-  function checkLoggedout($q, $timeout, $rootScope, $state,$http, $localStorage) {
+  function checkLoggedout($q, $timeout, $rootScope, $state,$http, $localStorage,UserModel) {
     var deferred = $q.defer();
     //accessToken = localStorage.getItem('accessToken')
     $timeout(function(){
         $http.get('/user/loggedin')
         .success(function (response) {
-          if($localStorage.user){
-            deferred.resolve();
-            $state.go('dashboard');
-          }
-
+          $rootScope.is_loggedin = true;
+          // saving user model
+          if(!UserModel.getUser())
+            UserModel.setUser(response.user);
         })
         .error(function (error) {
           deferred.resolve();
+          $localStorage.token = null;
+          $rootScope.is_loggedin = false;
           $state.go('login');
         })
       // if($localStorage.user){
@@ -195,10 +196,13 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
     $timeout(function(){
       $http.get('/user/loggedin')
       .success(function(response) {
+        $rootScope.is_loggedin = true;
         deferred.resolve();
         $state.go('dashboard');
       })
       .error(function(error){
+        $localStorage.token = null;
+        $rootScope.is_loggedin = false;
         deferred.resolve();
       })
       // if($localStorage.user){
@@ -258,7 +262,6 @@ app.directive('fileModel', ['$parse', function ($parse) {
        }
      };
  });
-
 ;app.constant("Constants", {
         "debug":true,
         "storagePrefix": "goAppAccount$",
@@ -298,20 +301,20 @@ app.directive('fileModel', ['$parse', function ($parse) {
             },
           },
           updateRole: {
-              url: "/role/",
-              method: "PUT",
-              "headers": {
-                  'Content-Type': 'application/json',
-                  'Accept': 'application/json'
-              },
+            url: "/role/",
+            method: "PUT",
+            "headers": {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
           },
           deleteRole: {
-              url: "/role/:_id",
-              method: "DELETE",
-              "headers": {
-                  'Content-Type': 'application/json',
-                  'Accept': 'application/json'
-              },
+            url: "/role/:_id",
+            method: "DELETE",
+            "headers": {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
           },
           userLogin : {
             url : "/user/login",
@@ -321,7 +324,7 @@ app.directive('fileModel', ['$parse', function ($parse) {
             url:"/user/",
             method: "GET"
           },
-           postUser: {
+          postUser: {
             url: "/user",
             method: "POST",
             "headers": {
@@ -329,7 +332,7 @@ app.directive('fileModel', ['$parse', function ($parse) {
                 'Accept': 'application/json'
             },
           },
-           deleteUser: {
+          deleteUser: {
               url: "/user/:_id",
               method: "DELETE",
               "headers": {
@@ -381,7 +384,7 @@ app.directive('fileModel', ['$parse', function ($parse) {
         postUser: ApiGenerator.getApi('postUser'),
         deleteUser: ApiGenerator.getApi('deleteUser'),
         updateUser: ApiGenerator.getApi('updateUser'),
-        getClient: ApiGenerator.getApi('getClient'),
+        // getClient: ApiGenerator.getApi('getClient'),
         postClient: ApiGenerator.getApi('postClient'),
       })
     })
@@ -442,7 +445,7 @@ app.directive('updateHeight',function () {
         }
     };
 });
-;app.controller('ClientController',function($scope,$rootScope,Util,$uibModal,$stateParams,NgTableParams,ClientService){
+;app.controller('ClientController',function($scope,$rootScope,Util,$uibModal,$stateParams,NgTableParams,ClientService,ApiCall){
 	
 	/*FOR DIRECTOR INCREMENT STARTS HERE*/
 				$scope.emp = {};	
@@ -553,22 +556,24 @@ app.directive('updateHeight',function () {
 		$scope.partner.list.push(obj);
 	}
 	
-});app.controller('LoginCtrl',function($scope,$rootScope,LoginService,$state,$window,$localStorage, ApiCall){
+});app.controller('LoginCtrl',function($scope,$rootScope,LoginService,$state,$window,$localStorage,UserModel, ApiCall){
 	$scope.user = {};
 	$scope.userLogin = function(){
 		$rootScope.showPreloader = true;
 		ApiCall.userLogin($scope.user, function(response){
 			$rootScope.showPreloader = false;
-		 	$localStorage.user = {
-		 		"token": response.data.token
-		 	};
-		 	$scope.$emit("Login_success");
+			  $rootScope.is_loggedin = true;
+		 	$localStorage.token = response.data.token;
+			//UserModel.setUser(response.data.user);
+			// 	$scope.$emit("Login_success");
 		  	$state.go('dashboard');
 		},function(error){
 			$rootScope.showPreloader = false;
+			$rootScope.is_loggedin = false;
 		})
 	}
-});app.controller("Main_Controller",function($scope,$rootScope,$state,$localStorage,NgTableParams){
+})
+;app.controller("Main_Controller",function($scope,$rootScope,$state,$localStorage,NgTableParams,UserModel){
   /*******************************************************/
   /*************This is use for check user login**********/
   /*******************************************************/
@@ -577,16 +582,16 @@ app.directive('updateHeight',function () {
     $scope.getUserDetails();
   })
   $scope.getUserDetails = function(){
-    if($localStorage.user){
-      $scope.is_loggedin = true;
-      $rootScope.profile = $localStorage.user;
+    if(UserModel.getUser()){
+      $rootScope.is_loggedin = true;
+      $rootScope.profile = UserModel.getUser();
     }
     else{
-      $scope.is_loggedin = false;
+      $rootScope.is_loggedin = false;
     }
   }
   $scope.signOut = function(){
-    delete $localStorage.user;
+    delete $localStorage.token;
     $scope.is_loggedin = false;
     $state.go('login');
   }
@@ -868,7 +873,25 @@ app.controller('updateUserModalCtrl',function($scope, ApiCall,$uibModalInstance,
     };
 
 
-});;app.service('LoginService',function($q,$http){
+});;app.factory("UserModel",function() {
+  var userModel = {};
+  userModel.setUser = function(user){
+    userModel.user = user;
+  }
+  userModel.getUser = function(user){
+    return userModel.user;
+  }
+  userModel.unsetUser = function(user){
+    userModel.user = null ;
+  }
+
+
+
+
+
+  return userModel;
+})
+;app.service('LoginService',function($q,$http){
 	return{
 		
 		jsonLogin : function(user){

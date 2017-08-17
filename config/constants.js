@@ -73,6 +73,9 @@ var constants = {
         "deleteData"                 :   "delete Data Error",
         "checkedIn"                 :   "checkedIn Error",
         "invalidPriceQuery"                 :   "Invalid Price in Query",
+
+        //***** Cafirm ***** //
+        "saveCafirm"                : "Error in saving Ca Firm",
     },
     success:{
       "verified":"verified",
@@ -101,6 +104,9 @@ var constants = {
       "deleteData"                 :   "delete Data Success",
       "checkedIn"                 :   "checkedIn success",
       "roomAvailable"                 :   "room is Available",
+
+      //***** Cafirm ***** //
+      "saveCafirm"                : "Success in saving Ca Firm",
     },
   },
 

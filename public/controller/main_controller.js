@@ -1,4 +1,4 @@
-app.controller("Main_Controller",function($scope,$rootScope,$state,$localStorage,NgTableParams){
+app.controller("Main_Controller",function($scope,$rootScope,$state,$localStorage,NgTableParams,UserModel){
   /*******************************************************/
   /*************This is use for check user login**********/
   /*******************************************************/
@@ -7,16 +7,16 @@ app.controller("Main_Controller",function($scope,$rootScope,$state,$localStorage
     $scope.getUserDetails();
   })
   $scope.getUserDetails = function(){
-    if($localStorage.user){
-      $scope.is_loggedin = true;
-      $rootScope.profile = $localStorage.user;
+    if(UserModel.getUser()){
+      $rootScope.is_loggedin = true;
+      $rootScope.profile = UserModel.getUser();
     }
     else{
-      $scope.is_loggedin = false;
+      $rootScope.is_loggedin = false;
     }
   }
   $scope.signOut = function(){
-    delete $localStorage.user;
+    delete $localStorage.token;
     $scope.is_loggedin = false;
     $state.go('login');
   }

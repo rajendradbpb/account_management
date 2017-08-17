@@ -76,6 +76,7 @@ module.exports = function(grunt) {
           "public/directive/*.js",
           "public/directive/**/*.js",
           "public/controller/*.js",
+          "public/models/*.js",
           "public/controller/**/*.js",
           "public/services/*.js",
           "public/services/**/*.js",
@@ -96,7 +97,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-notify');
   grunt.task.run('notify_hooks');
   // registerTask
-  grunt.registerTask("watch", ["concat:client","nodemon:server"]);
+  // grunt.registerTask("watch", ["concat:client","nodemon:server"]);
   // grunt.registerTask("start", ["nodemon:start"]);
   // grunt.registerTask("client", ["concat:client","watch:client"]);
   grunt.registerTask("con", ['concat','watch:client']);

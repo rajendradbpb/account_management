@@ -31,19 +31,17 @@ exports.verifiedUser = function(req,res,isError){
 }
 exports.login = function (req, res) {
   // creating token that will send to the client side
-  console.log("login  1111");
   try {
     var token = jwt.sign(req.user, config.token.secret, { expiresIn: config.token.expiry },
       function(token) {
-        console.log("login  2222");
         var data = {
-          user:req.user,
+          //user:req.user,
           token:token
         }
         response.sendResponse(res,200,"success",constants.messages.success.login,data);
       });
   } catch (e) {
-    console.log("login  2222",e);
+    LOG.error(e);
     response.sendResponse(res,500,"error",constants.messages.errors.login,e);
   }
 }

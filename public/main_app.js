@@ -5,9 +5,9 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
       return {
           request: function (config) {
               var isSignInUrl = config.url.indexOf('login') > -1 ? true : false;
-              if(!isSignInUrl && $localStorage.user){
+              if(!isSignInUrl && $localStorage.token){
                 config.headers = config.headers || {};
-                config.headers['Authorization'] = 'bearer '+$localStorage.user.token;
+                config.headers['Authorization'] = 'bearer '+$localStorage.token;
               }
               return config;
           },
@@ -32,17 +32,17 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
   .state('dashboard', {
     templateUrl: 'views/dashboard.html',
     url: '/dashboard',
-    //resolve: {
-      //loggedout: checkLoggedout
-    //}
+    resolve: {
+      loggedout: checkLoggedout
+    }
   })
  .state('client-list', {
     templateUrl: 'views/client/client_list.html',
     url: '/client-list',
 	controller:'ClientController',
-    //resolve: {
-      //loggedout: checkLoggedout
-    //}
+    resolve: {
+      loggedout: checkLoggedout
+    }
   })
   .state('user-profile',{
 	  templateUrl:'views/user/user_profile.html',
@@ -74,17 +74,17 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
     templateUrl: 'views/client/new_client.html',
     url: '/new-client',
 	  controller:'ClientController',
-    //resolve: {
-      //loggedout: checkLoggedout
-    //}
+    resolve: {
+      loggedout: checkLoggedout
+    }
   })
   .state('user-list',{
 	  templateUrl:'views/user/userlist.html',
 	  url:'/user-list',
-	  controller:'User_Controller'
-	  //resolve:{
-		  //loggedout:checkLoggedout
-	  //}
+	  controller:'User_Controller',
+	  resolve:{
+		  loggedout:checkLoggedout
+	  }
 
   } )
   .state('new-user',{
@@ -163,20 +163,21 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
     //}
   })
 
-  function checkLoggedout($q, $timeout, $rootScope, $state,$http, $localStorage) {
+  function checkLoggedout($q, $timeout, $rootScope, $state,$http, $localStorage,UserModel) {
     var deferred = $q.defer();
     //accessToken = localStorage.getItem('accessToken')
     $timeout(function(){
         $http.get('/user/loggedin')
         .success(function (response) {
-          if($localStorage.user){
-            deferred.resolve();
-            $state.go('dashboard');
-          }
-
+          $rootScope.is_loggedin = true;
+          // saving user model
+          if(!UserModel.getUser())
+            UserModel.setUser(response.user);
         })
         .error(function (error) {
           deferred.resolve();
+          $localStorage.token = null;
+          $rootScope.is_loggedin = false;
           $state.go('login');
         })
       // if($localStorage.user){
@@ -194,10 +195,13 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
     $timeout(function(){
       $http.get('/user/loggedin')
       .success(function(response) {
+        $rootScope.is_loggedin = true;
         deferred.resolve();
         $state.go('dashboard');
       })
       .error(function(error){
+        $localStorage.token = null;
+        $rootScope.is_loggedin = false;
         deferred.resolve();
       })
       // if($localStorage.user){
@@ -257,4 +261,3 @@ app.directive('fileModel', ['$parse', function ($parse) {
        }
      };
  });
-
