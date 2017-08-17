@@ -1,4 +1,4 @@
-/*! account_management - v0.0.0 - Fri Aug 18 2017 01:54:49 */
+/*! account_management - v0.0.0 - Fri Aug 18 2017 02:27:47 */
 var app = angular.module("acc_app", ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate','datePicker','ngTable','angular-js-xlsx','WebService']);
 app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
   //adding http intercepter

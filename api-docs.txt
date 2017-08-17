@@ -79,7 +79,7 @@ url - http://localhost:3000/caFirm     [POST]
 {
   "admin"                           :"599523fbbaf17308304ba1d4", // user id created as cafirm 
   firmType                              :"firmType",
-  firmName                              :"firmName",
+  firmName                 0             :"firmName",
   incorporationDate                  :"incorporationDate",
   tan                                   :"tan",
   tel                                   :"tel",
@@ -104,6 +104,11 @@ url - http://localhost:3000/caFirm     [POST]
     membership                           :"membership",
   }]
 }
+
+get firm details
+-----------------
+http://localhost:3000/caFirm?_id=59960088a3cb2a2318eef2fe   // to get particular firm details
+http://localhost:3000/caFirm 								// to get list of the firm details
 
 
 

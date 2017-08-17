@@ -76,6 +76,7 @@ var constants = {
 
         //***** Cafirm ***** //
         "saveCafirm"                : "Error in saving Ca Firm",
+        "getCafirm"                : "Error in fetch Ca Firm",
     },
     success:{
       "verified":"verified",
@@ -107,6 +108,7 @@ var constants = {
 
       //***** Cafirm ***** //
       "saveCafirm"                : "Success in saving Ca Firm",
+      "getCafirm"                : "Success in fetch Ca Firm",
     },
   },
 
