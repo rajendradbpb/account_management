@@ -62,10 +62,6 @@ angular.module('WebService', [])
                   'Accept': 'application/json'
               },
           },
-          getUser : {
-            url:"/client/",
-            method: "GET"
-          },
           postClient: {
             url: "/client",
             method: "POST",

@@ -1,4 +1,4 @@
-app.controller('FirmController',function($scope,$rootScope,Util,$uibModal,$stateParams){
+app.controller('FirmController',function($scope,$rootScope,Util,$uibModal,$stateParams,ApiCall){
 	
 	$scope.partner = {};	
 	$scope.partner.list=[
@@ -18,5 +18,13 @@ app.controller('FirmController',function($scope,$rootScope,Util,$uibModal,$state
 		var obj = {name:'' ,designation:'', no:'' };
 		$scope.partner.list.push(obj);
 	}
+	$scope.getRoleList = function(){
+     ApiCall.getRole(function(response){
+      $scope.roleList = response.data;
+     },function(error){
+
+     })
+  }
+
 	
 })

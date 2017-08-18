@@ -1,0 +1,155 @@
+	<section class="content-header m-b-40">
+	  <h1>
+	    CA Firm
+	    <small>Registration</small>
+	  </h1>
+	</section>
+
+<section class="content" ng-init="getRoleList()">
+	<div class="row">
+		<div class="col-sm-8 col-md-offset-2">
+			<div class="box box-info ">
+		      <div class="box-header with-border">
+		        <h3 class="box-title">Add New User</h3>
+		      </div>
+		      <form class="form-horizontal" name="caFirmReg">
+		        <div class="box-body">
+		         	
+		          	<div class="form-group" ng-class="{'has-error':caFirmReg.caFirm_role.$touched && caFirmReg.caFirm_role.$invalid}">
+			          	<label for="role" class="col-sm-3 control-label">User Role:</label>
+						<div class="col-sm-8" style="padding-bottom:5px;">
+							<select class="form-control" name="caFirm_role" ng-model="caFirm.role" required>
+								<option value="" ng-selected>User Role</option>
+								<option ng-value="role._id" ng-repeat="role in roleList">{{role.type}}</option>
+							</select>
+							<span class="help-block" ng-show="caFirmReg.caFirm_role.$error.required && caFirmReg.caFirm_role.$touched">User Role is required</span>
+						</div>		
+		          	</div>
+		          	<div class="form-group" ng-class="{'has-error':caFirmReg.caFirm_name.$touched && caFirmReg.caFirm_name.$invalid}">
+			          	<label for="uname" class="col-sm-3 control-label">User Name:</label>
+						<div class="col-sm-8">
+							<input type="text" name="caFirm_name" ng-model="caFirm.username" class="form-control" placeholder="User Name" required>
+							<span class="help-block" ng-show="caFirmReg.caFirm_name.$error.required && caFirmReg.caFirm_name.$touched">User Name is required</span>
+						</div>		
+		          	</div>
+		          	<div class="form-group" ng-class="{'has-error':caFirmReg.caFirm_pass.$touched && caFirmReg.caFirm_pass.$invalid}">
+			          	<label for="pass" class="col-sm-3 control-label">PassWord:</label>
+						<div class="col-sm-8" style="padding-bottom:5px;">
+							<input type="password" name="caFirm_pass" ng-model="caFirm.password" ng-change="change()" class="form-control" placeholder="PassWord" required >
+							<span class="help-block" ng-show="caFirmReg.caFirm_pass.$error.required && caFirmReg.caFirm_pass.$touched">Password is required</span>
+							
+						</div>		
+		          	</div>
+		          	<div class="form-group" ng-class="{'has-error':caFirmReg.caFirm_repass.$touched && caFirmReg.caFirm_repass.$invalid}">
+			          	<label for="pass" class="col-sm-3 control-label">ReEnter PassWord:</label>
+						<div class="col-sm-8" style="padding-bottom:5px;">
+							<input type="password" name="caFirm_repass" ng-model="caFirm.repass" ng-change="change()"  class="form-control" placeholder="PassWord" required >
+							<span class="help-block" ng-show="caFirmReg.caFirm_repass.$error.required && caFirmReg.caFirm_repass.$touched">Please reenter password</span>
+						</div>		
+		          	</div>
+		          <div class="form-group" ng-class="{'has-error':caFirmReg.caFirm_email.$touched && caFirmReg.caFirm_email.$invalid}">
+			          	<label for="lname" class="col-sm-3 control-label">Email:</label>
+						<div class="col-sm-8">
+							<input type="email" name="caFirm_email" ng-model="caFirm.email" class="form-control" placeholder=" Email " required>
+							<span class="help-block" ng-show="caFirmReg.caFirm_email.$error.required && caFirmReg.caFirm_email.$touched">Email is required</span>
+						</div>	
+		          	</div>
+		          	<div class="form-group" ng-class="{'has-error':caFirmReg.caFirm_fname.$touched && caFirmReg.caFirm_fname.$invalid}">
+			          	<label for="lname" class="col-sm-3 control-label">First Name: * </label>
+						<div class="col-sm-8">
+							<input type="text" name="caFirm_fname" class="form-control" placeholder=" First Name " ng-model="caFirm.fname" required ng-pattern="/^(\D)+$/">
+							<span class="help-block" ng-show="caFirmReg.caFirm_fname.$error.required && caFirmReg.caFirm_fname.$touched">First name is required</span>
+							<span class="help-block" ng-show="caFirmReg.caFirm_fname.$error.pattern && caFirmReg.caFirm_fname.$touched">Numeric not allowed</span>
+						</div>
+		          	</div>
+		          		<div class="form-group" ng-class="{'has-error':caFirmReg.caFirm_mname.$touched && caFirmReg.caFirm_mname.$invalid}">
+			          	<label for="lname" class="col-sm-3 control-label">Middle Name:</label>
+						<div class="col-sm-8">
+							<input type="text" name="caFirm_mname" ng-model="caFirm.mname" class="form-control" placeholder=" LastName " required ng-pattern="/^(\D)+$/">
+							<span class="help-block" ng-show="caFirmReg.caFirm_mname.$error.required && caFirmReg.caFirm_mname.$touched">Last name is required</span>
+							<span class="help-block" ng-show="caFirmReg.caFirm_mname.$error.pattern && caFirmReg.caFirm_mname.$touched">Numeric not allowed</span>
+						</div>	
+		          	</div>
+		          	<div class="form-group" ng-class="{'has-error':caFirmReg.caFirm_lname.$touched && caFirmReg.caFirm_lname.$invalid}">
+			          	<label for="lname" class="col-sm-3 control-label">Last Name:</label>
+						<div class="col-sm-8">
+							<input type="text" name="caFirm_lname" ng-model="caFirm.lname" class="form-control" placeholder=" LastName " required ng-pattern="/^(\D)+$/">
+							<span class="help-block" ng-show="caFirmReg.caFirm_lname.$error.required && caFirmReg.caFirm_lname.$touched">Last name is required</span>
+							<span class="help-block" ng-show="caFirmReg.caFirm_lname.$error.pattern && caFirmReg.caFirm_lname.$touched">Numeric not allowed</span>
+						</div>	
+		          	</div>
+		          	<div class="form-group" ng-class="{'has-error':caFirmReg.caFirm_id.$touched && caFirmReg.caFirm_id.$invalid}">
+			          	<label for="lname" class="col-sm-3 control-label">ID:</label>
+						<div class="col-sm-8">
+							<input type="text" name="caFirm_id" ng-model="caFirm.id" class="form-control" placeholder=" ID" required >
+							<span class="help-block" ng-show="caFirmReg.caFirm_id.$error.required && caFirmReg.caFirm_id.$touched">ID is required</span>
+							
+						</div>	
+		          	</div>
+		          	<div class="form-group" ng-class="{'has-error':caFirmReg.caFirm_desig.$touched && caFirmReg.caFirm_desig.$invalid}">
+			          	<label for="lname" class="col-sm-3 control-label">Designation:</label>
+						<div class="col-sm-8">
+							<input type="text" name="caFirm_desig" ng-model="caFirm.desig" class="form-control" placeholder=" Designation " required>
+							<span class="help-block" ng-show="caFirmReg.caFirm_desig.$error.required && caFirmReg.caFirm_desig.$touched">Designation is required</span>
+						</div>	
+		          	</div>
+		          	<div class="form-group" ng-class="{'has-error':caFirmReg.caFirm_pan.$touched && caFirmReg.caFirm_pan.$invalid}">
+			          	<label for="lname" class="col-sm-3 control-label">Pan:</label>
+						<div class="col-sm-8">
+							<input type="text" name="caFirm_pan" ng-model="caFirm.pan" class="form-control" placeholder=" LastName " required >
+							<span class="help-block" ng-show="caFirmReg.caFirm_pan.$error.required && caFirmReg.caFirm_pan.$touched">Pan is required</span>
+							
+						</div>	
+		          	</div>
+		          	<div class="form-group" ng-class="{'has-error':caFirmReg.caFirm_mobile.$touched && caFirmReg.caFirm_mobile.$invalid}">
+			          	<label for="lname" class="col-sm-3 control-label">Mobile:</label>
+						<div class="col-sm-8">
+							<input type="text" name="caFirm_mobile" ng-model="caFirm.lname" class="form-control" placeholder=" LastName " required ng-pattern="/^[0-9]{10,10}$/">
+							<span class="help-block" ng-show="caFirmReg.caFirm_mobile.$error.required && caFirmReg.caFirm_mobile.$touched">Last name is required</span>
+							<span class="help-block" ng-show="caFirmReg.caFirm_mobile.$error.pattern && caFirmReg.caFirm_mobile.$touched">Invalid mobile number</span>
+						</div>	
+		          	</div>
+					<div class="box box-success">
+						<div class="box-header">
+								<h3 class="box-title">Address</h3>
+						</div>
+						<div class="box-body">
+							<div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':caFirmReg.caFirm_country.$touched && caFirmReg.caFirm_country.$invalid}">
+									<input type="text" class="form-control" placeholder="Country " name="caFirm_country" ng-model="caFirm.country" required>
+									<span class="help-block" ng-show="caFirmReg.caFirm_country.$error.required && caFirmReg.caFirm_country.$touched">Please Enter Country</span>
+							</div>
+							<div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':caFirm.caFirm_state.$touched && caFirm.caFirm_state.$invalid}">
+									<input type="text" class="form-control" placeholder="State" name="caFirm_state" ng-model="caFirm.state" required>
+									<span class="help-block" ng-show="caFirmReg.caFirm_state.$error.required && caFirmReg.caFirm_state.$touched">Please Enter State</span>
+							</div>
+								<div class="col-xs-12 col-sm-4 col-md-2" ng-class="{'has-error':caFirmReg.caFirm_city.$touched && caFirmReg.caFirm_city.$invalid}">
+									<input type="text" class="form-control" placeholder="City" name="caFirm_city" ng-model="caFirm.city" required>
+									<span class="help-block" ng-show="caFirmReg.caFirm_city.$error.required && caFirmReg.caFirm_city.$touched">Please Enter City</span>
+								</div>
+								<div class="col-xs-12 col-sm-4 col-md-2" ng-class="{'has-error':caFirmReg.caFirm_plot.$touched && caFirmReg.caFirm_plot.$invalid}">
+									<input type="text" class="form-control" placeholder="Plot No/Lane" name="caFirm_plot" ng-model="caFirm.plot" required>
+									<span class="help-block" ng-show="caFirmReg.caFirm_plot.$error.required && caFirmReg.caFirm_plot.$touched">Please Enter Plot No</span>
+								</div>
+								<div class="col-xs-12 col-sm-4 col-md-2" ng-class="{'has-error':caFirmReg.caFirm_pin.$touched && caFirmReg.caFirm_pin.$invalid}">
+									<input type="text" class="form-control" placeholder="Pin" name="caFirm_pin" ng-model="caFirm.pin" required>
+									<span class="help-block" ng-show="caFirmReg.caFirm_pin.$error.required && caFirmReg.caFirm_pin.$touched">Please Enter Pin</span>
+						
+								</div>
+              				</div>
+					</div>
+				
+				
+		        </div>
+		        <div class="box-footer">
+		          <button type="submit" class="btn btn-default"  ui-sref="dashboard">Back</button>
+		          <button type="submit" ng-click="createUser()" class="btn btn-info pull-right">Create</button>
+		        </div>
+		      </form>
+		    </div>
+		</div>
+	</div>
+</section>
+
+
+
+

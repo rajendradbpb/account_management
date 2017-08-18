@@ -20,6 +20,7 @@ var userSchema = new mongoose.Schema({
     po                : {type: String},
     city              : {type: String},
     dist              : {type: String},
+    state             : {type: String},
     country           : {type: String},
     pin               : {type: String},
     status            : {type: String},

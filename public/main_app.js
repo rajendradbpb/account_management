@@ -124,20 +124,27 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
   .state('ca-firm',{
 	  templateUrl:'views/ca_firm_details.html',
 	  url:'/ca-firm',
-	  //controller:'FirmController',
-	  //resolve:{
-		  //loggedout:checkLoggedout
-	  //}
+	  controller:'FirmController',
+	  resolve:{
+		  loggedout:checkLoggedout
+	  }
+  })
+  .state('test',{
+    templateUrl:'views/ca_registration.html',
+    url:'/test',
+    controller:'FirmController',
+    resolve:{
+      loggedout:checkLoggedout
+    }
   })
   .state('ca-update',{
 	  templateUrl:'views/ca_update.html',
 	  url:'/ca-update',
 	  controller:'FirmController',
-	  //resolve:{
-		  //loggedout:checkLoggedout
-	  //}
-
-  })
+	  resolve:{
+		  loggedout:checkLoggedout
+	  }
+})
   .state('role-create',{
     templateUrl:'views/role_create.html',
     url:'/role-create',

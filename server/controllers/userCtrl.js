@@ -62,6 +62,7 @@ exports.addUser = function(req,res){
 
 }
 exports.getUser = function(req,res){
+
   var params = {
     isDelete:false
   };
