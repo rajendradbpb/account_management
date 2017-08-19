@@ -1,4 +1,4 @@
-app.controller('LoginCtrl',function($scope,$rootScope,LoginService,$state,$window,$localStorage,UserModel, ApiCall){
+	app.controller('LoginCtrl',function($scope,$rootScope,LoginService,$state,$window,$localStorage,UserModel, ApiCall){
 	$scope.user = {};
 	$scope.userLogin = function(){
 		$rootScope.showPreloader = true;

@@ -16,13 +16,13 @@
           <i class="fa fa-dashboard"></i> <span>Dashboard</span>
         </a>
 		  </li>
-      <li class="treeview" ng-class="{'active':stateName == 'test'}">
-        <a href="" ui-sref="test">
+      <li class="treeview" ng-class="{'active':stateName == 'ca-register'}">
+        <a href="" ui-sref="ca-register">
           <i class="fa fa-dashboard"></i> <span>CA Firm Registration</span>
         </a>
       </li>
 		  <li class="treeview" ng-class="{'active':stateName == 'ca-firm' || stateName == 'ca-update'}">
-        <a href="" ui-sref="ca-firm">
+        <a href="" ng-click="checkUser()">
           <i class="fa fa-dashboard"></i> <span>CA Firm</span>
         </a>
 		  </li>

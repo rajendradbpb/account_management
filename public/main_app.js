@@ -129,9 +129,9 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
 		  loggedout:checkLoggedout
 	  }
   })
-  .state('test',{
+  .state('ca-register',{
     templateUrl:'views/ca_registration.html',
-    url:'/test',
+    url:'/ca-register',
     controller:'FirmController',
     resolve:{
       loggedout:checkLoggedout
@@ -178,7 +178,7 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
         .success(function (response) {
           $rootScope.is_loggedin = true;
           // saving user model
-          if(!UserModel.getUser())
+          // if(UserModel.getUser())
             UserModel.setUser(response.user);
         })
         .error(function (error) {

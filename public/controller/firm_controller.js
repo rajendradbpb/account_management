@@ -1,4 +1,4 @@
-app.controller('FirmController',function($scope,$rootScope,Util,$uibModal,$stateParams,ApiCall){
+app.controller('FirmController',function($scope,$rootScope,Util,$uibModal,$stateParams,ApiCall,$state,UserModel){
 	
 	$scope.partner = {};	
 	$scope.partner.list=[
@@ -24,6 +24,29 @@ app.controller('FirmController',function($scope,$rootScope,Util,$uibModal,$state
      },function(error){
 
      })
+  }
+  $scope.caFirm = {};
+  $scope.caFirmRegister = function(){
+  	ApiCall.postUser($scope.caFirm, function(response){
+  		
+  	},function(error){
+
+  	})
+  }
+  $scope.updateCaFirm = function(){
+  	$scope.caFirm.admin = UserModel.getUser()._id;
+  	ApiCall.postCaFirm($scope.caFirm, function(response){
+  		console.log(response);
+  		$state.go('ca-firm')
+  	},function(error){
+
+  	})
+  }
+  $scope.data = {};
+  $scope.getCaFirmDetails = function(){
+  	$scope.data = UserModel.getUser();
+  	console.log($scope.data);
+  
   }
 
 	

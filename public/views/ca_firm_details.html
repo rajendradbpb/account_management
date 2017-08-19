@@ -3,10 +3,10 @@
     Client Details
     <small></small>
   </h1>
-   <button class="btn btn-primary pull-left" ui-sref="ca-create"><i class="fa fa-plus"></i> create</button>
+ 
   <button class="btn btn-primary pull-right" ui-sref="ca-update"><i class="fa fa-plus"></i> Update</button>
 </section>
-<section class="content">
+<section class="content" ng-init="getCaFirmDetails()" >
 	<div class="row">
 		<div class="col-md-3">
 		  	<div class="box box-primary">
@@ -16,7 +16,7 @@
 			      <p class="text-muted text-center">Chatard Accountants</p>
 			      <ul class="list-group list-group-unbordered">
 			        <li class="list-group-item">
-			          <b>Clients</b> <a class="pull-right">1,322</a>
+			          <b>Country</b> <a class="pull-right">{{data.country}}</a>
 			        </li>
 			        <li class="list-group-item">
 			          <b>Members</b> <a class="pull-right">543</a>
@@ -36,7 +36,7 @@
     			<div class="box-body">
       				<strong><i class="fa fa-map-marker margin-r-5"></i> Regd. Office Address</strong>
 			      	<p class="text-muted">
-			       		Saheed Nagar,Bhubaneswar,Odisha
+			       		{{data.plot}}
 			      	</p>
 	      			<hr>
 	  				<strong><i class="fa fa-map-marker margin-r-5"></i> Principal Place of Business Address</strong>

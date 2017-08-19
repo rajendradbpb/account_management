@@ -11,200 +11,173 @@
 				<div class="box-header with-border">
 					<h3 class="box-title">Update Your Details</h3>
 				</div>
-				 <form class="form-horizontal" name="caFirm">
-						<div class="box-body">
+				<form class="form-horizontal" name="caFirmUpdate">
+					<div class="box-body">
 						<!--row Started-->
-							<div class="row">  
-								<div class="col-xs-6">
-									<div class="form-group has-feedback" ng-class="{'has-error':caFirm.ca_name.$touched && caFirm.ca_name.$invalid}">
-										<label for="uname" class="col-sm-3 control-label">CA Firm Name:</label>
-										<div class="col-sm-9">
-											<input type="text" name="ca_name" ng-model="ca.name" class="form-control" placeholder="CA Farm name" required ng-pattern="/^(\D)+$/">
-											<span class="help-block" ng-show="caFirm.ca_name.$error.required && caFirm.ca_name.$touched">Please Provide a firm name</span>
-											<span class="help-block" ng-show="caFirm.ca_name.$error.pattern && caFirm.ca_name.$touched">Numeric not allowed</span>
-										</div>		
-									</div>
-									<div class="form-group has-feedback" ng-class="{'has-error':caFirm.ca_no.$touched && caFirm.ca_no.$invalid}">
+						<div class="row">  
+							<div class="col-xs-6">
+								<div class="form-group has-feedback" ng-class="{'has-error':caFirmUpdate.ca_type.$touched && caFirmUpdate.ca_type.$invalid}">
+										<label for="uname" class="col-sm-3 control-label">Firm Type:</label>
+									<div class="col-sm-9">
+										<select class="form-control" name="ca_type" ng-model="caFirm.type" required>
+												<option value="" ng-selected>Firm Type</option>
+												<option value="2">A</option>
+												<option value="3">B</option>
+												<option value="4">C</option>
+										</select>
+											<span class="help-block" ng-show="caFirmUpdate.ca_type.$error.required && caFirmUpdate.ca_type.$touched">Please select  firm type</span>	
+									</div>		
+								</div>
+								<div class="form-group has-feedback" ng-class="{'has-error':caFirmUpdate.ca_name.$touched && caFirmUpdate.ca_name.$invalid}">
+										<label for="uname" class="col-sm-3 control-label">Firm Name:</label>
+									<div class="col-sm-9">
+										<input type="text" name="ca_name" ng-model="caFirm.name" class="form-control" placeholder="CA Farm name" required ng-pattern="/^(\D)+$/">
+										<span class="help-block" ng-show="caFirmUpdate.ca_name.$error.required && caFirmUpdate.ca_name.$touched">Please Provide a firm name</span>
+										<span class="help-block" ng-show="caFirmUpdate.ca_name.$error.pattern && caFirmUpdate.ca_name.$touched">Numeric not allowed</span>
+									</div>		
+								</div>								
+								<div class="form-group has-feedback" ng-class="{'has-error':caFirmUpdate.ca_regdNo.$touched && caFirmUpdate.ca_regdNo.$invalid}">
 										<label for="uname" class="col-sm-3 control-label">CA Firm Regd.No:</label>
-										<div class="col-sm-9">
-											<input type="text" name="ca_no" ng-model="ca.no" class="form-control" placeholder="CA Farm Regd.No" required>
-											<span class="help-block" ng-show="caFirm.ca_no.$error.required && caFirm.ca_no.$touched">Please Provide firm regd. no</span>
-											
-										</div>		
-									</div>
-									<div class="form-group has-feedback" ng-class="{'has-error':caFirm.ca_tel.$touched && caFirm.ca_tel.$invalid}">
-										<label for="uname" class="col-sm-3 control-label">Telephone No:</label>
-										<div class="col-sm-9">
-											<input type="text" name="ca_tel" ng-model="ca.tel" class="form-control" placeholder="Telephone No" required ng-pattern="/^[0-9]{10,10}$/">
-											<span class="help-block" ng-show="caFirm.ca_tel.$error.required && caFirm.ca_tel.$touched">Please Provide Telephone no</span>
-											<span class="help-block" ng-show="caFirm.ca_tel.$error.pattern && caFirm.ca_tel.$touched">Invalid Mobile No</span>
-										</div>		
-									</div>
-								
-								
-								
+									<div class="col-sm-9">
+										<input type="text" name="ca_regdNo" ng-model="caFirm.no" class="form-control" placeholder="CA Farm Regd.No" required>
+										<span class="help-block" ng-show="caFirmUpdate.ca_regdNo.$error.required && caFirmUpdate.ca_regdNo.$touched">Please Provide firm regd. no</span>
+									</div>		
 								</div>
-								<div class="col-xs-6">
-									<div class="form-group has-feedback" ng-class="{'has-error':caFirm.ca_date.$touched && caFirm.ca_date.$invalid}">
-										<label for="lname" class="col-sm-3 control-label">Date of formation:</label>
-										<div class="col-sm-9">
-											 <input type="date" name="ca_date" ng-model="ca.date" class="form-control" placeholder="Date of formation" required>
-											<span class="help-block" ng-show="caFirm.ca_date.$error.required && caFirm.ca_date.$touched">Please Provide Date of formation</span>
-											
-										</div>	
-									</div>
-									<div class="form-group has-feedback" ng-class="{'has-error':caFirm.ca_gst.$touched && caFirm.ca_gst.$invalid}" >
-												<label for="pass" class="col-sm-3 control-label">GST No:</label>
-												<div class="col-sm-9">
-													<input type="text" class="form-control" name="ca_gst" ng-model="ca.gst" required placeholder="GST No">
-												
-													<span class="help-block" ng-show="caFirm.ca_gst.$error.required && caFirm.ca_gst.$touched">GST is required</span>
-													
-												</div>		
-									</div>
-									<div class="form-group has-feedback" ng-class="{'has-error':caFirm.ca_pan.$touched && caFirm.ca_pan.$invalid}">
-												<label for="pass" class="col-sm-3 control-label">PAN No:</label>
-												<div class="col-sm-9">
-													<input type="text" class="form-control" name="ca_pan" ng-model="ca.pan" required placeholder="Pan no of Firm">
-													<span class="help-block" ng-show="caFirm.ca_pan.$error.required && caFirm.ca_pan.$touched">Pan is required</span>
-													
-												</div>		
-									</div>
-								
-								
-								
+								<div class="form-group has-feedback" ng-class="{'has-error':caFirmUpdate.ca_tel.$touched && caFirmUpdate.ca_tel.$invalid}">
+									<label for="uname" class="col-sm-3 control-label">Telephone No:</label>
+									<div class="col-sm-9">
+										<input type="text" name="ca_tel" ng-model="caFirm.tel" class="form-control" placeholder="Telephone No" >
+										<span class="help-block" ng-show="caFirmUpdate.ca_tel.$error.required && caFirmUpdate.ca_tel.$touched">Please Provide Telephone no</span>
+									</div>		
 								</div>
 							</div>
-							<!--one row ended-->
-								
-									<div class="row ">
-										<div class="col-sm-12">
-											<div class="box box-success">
-												<div class="box-header">
-													<h3 class="box-title">Regd. Office Address</h3>
-												</div>
-												<div class="box-body">
-									
-                                   
-													<div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':caFirm.ca_country.$touched && caFirm.ca_country.$invalid}">
-														<input type="text" class="form-control" placeholder="Country " name="ca_country" ng-model="ca.country" required>
-														<span class="help-block" ng-show="caFirm.ca_country.$error.required && caFirm.ca_country.$touched">Please Enter Country</span>
-													</div>
-													<div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':caFirm.ca_state.$touched && caFirm.ca_state.$invalid}">
-														<input type="text" class="form-control" placeholder="State" name="ca_state" ng-model="ca.state" required>
-														<span class="help-block" ng-show="caFirm.ca_state.$error.required && caFirm.ca_state.$touched">Please Enter State</span>
-													</div>
-									
-										
-													<div class="col-xs-12 col-sm-4 col-md-2" ng-class="{'has-error':caFirm.ca_city.$touched && caFirm.ca_city.$invalid}">
-														<input type="text" class="form-control" placeholder="City" name="ca_city" ng-model="ca.city" required>
-														<span class="help-block" ng-show="caFirm.ca_city.$error.required && caFirm.ca_city.$touched">Please Enter City</span>
-													</div>
-													<div class="col-xs-12 col-sm-4 col-md-2" ng-class="{'has-error':caFirm.ca_plot.$touched && caFirm.ca_plot.$invalid}">
-														<input type="text" class="form-control" placeholder="Plot No/Lane" name="ca_plot" ng-model="ca.plot" required>
-														<span class="help-block" ng-show="caFirm.ca_plot.$error.required && caFirm.ca_plot.$touched">Please Enter Plot No</span>
-													</div>
-													<div class="col-xs-12 col-sm-4 col-md-2" ng-class="{'has-error':caFirm.ca_pin.$touched && caFirm.ca_pin.$invalid}">
-														<input type="text" class="form-control" placeholder="Pin" name="ca_pin" ng-model="ca.pin" required>
-														<span class="help-block" ng-show="caFirm.ca_pin.$error.required && caFirm.ca_pin.$touched">Please Enter Pin</span>
-											
-													</div>
-                                   
-                                </div>
-				</div>
-				
-				
-						<div class="box box-success">
-                                <div class="box-header">
-                                    <h3 class="box-title">Principal place of business Address</h3>
-                                </div>
-                                <div class="box-body">
-									
-                                   
-                                        <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':caFirm.comp_country1.$touched && caFirm.comp_country1.$invalid}">
-                                            <input type="text" class="form-control" placeholder="Country " name="comp_country1" ng-model="company.country1" required>
-											<span class="help-block" ng-show="caFirm.comp_country1.$error.required && caFirm.comp_country1.$touched">Please Enter Country</span>
-                                        </div>
-                                        <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':caFirm.comp_state1.$touched && caFirm.comp_state1.$invalid}">
-                                            <input type="text" class="form-control" placeholder="State" name="comp_state1" ng-model="company.state1" required>
-											<span class="help-block" ng-show="caFirm.comp_state1.$error.required && caFirm.comp_state1.$touched">Please Enter State</span>
-                                        </div>
-									
-										
-                                        <div class="col-xs-12 col-sm-4 col-md-2" ng-class="{'has-error':caFirm.comp_city1.$touched && caFirm.comp_city1.$invalid}">
-                                            <input type="text" class="form-control" placeholder="City" name="comp_city1" ng-model="company.city1" required>
-											<span class="help-block" ng-show="caFirm.comp_city1.$error.required && caFirm.comp_city1.$touched">Please Enter City</span>
-                                        </div>
-										<div class="col-xs-12 col-sm-4 col-md-2" ng-class="{'has-error':caFirm.comp_plot1.$touched && caFirm.comp_plot1.$invalid}">
-                                            <input type="text" class="form-control" placeholder="Plot No/Lane" name="comp_plot1" ng-model="company.plot1" required>
-											<span class="help-block" ng-show="caFirm.comp_plot1.$error.required && caFirm.comp_plot1.$touched">Please Enter Plot No</span>
-                                        </div>
-										<div class="col-xs-12 col-sm-4 col-md-2" ng-class="{'has-error':caFirm.comp_pin1.$touched && caFirm.comp_pin1.$invalid}">
-                                            <input type="text" class="form-control" placeholder="Pin" name="comp_pin1" ng-model="company.pin1" required>
-											<span class="help-block" ng-show="caFirm.comp_pin1.$error.required && caFirm.comp_pin1.$touched">Please Enter Pin</span>
-											
-                                        </div>
-                                 
-                                </div>
+							<div class="col-xs-6">
+								<div class="form-group has-feedback" ng-class="{'has-error':caFirmUpdate.ca_date.$touched && caFirmUpdate.ca_date.$invalid}">
+									<label for="lname" class="col-sm-3 control-label">Incorporation Date:</label>
+									<div class="col-sm-9">
+										 <input type="date" name="ca_date" ng-model="caFirm.incDate" class="form-control" required>
+										<span class="help-block" ng-show="caFirmUpdate.ca_date.$error.required && caFirmUpdate.ca_date.$touched">Please Provide Date of formation</span>											
+									</div>	
+								</div>
+								<div class="form-group has-feedback" ng-class="{'has-error':caFirmUpdate.ca_gst.$touched && caFirmUpdate.ca_gst.$invalid}" >
+									<label for="pass" class="col-sm-3 control-label">GST No:</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" name="ca_gst" ng-model="caFirm.gst" required placeholder="GST No">
+										<span class="help-block" ng-show="caFirmUpdate.ca_gst.$error.required && caFirmUpdate.ca_gst.$touched">GST is required</span>
+									</div>		
+								</div>
+								<div class="form-group has-feedback" ng-class="{'has-error':caFirmUpdate.ca_tan.$touched && caFirmUpdate.ca_tan.$invalid}">
+									<label for="pass" class="col-sm-3 control-label">TAN No:</label>
+									<div class="col-sm-9">
+										<input type="text" class="form-control" name="ca_tan" ng-model="caFirm.tan" required placeholder="Tan no of Firm">
+										<span class="help-block" ng-show="caFirmUpdate.ca_tan.$error.required && caFirmUpdate.ca_tan.$touched">Tan is required</span>
+													
+									</div>		
+								</div>
 							</div>
-					<div class="box box-info">
-                                <div class="box-header">
-                                    <h3 class="box-title">Partners details</h3>
-                                </div>
-                                <div class="box-body">
-								
-                                    <div class="row m-b-10" ng-repeat="partners in partner.list">
-                                        <div class="col-sm-4" ng-class="{'has-error':caFirm.part_name_{{$index}}.$touched && caFirm.part_name_{{$index}}.$invalid}">
-                                            <input type="text" class="form-control" placeholder="Patrner's Name " name="part_name_{{$index}}" ng-model="partners.name" required ng-pattern="/^(\D)+$/">
-											<span class="help-block" ng-show="caFirm.part_name_{{$index}}.$error.required && caFirm.part_name_{{$index}}.$touched">Please Enter partner's Name</span>
-											<span class="help-block" ng-show="caFirm.part_name_{{$index}}.$error.pattern && caFirm.part_name_{{$index}}.$touched">Numeric not allowed</span>
-                                        </div>
-                                        <div class="col-sm-3" ng-class="{'has-error':caFirm.part_desig_{{$index}}.$touched && caFirm.part_desig_{{$index}}.$invalid}">
-                                            <select class="form-control" name="part_desig_{{$index}}" ng-model="partners.designation" required >
-											<option value><i class="fa fa-sort-desc"></i>Designation</option>
-											<option value="2">a</option>
-											<option value="3">b</option>
-											</select>
-											<span class="help-block" ng-show="caFirm.part_desig_{{$index}}.$error.required && caFirm.part_desig_{{$index}}.$touched">Designation is required</span>
-                                        </div>
-                                        <div class="col-sm-3" ng-class="{'has-error':caFirm.part_no_{{$index}}.$touched && caFirm.part_no_{{$index}}.$invalid}">
-                                            <input type="text" class="form-control" placeholder="Membership Number" name="part_no_{{$index}}" ng-model="partners.no" required>
-											<span class="help-block" ng-show="caFirm.part_no_{{$index}}.$error.required && caFirm.part_no_{{$index}}.$touched">Please provide membership number</span>
-                                        </div>
-										
-										<div class="col-sm-2" >
-                                           <button type="button"  ng-if="partner.list.length > 1" ng-click="removePart($index)" class="btn btn-danger btn-sm">
-	                  							<i class="fa fa-minus"></i>
-	                  						</button>
-                                           <button type="button" ng-if="$last" ng-click="updatePart()" class="btn btn-info btn-sm">
-	                  							<i class="fa fa-plus"></i>
-	                  						</button>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-				
-				
-				
-				
-				</div>
-		</div>
-								
-							
-							
-							
-						
-						
 						</div>
-						  <div class="box-footer">
-		          <button type="submit" class="btn btn-default"  ui-sref="ca-firm">Back</button>
-		          <button type="submit" class="btn btn-info pull-right">Submit</button>
-		        </div>
+							<!--one row ended-->
+						<div class="row ">
+							<div class="col-sm-12">
+								<div class="box box-success">
+									<div class="box-header">
+										<h3 class="box-title">Regd. Office Address</h3>
+									</div>
+									<div class="box-body">
+										<div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':caFirmUpdate.ca_country.$touched && caFirmUpdate.ca_country.$invalid}">
+											<input type="text" class="form-control" placeholder="Country " name="ca_country" ng-model="caFirm.country" required>
+											<span class="help-block" ng-show="caFirmUpdate.ca_country.$error.required && caFirm.ca_country.$touched">Please Enter Country</span>
+										</div>
+										<div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':caFirmUpdate.ca_state.$touched && caFirmUpdate.ca_state.$invalid}">
+											<input type="text" class="form-control" placeholder="State" name="ca_state" ng-model="caFirm.state" required>
+											<span class="help-block" ng-show="caFirmUpdate.ca_state.$error.required && caFirmUpdate.ca_state.$touched">Please Enter State</span>
+										</div>
+						
+							
+										<div class="col-xs-12 col-sm-4 col-md-2" ng-class="{'has-error':caFirmUpdate.ca_city.$touched && caFirmUpdate.ca_city.$invalid}">
+											<input type="text" class="form-control" placeholder="City" name="ca_city" ng-model="caFirm.city" required>
+											<span class="help-block" ng-show="caFirmUpdate.ca_city.$error.required && caFirmUpdate.ca_city.$touched">Please Enter City</span>
+										</div>
+										<div class="col-xs-12 col-sm-4 col-md-2" ng-class="{'has-error':caFirmUpdate.ca_plot.$touched && caFirmUpdate.ca_plot.$invalid}">
+											<input type="text" class="form-control" placeholder="Plot No/Lane" name="ca_plot" ng-model="caFirm.plot" required>
+											<span class="help-block" ng-show="caFirmUpdate.ca_plot.$error.required && caFirmUpdate.ca_plot.$touched">Please Enter Plot No</span>
+										</div>
+										<div class="col-xs-12 col-sm-4 col-md-2" ng-class="{'has-error':caFirmUpdate.ca_pin.$touched && caFirmUpdate.ca_pin.$invalid}">
+											<input type="text" class="form-control" placeholder="Pin" name="ca_pin" ng-model="caFirm.pin" required>
+											<span class="help-block" ng-show="caFirmUpdate.ca_pin.$error.required && caFirmUpdate.ca_pin.$touched">Please Enter Pin</span>
+										</div>
+			           				</div>
+								</div>
+								<div class="box box-success">
+			                        <div class="box-header">
+			                            <h3 class="box-title">Principal place of business Address</h3>
+			                        </div>
+			                        <div class="box-body">
+			                        	<div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':caFirmUpdate.comp_country1.$touched && caFirmUpdate.comp_country1.$invalid}">
+			                            	<input type="text" class="form-control" placeholder="Country " name="comp_country1" ng-model="caFirm.country1" required>
+											<span class="help-block" ng-show="caFirmUpdate.comp_country1.$error.required && caFirmUpdate.comp_country1.$touched"	>Please Enter Country</span>
+			                       		 </div>
+				                         <div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':caFirmUpdate.comp_state1.$touched && caFirmUpdate.comp_state1.$invalid}">
+				                            <input type="text" class="form-control" placeholder="State" name="comp_state1" ng-model="caFirm.state1" required>
+											<span class="help-block" ng-show="caFirmUpdate.comp_state1.$error.required && caFirmUpdate.comp_state1.$touched">Please Enter State</span>
+				                         </div>
+								         <div class="col-xs-12 col-sm-4 col-md-2" ng-class="{'has-error':caFirmUpdate.comp_city1.$touched && caFirmUpdate.comp_city1.$invalid}">
+			                           		<input type="text" class="form-control" placeholder="City" name="comp_city1" ng-model="caFirm.city1" required>
+											<span class="help-block" ng-show="caFirmUpdate.comp_city1.$error.required && caFirmUpdate.comp_city1.$touched">Please Enter City</span>
+			                        	</div>
+										<div class="col-xs-12 col-sm-4 col-md-2" ng-class="{'has-error':caFirmUpdate.comp_plot1.$touched && caFirmUpdate.comp_plot1.$invalid}">
+			                            	<input type="text" class="form-control" placeholder="Plot No/Lane" name="comp_plot1" ng-model="caFirm.plot1" required>
+											<span class="help-block" ng-show="caFirmUpdate.comp_plot1.$error.required && caFirmUpdate.comp_plot1.$touched">		Please Enter Plot No</span>
+			                       		 </div>
+										<div class="col-xs-12 col-sm-4 col-md-2" ng-class="{'has-error':caFirmUpdate.comp_pin1.$touched && caFirmUpdate.comp_pin1.$invalid}">
+				                            <input type="text" class="form-control" placeholder="Pin" name="comp_pin1" ng-model="caFirm.pin1" required>
+											<span class="help-block" ng-show="caFirmUpdate.comp_pin1.$error.required && caFirmUpdate.comp_pin1.$touched">Please Enter Pin</span>
+				                        </div>
+			                        </div>
+								</div>
+								<div class="box box-info">
+			                        <div class="box-header">
+			                            <h3 class="box-title">Partners details</h3>
+			                        </div>
+			                        <div class="box-body">								
+			                            <div class="row m-b-10" ng-repeat="caFirm in partner.list">
+			                                <div class="col-sm-4" ng-class="{'has-error':caFirmUpdate.part_name_{{$index}}.$touched && caFirmUpdate.part_name_{{$index}}.$invalid}">
+			                                    <input type="text" class="form-control" placeholder="Patrner's Name " name="part_name_{{$index}}" ng-model="caFirm.partnerName" required ng-pattern="/^(\D)+$/">
+												<span class="help-block" ng-show="caFirmUpdate.part_name_{{$index}}.$error.required && caFirmUpdate.part_name_{{$index}}.$touched">Please Enter partner's Name</span>
+												<span class="help-block" ng-show="caFirmUpdate.part_name_{{$index}}.$error.pattern && caFirmUpdate.part_name_{{$index}}.$touched">Numeric not allowed</span>
+			                                </div>
+			                                <div class="col-sm-3" ng-class="{'has-error':caFirmUpdate.part_desig_{{$index}}.$touched && caFirmUpdate.part_desig_{{$index}}.$invalid}">
+			                                    <select class="form-control" name="part_desig_{{$index}}" ng-model="caFirm.partnerDesignation" required >
+												<option value><i class="fa fa-sort-desc"></i>Designation</option>
+												<option value="2">a</option>
+												<option value="3">b</option>
+												</select>
+												<span class="help-block" ng-show="caFirmUpdate.part_desig_{{$index}}.$error.required && caFirmUpdate.part_desig_{{$index}}.$touched">Designation is required</span>
+			                                </div>
+			                                <div class="col-sm-3" ng-class="{'has-error':caFirmUpdate.part_no_{{$index}}.$touched && caFirmUpdate.part_no_{{$index}}.$invalid}">
+			                                    <input type="text" class="form-control" placeholder="Membership Number" name="part_no_{{$index}}" ng-model="caFirm.partnerMembershipNo" required>
+												<span class="help-block" ng-show="caFirmUpdate.part_no_{{$index}}.$error.required && caFirmUpdate.part_no_{{$index}}.$touched">Please provide membership number</span>
+			                                </div>
+											<div class="col-sm-2" >
+			                                   	<button type="button"  ng-if="partner.list.length > 1" ng-click="removePart($index)" class="btn btn-danger btn-sm">
+			              							<i class="fa fa-minus"></i>
+			              						</button>
+			                                   	<button type="button" ng-if="$last" ng-click="updatePart()" class="btn btn-info btn-sm">
+			              							<i class="fa fa-plus"></i>
+			              						</button>
+			                                </div>
+			                            </div>
+			                        </div>
+			                    </div>
+							</div>
+						</div>
+					</div>
+					<div class="box-footer">
+					    <button type="submit" class="btn btn-default"  ui-sref="caFirmUpdate-firm">Back</button>
+					    <button type="submit" ng-click="updateCaFirm()" class="btn btn-info pull-right">Submit</button>
+					</div>
 				</form>
-			  
-			 </div>
+			</div>
 		</div>
 	</div>
-			 
 </section>
