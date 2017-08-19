@@ -1,4 +1,5 @@
 var app = angular.module("acc_app", ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate','datePicker','ngTable','angular-js-xlsx','WebService']);
+
 app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
   //adding http intercepter
   $httpProvider.interceptors.push(function ($q, $location, $window,$localStorage) {
