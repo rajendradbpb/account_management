@@ -1,4 +1,4 @@
-/*! account_management - v0.0.0 - Sat Aug 19 2017 18:25:27 */
+/*! account_management - v0.0.0 - Sun Aug 20 2017 01:05:05 */
 var app = angular.module("acc_app", ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate','datePicker','ngTable','angular-js-xlsx','WebService']);
 app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
   //adding http intercepter
@@ -91,10 +91,10 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
   .state('new-user',{
 	  templateUrl:'views/user/new_user.html',
 	  url:'/new-user',
-    controller:'User_Controller'
-	  //resolve:{
-		  //loggedout:checkLoggedout
-	  //}
+    controller:'User_Controller',
+	  resolve:{
+		  loggedout:checkLoggedout
+	  }
   })
   .state('user-update',{
 	  templateUrl:'views/user/user_update.html',
