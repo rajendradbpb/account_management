@@ -1,4 +1,4 @@
-/*! account_management - v0.0.0 - Sat Aug 19 2017 13:24:01 */
+/*! account_management - v0.0.0 - Sat Aug 19 2017 18:25:27 */
 var app = angular.module("acc_app", ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate','datePicker','ngTable','angular-js-xlsx','WebService']);
 app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
   //adding http intercepter
@@ -371,6 +371,10 @@ app.directive('fileModel', ['$parse', function ($parse) {
                 'Accept': 'application/json'
             },
           },
+          getCaFirm : {
+            url:"/caFirm/",
+            method: "GET"
+          },
         }
     })
     .factory('ApiGenerator', function($http, $resource, API, EnvService) {
@@ -395,7 +399,8 @@ app.directive('fileModel', ['$parse', function ($parse) {
         postUser: ApiGenerator.getApi('postUser'),
         deleteUser: ApiGenerator.getApi('deleteUser'),
         updateUser: ApiGenerator.getApi('updateUser'),
-        postCaFirm: ApiGenerator.getApi('postCaFirm')
+        postCaFirm: ApiGenerator.getApi('postCaFirm'),
+        getCaFirm: ApiGenerator.getApi('getCaFirm'),
       })
     })
     .factory('EnvService',function($http,$localStorage){
@@ -579,6 +584,7 @@ app.directive('updateHeight',function () {
   }
   $scope.updateCaFirm = function(){
   	$scope.caFirm.admin = UserModel.getUser()._id;
+    console.log(JSON.stringify($scope.caFirm));
   	ApiCall.postCaFirm($scope.caFirm, function(response){
   		console.log(response);
   		$state.go('ca-firm')
@@ -589,10 +595,17 @@ app.directive('updateHeight',function () {
   $scope.data = {};
   $scope.getCaFirmDetails = function(){
   	$scope.data = UserModel.getUser();
-  	console.log($scope.data);
-  }
+    	var obj = {
+      "_id":"599823699345e92a141e2cba"
+    }
+    ApiCall.getCaFirm( function(response){
+      console.log(response);
 
-	
+    },function(error){
+
+    })
+
+	}
 });	app.controller('LoginCtrl',function($scope,$rootScope,LoginService,$state,$window,$localStorage,UserModel, ApiCall){
 	$scope.user = {};
 	$scope.userLogin = function(){
@@ -603,6 +616,7 @@ app.directive('updateHeight',function () {
 		 	$localStorage.token = response.data.token;
 			//UserModel.setUser(response.data.user);
 			// 	$scope.$emit("Login_success");
+			console.log("login success")
 		  	$state.go('dashboard');
 		},function(error){
 			$rootScope.showPreloader = false;
@@ -634,7 +648,7 @@ app.directive('updateHeight',function () {
   }
   $scope.checkUser = function(){
     $scope.loggedin_user = UserModel.getUser();
-   // console.log($scope.loggedin_user);
+   console.log($scope.loggedin_user);
     if(!$scope.loggedin_user.caFirm){
       $state.go('ca-update');
     }

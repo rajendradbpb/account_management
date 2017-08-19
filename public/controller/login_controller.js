@@ -8,6 +8,7 @@
 		 	$localStorage.token = response.data.token;
 			//UserModel.setUser(response.data.user);
 			// 	$scope.$emit("Login_success");
+			console.log("login success")
 		  	$state.go('dashboard');
 		},function(error){
 			$rootScope.showPreloader = false;

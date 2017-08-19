@@ -32,6 +32,7 @@ app.controller('FirmController',function($scope,$rootScope,Util,$uibModal,$state
   }
   $scope.updateCaFirm = function(){
   	$scope.caFirm.admin = UserModel.getUser()._id;
+    console.log(JSON.stringify($scope.caFirm));
   	ApiCall.postCaFirm($scope.caFirm, function(response){
   		console.log(response);
   		$state.go('ca-firm')
@@ -42,8 +43,15 @@ app.controller('FirmController',function($scope,$rootScope,Util,$uibModal,$state
   $scope.data = {};
   $scope.getCaFirmDetails = function(){
   	$scope.data = UserModel.getUser();
-  	console.log($scope.data);
-  }
+    	var obj = {
+      "_id":"599823699345e92a141e2cba"
+    }
+    ApiCall.getCaFirm( function(response){
+      console.log(response);
 
-	
+    },function(error){
+
+    })
+
+	}
 })

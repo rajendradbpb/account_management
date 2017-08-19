@@ -22,7 +22,7 @@ app.controller("Main_Controller",function($scope,$rootScope,$state,$localStorage
   }
   $scope.checkUser = function(){
     $scope.loggedin_user = UserModel.getUser();
-   // console.log($scope.loggedin_user);
+   console.log($scope.loggedin_user);
     if(!$scope.loggedin_user.caFirm){
       $state.go('ca-update');
     }

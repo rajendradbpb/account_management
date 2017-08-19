@@ -95,7 +95,7 @@ passport.use('token',new BearerStrategy(
   function(token, done) {
     jwt.verify(token,config.token.secret, function(err, decoded) {
       if (err) {
-        // console.log("error in verify token  ",err);
+        //console.log("error in verify token  ",err);
         return done(err,null);
       }
       else if(!decoded) {

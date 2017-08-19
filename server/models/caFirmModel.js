@@ -3,26 +3,26 @@ var uniqueValidator = require('mongoose-unique-validator');
 var Schema = mongoose.Schema;
 var constants = require("./../../config/constants")
 var caFirmSchema = new mongoose.Schema({
-  admin                            :{type: Schema.Types.ObjectId, ref: 'user',required: true,unique:true},
+  admin                                 :{type: Schema.Types.ObjectId, ref: 'user',required: true,unique:true},
   firmType                              :{type: String},
   firmName                              :{type: String},
   incorporationDate                     :{type: String},
   gst                                   :{type: String},
-  pan                                   :{type: String},
   tan                                   :{type: String},
   tel                                   :{type: String},
-  mob                                   :{type: String},
   regAddress :{
     plotNo                              :{type: String},
+    pin                                 :{type: String},
     lane                                :{type: String},
     city                                :{type: String},
     state                               :{type: String},
     country                             :{type: String},
   },
   businessAddress :{
-    plotNo                             :{type: String},
+    plotNo                              :{type: String},
     lane                                :{type: String},
-    city                               :{type: String},
+    city                                :{type: String},
+    pin                                 :{type: String},
     state                               :{type: String},
     country                             :{type: String},
   },
