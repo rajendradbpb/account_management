@@ -101,5 +101,5 @@ module.exports = function(grunt) {
   // grunt.registerTask("start", ["nodemon:start"]);
   // grunt.registerTask("client", ["concat:client","watch:client"]);
   grunt.registerTask("con", ['concat','watch:client']);
-  grunt.registerTask("notify", ['notify:server'] );
+  //grunt.registerTask("notify", ['notify:server'] );
 };

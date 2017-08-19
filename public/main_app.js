@@ -90,10 +90,10 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
   .state('new-user',{
 	  templateUrl:'views/user/new_user.html',
 	  url:'/new-user',
-    controller:'User_Controller'
-	  //resolve:{
-		  //loggedout:checkLoggedout
-	  //}
+    controller:'User_Controller',
+	  resolve:{
+		  loggedout:checkLoggedout
+	  }
   })
   .state('user-update',{
 	  templateUrl:'views/user/user_update.html',

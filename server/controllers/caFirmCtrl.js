@@ -36,7 +36,7 @@ exports.add = function(req, res) {
 }
 exports.get = function(req, res) {
   var params = {
-    //isDelete: false
+    isDelete: false
   };
   if (req.query._id) {
     console.log("req.query.id   " + req.query._id);
@@ -48,7 +48,7 @@ exports.get = function(req, res) {
     } else {
       response.sendResponse(res, 200, "success", constants.messages.success.getCafirm, data);
     }
-  }) 
+  })
 }
 exports.udpate = function(req, res) {
   var query = {

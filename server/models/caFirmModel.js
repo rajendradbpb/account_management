@@ -30,7 +30,8 @@ var caFirmSchema = new mongoose.Schema({
     name                                :{type: String},
     designation                         :{type: String},
     membership                           :{type: String},
-  }]
+  }],
+  isDelete                              :{type:Boolean,default:false}
 });
 caFirmSchema.plugin(uniqueValidator, {
   message: "Firm admin already registered"
