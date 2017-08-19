@@ -1,22 +1,20 @@
 app.controller('FirmController',function($scope,$rootScope,Util,$uibModal,$stateParams,ApiCall,$state,UserModel){
 	
-	$scope.partner = {};	
-	$scope.partner.list=[
-	{
-		       'name':'',
-		'designation':'',
-		         'no':'',
-			  
-	    	
-	}
+	$scope.caFirm = {};	
+	$scope.caFirm.Partners = [
+  	{
+  		'name':'',
+  		'designation':'',
+  		'membership':'',
+  	}
 	];	
-	$scope.removePart=function($index){
-		$scope.partner.list.splice($index,1);
+	$scope.removePart = function($index){
+		$scope.caFirm.Partners.splice($index,1);
 		
 	}
 	$scope.updatePart = function(){
-		var obj = {name:'' ,designation:'', no:'' };
-		$scope.partner.list.push(obj);
+		var obj = {name:'' ,designation:'', membership:'' };
+		$scope.caFirm.Partners.push(obj);
 	}
 	$scope.getRoleList = function(){
      ApiCall.getRole(function(response){
@@ -25,7 +23,6 @@ app.controller('FirmController',function($scope,$rootScope,Util,$uibModal,$state
 
      })
   }
-  $scope.caFirm = {};
   $scope.caFirmRegister = function(){
   	ApiCall.postUser($scope.caFirm, function(response){
   		
@@ -46,7 +43,6 @@ app.controller('FirmController',function($scope,$rootScope,Util,$uibModal,$state
   $scope.getCaFirmDetails = function(){
   	$scope.data = UserModel.getUser();
   	console.log($scope.data);
-  
   }
 
 	

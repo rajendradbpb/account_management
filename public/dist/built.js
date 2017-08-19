@@ -1,4 +1,4 @@
-/*! account_management - v0.0.0 - Fri Aug 18 2017 02:27:47 */
+/*! account_management - v0.0.0 - Sat Aug 19 2017 13:24:01 */
 var app = angular.module("acc_app", ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate','datePicker','ngTable','angular-js-xlsx','WebService']);
 app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
   //adding http intercepter
@@ -125,20 +125,27 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
   .state('ca-firm',{
 	  templateUrl:'views/ca_firm_details.html',
 	  url:'/ca-firm',
-	  //controller:'FirmController',
-	  //resolve:{
-		  //loggedout:checkLoggedout
-	  //}
+	  controller:'FirmController',
+	  resolve:{
+		  loggedout:checkLoggedout
+	  }
+  })
+  .state('ca-register',{
+    templateUrl:'views/ca_registration.html',
+    url:'/ca-register',
+    controller:'FirmController',
+    resolve:{
+      loggedout:checkLoggedout
+    }
   })
   .state('ca-update',{
 	  templateUrl:'views/ca_update.html',
 	  url:'/ca-update',
 	  controller:'FirmController',
-	  //resolve:{
-		  //loggedout:checkLoggedout
-	  //}
-
-  })
+	  resolve:{
+		  loggedout:checkLoggedout
+	  }
+})
   .state('role-create',{
     templateUrl:'views/role_create.html',
     url:'/role-create',
@@ -172,7 +179,7 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
         .success(function (response) {
           $rootScope.is_loggedin = true;
           // saving user model
-          if(!UserModel.getUser())
+          // if(UserModel.getUser())
             UserModel.setUser(response.user);
         })
         .error(function (error) {
@@ -348,12 +355,16 @@ app.directive('fileModel', ['$parse', function ($parse) {
                   'Accept': 'application/json'
               },
           },
-          getUser : {
-            url:"/client/",
-            method: "GET"
-          },
           postClient: {
             url: "/client",
+            method: "POST",
+            "headers": {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+          },
+          postCaFirm: {
+            url: "/caFirm",
             method: "POST",
             "headers": {
                 'Content-Type': 'application/json',
@@ -384,8 +395,7 @@ app.directive('fileModel', ['$parse', function ($parse) {
         postUser: ApiGenerator.getApi('postUser'),
         deleteUser: ApiGenerator.getApi('deleteUser'),
         updateUser: ApiGenerator.getApi('updateUser'),
-        // getClient: ApiGenerator.getApi('getClient'),
-        postClient: ApiGenerator.getApi('postClient'),
+        postCaFirm: ApiGenerator.getApi('postCaFirm')
       })
     })
     .factory('EnvService',function($http,$localStorage){
@@ -535,28 +545,55 @@ app.directive('updateHeight',function () {
 			    }
     /*Clientlist table view code ends here*/
 	
-});app.controller('FirmController',function($scope,$rootScope,Util,$uibModal,$stateParams){
+});app.controller('FirmController',function($scope,$rootScope,Util,$uibModal,$stateParams,ApiCall,$state,UserModel){
 	
-	$scope.partner = {};	
-	$scope.partner.list=[
-	{
-		       'name':'',
-		'designation':'',
-		         'no':'',
-			  
-	    	
-	}
+	$scope.caFirm = {};	
+	$scope.caFirm.Partners = [
+  	{
+  		'name':'',
+  		'designation':'',
+  		'membership':'',
+  	}
 	];	
-	$scope.removePart=function($index){
-		$scope.partner.list.splice($index,1);
+	$scope.removePart = function($index){
+		$scope.caFirm.Partners.splice($index,1);
 		
 	}
 	$scope.updatePart = function(){
-		var obj = {name:'' ,designation:'', no:'' };
-		$scope.partner.list.push(obj);
+		var obj = {name:'' ,designation:'', membership:'' };
+		$scope.caFirm.Partners.push(obj);
 	}
+	$scope.getRoleList = function(){
+     ApiCall.getRole(function(response){
+      $scope.roleList = response.data;
+     },function(error){
+
+     })
+  }
+  $scope.caFirmRegister = function(){
+  	ApiCall.postUser($scope.caFirm, function(response){
+  		
+  	},function(error){
+
+  	})
+  }
+  $scope.updateCaFirm = function(){
+  	$scope.caFirm.admin = UserModel.getUser()._id;
+  	ApiCall.postCaFirm($scope.caFirm, function(response){
+  		console.log(response);
+  		$state.go('ca-firm')
+  	},function(error){
+
+  	})
+  }
+  $scope.data = {};
+  $scope.getCaFirmDetails = function(){
+  	$scope.data = UserModel.getUser();
+  	console.log($scope.data);
+  }
+
 	
-});app.controller('LoginCtrl',function($scope,$rootScope,LoginService,$state,$window,$localStorage,UserModel, ApiCall){
+});	app.controller('LoginCtrl',function($scope,$rootScope,LoginService,$state,$window,$localStorage,UserModel, ApiCall){
 	$scope.user = {};
 	$scope.userLogin = function(){
 		$rootScope.showPreloader = true;
@@ -594,6 +631,16 @@ app.directive('updateHeight',function () {
     delete $localStorage.token;
     $scope.is_loggedin = false;
     $state.go('login');
+  }
+  $scope.checkUser = function(){
+    $scope.loggedin_user = UserModel.getUser();
+   // console.log($scope.loggedin_user);
+    if(!$scope.loggedin_user.caFirm){
+      $state.go('ca-update');
+    }
+    else{
+      $state.go('ca-firm');
+    }
   }
 });
 /*---------------------------------------------------------------------------------------------------------------------------------*/
