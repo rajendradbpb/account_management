@@ -1,4 +1,4 @@
-/*! account_management - v0.0.0 - Sun Aug 20 2017 01:05:05 */
+/*! account_management - v0.0.0 - Sun Aug 20 2017 14:23:11 */
 var app = angular.module("acc_app", ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate','datePicker','ngTable','angular-js-xlsx','WebService']);
 app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
   //adding http intercepter
@@ -181,11 +181,13 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
           // saving user model
           // if(UserModel.getUser())
             UserModel.setUser(response.user);
+            deferred.resolve();
         })
         .error(function (error) {
-          deferred.resolve();
+
           $localStorage.token = null;
           $rootScope.is_loggedin = false;
+          deferred.resolve();
           $state.go('login');
         })
       // if($localStorage.user){

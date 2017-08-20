@@ -180,11 +180,13 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
           // saving user model
           // if(UserModel.getUser())
             UserModel.setUser(response.user);
+            deferred.resolve();
         })
         .error(function (error) {
-          deferred.resolve();
+
           $localStorage.token = null;
           $rootScope.is_loggedin = false;
+          deferred.resolve();
           $state.go('login');
         })
       // if($localStorage.user){
