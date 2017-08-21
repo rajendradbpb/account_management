@@ -1,4 +1,4 @@
-/*! account_management - v0.0.0 - Sun Aug 20 2017 14:23:11 */
+/*! account_management - v0.0.0 - Mon Aug 21 2017 06:12:39 */
 var app = angular.module("acc_app", ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate','datePicker','ngTable','angular-js-xlsx','WebService']);
 app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
   //adding http intercepter
@@ -174,21 +174,27 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
   function checkLoggedout($q, $timeout, $rootScope, $state,$http, $localStorage,UserModel) {
     var deferred = $q.defer();
     //accessToken = localStorage.getItem('accessToken')
-    $timeout(function(){
+
         $http.get('/user/loggedin')
         .success(function (response) {
-          $rootScope.is_loggedin = true;
-          // saving user model
-          // if(UserModel.getUser())
-            UserModel.setUser(response.user);
-            deferred.resolve();
+          $timeout(function(){
+            $rootScope.is_loggedin = true;
+            // saving user model
+            // if(UserModel.getUser())
+              UserModel.setUser(response.user);
+              deferred.resolve();
+          },200)
+
         })
         .error(function (error) {
+          $timeout(function(){
 
-          $localStorage.token = null;
-          $rootScope.is_loggedin = false;
-          deferred.resolve();
-          $state.go('login');
+            $localStorage.token = null;
+            $rootScope.is_loggedin = false;
+            deferred.resolve();
+            $state.go('login');
+          },200)
+
         })
       // if($localStorage.user){
       //   deferred.resolve();
@@ -197,22 +203,28 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
       //   deferred.resolve();
       //   $state.go('login');
       // }
-    },100)
+
   }
   function checkLoggedin($q, $timeout, $rootScope, $state,$http, $localStorage) {
     var deferred = $q.defer();
     // accessToken = localStorage.getItem('accessToken')
-    $timeout(function(){
+
       $http.get('/user/loggedin')
       .success(function(response) {
-        $rootScope.is_loggedin = true;
-        deferred.resolve();
-        $state.go('dashboard');
+        $timeout(function(){
+          $rootScope.is_loggedin = true;
+          deferred.resolve();
+          $state.go('dashboard');
+        },200)
+
       })
       .error(function(error){
-        $localStorage.token = null;
-        $rootScope.is_loggedin = false;
-        deferred.resolve();
+        $timeout(function(){
+          $localStorage.token = null;
+          $rootScope.is_loggedin = false;
+          deferred.resolve();
+        },200)
+
       })
       // if($localStorage.user){
       //   deferred.resolve();
@@ -221,7 +233,7 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
       // else{
       //   deferred.resolve();
       // }
-    },100)
+
   }
 });
 app.constant('CONFIG', {

@@ -10,6 +10,9 @@ var userModel = require("./../models/userModel");
 var password = require('password-hash-and-salt');
 var jwt     = require('jsonwebtoken');
 var config     = require('config');
+var validator = require('validator');
+var component = require('./../component/index');
+var models = require('./../models/index');
 // var password = require('password-hash-and-salt');
 // var jwt     = require('jsonwebtoken');
 // var config = require("config");
@@ -47,18 +50,38 @@ exports.login = function (req, res) {
 }
 exports.addUser = function(req,res){
   LOG.info("add user");
-  password(req.body.password).hash(function(error, hash) {
-    req.body.password = hash; // encrypting the password
-    new userModel(req.body).save(function (err) {
-      if(err){
-        LOG.error(err.message);
-        response.sendResponse(res,500,"error",constants.messages.errors.saveUser,err);
-      }
-        else {
-          response.sendResponse(res,200,"success",constants.messages.success.saveUser);
+  // cheking validation
+  if(component.utility.isEmpty(req.body.username)
+      || component.utility.isEmpty(req.body.password)
+      || component.utility.isEmpty(req.body.email)
+      || component.utility.isEmpty(req.body.role)
+    )
+    {
+      return response.sendResponse(res,400,"error",constants.statusCode['400']);
+    }
+  // caFirm check for the level 3 users like S.Auditor , auditor etc
+  models.roleModel.findById(req.body.role)
+  .then(function(role){
+    if(role.type != "superAdmin" && role.type != "superAdmin" && !req.body.caFirm){
+      return response.sendResponse(res,400,"error",constants.statusCode['400']);
+    }
+    password(req.body.password).hash(function(error, hash) {
+      req.body.password = hash; // encrypting the password
+      new userModel(req.body).save(function (err) {
+        if(err){
+          LOG.error(err.message);
+          response.sendResponse(res,500,"error",constants.messages.errors.saveUser,err);
         }
+          else {
+            response.sendResponse(res,200,"success",constants.messages.success.saveUser);
+          }
+      })
     })
   })
+  .catch(function(err){
+      response.sendResponse(res,500,"error",constants.messages.errors.saveUser,err);
+  })
+
 
 }
 exports.getUser = function(req,res){
@@ -66,9 +89,17 @@ exports.getUser = function(req,res){
   var params = {
     isDelete:false
   };
+  // get all the users under one caFirm
+  if(req.query.caFirm){
+    params['caFirm'] = req.query.caFirm;
+  }
+  // get specific users based on roles
+  if(req.query.role){
+    params['role'] = req.query.role;
+  }
   console.log("req.query._id   "+req.query._id);
   if(req.query._id){
-    params['_id'] = req.query._id
+    params['_id'] = req.query._id;
   }
   userModel.find(params,function(err,data){
     response.sendResponse(res,200,"success",constants.messages.success.fetchRoles,data);

@@ -1,5 +1,8 @@
 var config = require('config');
 var constants = {
+  statusCode:{
+    400:" Bad Request",
+  },
   messages:{
     errors:{
       "verified"                    :"Error in token verification",

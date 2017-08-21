@@ -97,9 +97,9 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-notify');
   grunt.task.run('notify_hooks');
   // registerTask
-  //grunt.registerTask("watch", ["concat:client","nodemon:server"]);
+  grunt.registerTask("watch", ["concat:client","nodemon:server"]);
   // grunt.registerTask("start", ["nodemon:start"]);
   // grunt.registerTask("client", ["concat:client","watch:client"]);
-  grunt.registerTask("con", ['concat','watch:client']);
+  // grunt.registerTask("con", ['concat','watch:client']);
   //grunt.registerTask("notify", ['notify:server'] );
 };

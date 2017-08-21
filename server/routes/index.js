@@ -4,7 +4,6 @@ var router = express.Router();
 var roleRoutes = require('./roleRoutes');
 var userRoutes = require('./userRoutes');
 var caFirmRoutes = require('./caFirmRoutes');
-var srAuditorRoutes = require('./srAuditorRoutes');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
