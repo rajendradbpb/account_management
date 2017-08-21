@@ -1,9 +1,14 @@
-app.controller("role_controller", function($scope, $rootScope, $state, $localStorage, ApiCall, NgTableParams, RoleService,$uibModal,Util) {
+app.controller("role_controller", function($scope, $rootScope, $state, UserModel, $localStorage, ApiCall, NgTableParams, RoleService,$uibModal,Util) {
   $scope.roles = {};
   $scope.crudRole = function(method, data) {
+    var loggedIn_user = UserModel.getUser();
     switch (method) {
       case 'get':
-        ApiCall.getRole(function(res) {
+      var obj = {};
+        if(loggedIn_user && loggedIn_user.caFirm){
+          obj.caFirm = loggedIn_user.caFirm;
+        }
+        ApiCall.getRole(obj,function(res) {
           $scope.roleList = res.data;
           $scope.role = new NgTableParams;
           $scope.role.settings({
@@ -29,6 +34,8 @@ app.controller("role_controller", function($scope, $rootScope, $state, $localSto
         break;
       case 'create' :
         $rootScope.showPreloader = true;
+        if(loggedIn_user.caFirm)
+          $scope.roles.caFirm = loggedIn_user.caFirm;
         ApiCall.postRole($scope.roles, function(response){
           if(response.statusCode == 200){
             $rootScope.showPreloader = false;

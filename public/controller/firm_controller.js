@@ -1,7 +1,7 @@
 app.controller('FirmController',function($scope,$rootScope,Util,$uibModal,$stateParams,ApiCall,$state,UserModel){
 	
-	$scope.caFirm = {};	
-	$scope.caFirm.Partners = [
+	$scope.partners = {};	
+	$scope.partners.list = [
   	{
   		'name':'',
   		'designation':'',
@@ -9,12 +9,12 @@ app.controller('FirmController',function($scope,$rootScope,Util,$uibModal,$state
   	}
 	];	
 	$scope.removePart = function($index){
-		$scope.caFirm.Partners.splice($index,1);
+		$scope.partners.list.splice($index,1);
 		
 	}
 	$scope.updatePart = function(){
 		var obj = {name:'' ,designation:'', membership:'' };
-		$scope.caFirm.Partners.push(obj);
+		$scope.partners.list.push(obj);
 	}
 	$scope.getRoleList = function(){
      ApiCall.getRole(function(response){
@@ -25,17 +25,20 @@ app.controller('FirmController',function($scope,$rootScope,Util,$uibModal,$state
   }
   $scope.caFirmRegister = function(){
   	ApiCall.postUser($scope.caFirm, function(response){
-  		
+      if(response.statusCode == 200)
+  		  Util.alertMessage('success',response.message);
   	},function(error){
 
   	})
   }
   $scope.updateCaFirm = function(){
   	$scope.caFirm.admin = UserModel.getUser()._id;
-    console.log(JSON.stringify($scope.caFirm));
+    $scope.caFirm.Partners = $scope.partners.list;
   	ApiCall.postCaFirm($scope.caFirm, function(response){
-  		console.log(response);
-  		$state.go('ca-firm')
+  		if(response.statusCode == 200){
+        Util.alertMessage('success',response.message);
+  		  $state.go('ca-firm');
+      }
   	},function(error){
 
   	})

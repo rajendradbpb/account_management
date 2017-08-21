@@ -62,7 +62,7 @@ exports.addUser = function(req,res){
   // caFirm check for the level 3 users like S.Auditor , auditor etc
   models.roleModel.findById(req.body.role)
   .then(function(role){
-    if(role.type != "superAdmin" && role.type != "superAdmin" && !req.body.caFirm){
+    if(role.type != "superAdmin" && role.type != "firmAdmin" && !req.body.caFirm){
       return response.sendResponse(res,400,"error",constants.statusCode['400']);
     }
     password(req.body.password).hash(function(error, hash) {

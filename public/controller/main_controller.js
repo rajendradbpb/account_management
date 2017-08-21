@@ -3,9 +3,9 @@ app.controller("Main_Controller",function($scope,$rootScope,$state,$localStorage
   /*************This is use for check user login**********/
   /*******************************************************/
 
-  $rootScope.$on('Login_success',function(){
-    $scope.getUserDetails();
-  })
+  // $rootScope.$on('Login_success',function(){
+  //   $scope.getUserDetails();
+  // })
   $scope.getUserDetails = function(){
     if(UserModel.getUser()){
       $rootScope.is_loggedin = true;

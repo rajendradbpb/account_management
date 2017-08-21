@@ -1,4 +1,4 @@
-/*! account_management - v0.0.0 - Mon Aug 21 2017 06:12:39 */
+/*! account_management - v0.0.0 - Mon Aug 21 2017 23:35:13 */
 var app = angular.module("acc_app", ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate','datePicker','ngTable','angular-js-xlsx','WebService']);
 app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
   //adding http intercepter
@@ -40,7 +40,7 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
  .state('client-list', {
     templateUrl: 'views/client/client_list.html',
     url: '/client-list',
-	controller:'ClientController',
+	  controller:'ClientController',
     resolve: {
       loggedout: checkLoggedout
     }
@@ -150,9 +150,9 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
     templateUrl:'views/role_create.html',
     url:'/role-create',
     controller:'role_controller',
-   // resolve:{
-     // loggedout:checkLoggedout
-   // }
+   resolve:{
+     loggedout:checkLoggedout
+   }
   })
   //.state('role-update',{
     //templateUrl:'views/role_update.html',
@@ -166,20 +166,20 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
     templateUrl:'views/role_management.html',
     url:'/role-list',
     controller:'role_controller',
-    //resolve:{
-      //loggedout:checkLoggedout
-    //}
+    resolve:{
+      loggedout:checkLoggedout
+    }
   })
 
   function checkLoggedout($q, $timeout, $rootScope, $state,$http, $localStorage,UserModel) {
     var deferred = $q.defer();
     //accessToken = localStorage.getItem('accessToken')
-
         $http.get('/user/loggedin')
         .success(function (response) {
           $timeout(function(){
             $rootScope.is_loggedin = true;
             // saving user model
+            $rootScope.is_loggedin = true;
             // if(UserModel.getUser())
               UserModel.setUser(response.user);
               deferred.resolve();
@@ -188,7 +188,6 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
         })
         .error(function (error) {
           $timeout(function(){
-
             $localStorage.token = null;
             $rootScope.is_loggedin = false;
             deferred.resolve();
@@ -566,8 +565,8 @@ app.directive('updateHeight',function () {
 	
 });app.controller('FirmController',function($scope,$rootScope,Util,$uibModal,$stateParams,ApiCall,$state,UserModel){
 	
-	$scope.caFirm = {};	
-	$scope.caFirm.Partners = [
+	$scope.partners = {};	
+	$scope.partners.list = [
   	{
   		'name':'',
   		'designation':'',
@@ -575,12 +574,12 @@ app.directive('updateHeight',function () {
   	}
 	];	
 	$scope.removePart = function($index){
-		$scope.caFirm.Partners.splice($index,1);
+		$scope.partners.list.splice($index,1);
 		
 	}
 	$scope.updatePart = function(){
 		var obj = {name:'' ,designation:'', membership:'' };
-		$scope.caFirm.Partners.push(obj);
+		$scope.partners.list.push(obj);
 	}
 	$scope.getRoleList = function(){
      ApiCall.getRole(function(response){
@@ -591,17 +590,20 @@ app.directive('updateHeight',function () {
   }
   $scope.caFirmRegister = function(){
   	ApiCall.postUser($scope.caFirm, function(response){
-  		
+      if(response.statusCode == 200)
+  		  Util.alertMessage('success',response.message);
   	},function(error){
 
   	})
   }
   $scope.updateCaFirm = function(){
   	$scope.caFirm.admin = UserModel.getUser()._id;
-    console.log(JSON.stringify($scope.caFirm));
+    $scope.caFirm.Partners = $scope.partners.list;
   	ApiCall.postCaFirm($scope.caFirm, function(response){
-  		console.log(response);
-  		$state.go('ca-firm')
+  		if(response.statusCode == 200){
+        Util.alertMessage('success',response.message);
+  		  $state.go('ca-firm');
+      }
   	},function(error){
 
   	})
@@ -620,18 +622,20 @@ app.directive('updateHeight',function () {
     })
 
 	}
-});	app.controller('LoginCtrl',function($scope,$rootScope,LoginService,$state,$window,$localStorage,UserModel, ApiCall){
+});	app.controller('LoginCtrl',function($scope,$rootScope,LoginService,$state,$window,$localStorage,UserModel, ApiCall, $timeout){
 	$scope.user = {};
 	$scope.userLogin = function(){
 		$rootScope.showPreloader = true;
 		ApiCall.userLogin($scope.user, function(response){
 			$rootScope.showPreloader = false;
-			  $rootScope.is_loggedin = true;
+			$rootScope.is_loggedin = true;
 		 	$localStorage.token = response.data.token;
 			//UserModel.setUser(response.data.user);
 			// 	$scope.$emit("Login_success");
-			console.log("login success")
-		  	$state.go('dashboard');
+			console.log("login success");
+			$timeout(function() {
+				$state.go('dashboard');
+			},500);
 		},function(error){
 			$rootScope.showPreloader = false;
 			$rootScope.is_loggedin = false;
@@ -643,9 +647,9 @@ app.directive('updateHeight',function () {
   /*************This is use for check user login**********/
   /*******************************************************/
 
-  $rootScope.$on('Login_success',function(){
-    $scope.getUserDetails();
-  })
+  // $rootScope.$on('Login_success',function(){
+  //   $scope.getUserDetails();
+  // })
   $scope.getUserDetails = function(){
     if(UserModel.getUser()){
       $rootScope.is_loggedin = true;
@@ -691,12 +695,17 @@ app.controller("ProfileController",function($scope,$rootScope,$state,$localStora
   /*******************************************************/
 /*----------------------------------------------------------------------------------------------------------------------------------*/
                         /*-------------------------------------------------------------------------------*/
-;app.controller("role_controller", function($scope, $rootScope, $state, $localStorage, ApiCall, NgTableParams, RoleService,$uibModal,Util) {
+;app.controller("role_controller", function($scope, $rootScope, $state, UserModel, $localStorage, ApiCall, NgTableParams, RoleService,$uibModal,Util) {
   $scope.roles = {};
   $scope.crudRole = function(method, data) {
+    var loggedIn_user = UserModel.getUser();
     switch (method) {
       case 'get':
-        ApiCall.getRole(function(res) {
+      var obj = {};
+        if(loggedIn_user && loggedIn_user.caFirm){
+          obj.caFirm = loggedIn_user.caFirm;
+        }
+        ApiCall.getRole(obj,function(res) {
           $scope.roleList = res.data;
           $scope.role = new NgTableParams;
           $scope.role.settings({
@@ -722,6 +731,8 @@ app.controller("ProfileController",function($scope,$rootScope,$state,$localStora
         break;
       case 'create' :
         $rootScope.showPreloader = true;
+        if(loggedIn_user.caFirm)
+          $scope.roles.caFirm = loggedIn_user.caFirm;
         ApiCall.postRole($scope.roles, function(response){
           if(response.statusCode == 200){
             $rootScope.showPreloader = false;
@@ -804,6 +815,21 @@ app.controller('RoleUpdateModalCtrl', function ($scope, $uibModalInstance,update
 		console.log(workbook);
 	} 
 });app.controller("User_Controller",function($scope,$rootScope,$state,$localStorage,NgTableParams,ApiCall,Util,$uibModal){
+  
+/*******************************************************/
+  /*************This is use for change user-list tabs**********/
+  /******************************************************/
+
+  $scope.active_tab = 'allUsers';
+  console.log(12345);
+  $scope.tabChange = function(tab){
+    console.log(2542656);
+    $scope.active_tab = tab;
+  }
+
+
+
+
   /*******************************************************/
   /*************This is use for check user login**********/
   /******************************************************/
@@ -811,7 +837,8 @@ app.controller('RoleUpdateModalCtrl', function ($scope, $uibModalInstance,update
  
 
   $scope.userlist = {};
-  $scope.getUserList = function(){
+  $scope.getAllUserList = function(){
+    console.log(52387556);
     ApiCall.getUser(function(response){
       $scope.userlist = response.data;
       $scope.userData = new NgTableParams();

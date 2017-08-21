@@ -39,7 +39,7 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
  .state('client-list', {
     templateUrl: 'views/client/client_list.html',
     url: '/client-list',
-	controller:'ClientController',
+	  controller:'ClientController',
     resolve: {
       loggedout: checkLoggedout
     }
@@ -149,9 +149,9 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
     templateUrl:'views/role_create.html',
     url:'/role-create',
     controller:'role_controller',
-   // resolve:{
-     // loggedout:checkLoggedout
-   // }
+   resolve:{
+     loggedout:checkLoggedout
+   }
   })
   //.state('role-update',{
     //templateUrl:'views/role_update.html',
@@ -165,20 +165,20 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
     templateUrl:'views/role_management.html',
     url:'/role-list',
     controller:'role_controller',
-    //resolve:{
-      //loggedout:checkLoggedout
-    //}
+    resolve:{
+      loggedout:checkLoggedout
+    }
   })
 
   function checkLoggedout($q, $timeout, $rootScope, $state,$http, $localStorage,UserModel) {
     var deferred = $q.defer();
     //accessToken = localStorage.getItem('accessToken')
-
         $http.get('/user/loggedin')
         .success(function (response) {
           $timeout(function(){
             $rootScope.is_loggedin = true;
             // saving user model
+            $rootScope.is_loggedin = true;
             // if(UserModel.getUser())
               UserModel.setUser(response.user);
               deferred.resolve();
@@ -187,7 +187,6 @@ app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
         })
         .error(function (error) {
           $timeout(function(){
-
             $localStorage.token = null;
             $rootScope.is_loggedin = false;
             deferred.resolve();

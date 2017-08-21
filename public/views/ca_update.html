@@ -141,7 +141,7 @@
 			                            <h3 class="box-title">Partners details</h3>
 			                        </div>
 			                        <div class="box-body">								
-			                            <div class="row m-b-10" ng-repeat="item in caFirm.Partners">
+			                            <div class="row m-b-10" ng-repeat="item in partners.list">
 			                                <div class="col-sm-4" ng-class="{'has-error':caFirmUpdate.part_name_{{$index}}.$touched && caFirmUpdate.part_name_{{$index}}.$invalid}">
 			                                    <input type="text" class="form-control" placeholder="Patrner's Name " name="part_name_{{$index}}" ng-model="item.name" required ng-pattern="/^(\D)+$/">
 												<span class="help-block" ng-show="caFirmUpdate.part_name_{{$index}}.$error.required && caFirmUpdate.part_name_{{$index}}.$touched">Please Enter partner's Name</span>
