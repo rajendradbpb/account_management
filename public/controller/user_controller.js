@@ -1,4 +1,19 @@
 app.controller("User_Controller",function($scope,$rootScope,$state,$localStorage,NgTableParams,ApiCall,Util,$uibModal){
+  
+/*******************************************************/
+  /*************This is use for change user-list tabs**********/
+  /******************************************************/
+
+  $scope.active_tab = 'allUsers';
+  console.log(12345);
+  $scope.tabChange = function(tab){
+    console.log(2542656);
+    $scope.active_tab = tab;
+  }
+
+
+
+
   /*******************************************************/
   /*************This is use for check user login**********/
   /******************************************************/
@@ -6,7 +21,8 @@ app.controller("User_Controller",function($scope,$rootScope,$state,$localStorage
  
 
   $scope.userlist = {};
-  $scope.getUserList = function(){
+  $scope.getAllUserList = function(){
+    console.log(52387556);
     ApiCall.getUser(function(response){
       $scope.userlist = response.data;
       $scope.userData = new NgTableParams();
