@@ -44,14 +44,30 @@ request : {
 	"password":"user13",
 	"email":"user10gmail.com"
 }
+2. create user of type senior auditor , auditor , client
+url - http://localhost:3000/user
+request :
+{
+	"username": "seniorAuditor",
+"password": "seniorAuditor",
+"email": "seniorAuditor@yopmail.com",
+"role":"5998840ce58b372124ae74f0",
+"caFirm":"599a31c8995cf112b0118b96" // here this used to mapping the user to CaFirm , this is mandatory if u r selected role other than superAdmin and firmAdmin
+
+}
 2. user listing GET
 url - http://localhost:3000/user
-3. User details GET
+3. http://localhost:3000/user?caFirm=599a31c8995cf112b0118b96
+this is used to get users based on particular ca firm
+
+4. http://localhost:3000/user?caFirm=599a31c8995cf112b0118b96&role=5998840ce58b372124ae74f0
+this is used to get users particular users of particular caFirm
+5. User details GET
 url - http://localhost:3000/user?_id=598f7dda25e2db15ec426ad6
 
-4. Delete User DELETE
+6. Delete User DELETE
 url - http://localhost:3000/user/598f7dda25e2db15ec426ad6
-5. Update User PUT
+7. Update User PUT
 url - http://localhost:3000/user
 request - {
         "_id": "598f7dda25e2db15ec426ad6",
@@ -62,7 +78,7 @@ request - {
         
     }
 	
-6. User login POST
+8. User login POST
 
 url - http://localhost:3000/user/login
 request - {
