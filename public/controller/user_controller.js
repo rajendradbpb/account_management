@@ -1,13 +1,13 @@
-app.controller("User_Controller",function($scope,$rootScope,$state,$localStorage,NgTableParams,ApiCall,Util,$uibModal){
-  
+app.controller("User_Controller",function($scope,$rootScope,$state,$localStorage,NgTableParams,ApiCall,Util,$uibModal,UserModel){
+  var loggedIn_user = UserModel.getUser();
 /*******************************************************/
   /*************This is use for change user-list tabs**********/
   /******************************************************/
 
   $scope.active_tab = 'allUsers';
-  console.log(12345);
+  console.log();
   $scope.tabChange = function(tab){
-    console.log(2542656);
+    console.log();
     $scope.active_tab = tab;
   }
 
@@ -22,7 +22,6 @@ app.controller("User_Controller",function($scope,$rootScope,$state,$localStorage
 
   $scope.userlist = {};
   $scope.getAllUserList = function(){
-    console.log(52387556);
     ApiCall.getUser(function(response){
       $scope.userlist = response.data;
       $scope.userData = new NgTableParams();
@@ -33,13 +32,30 @@ app.controller("User_Controller",function($scope,$rootScope,$state,$localStorage
 
     })
   }
+  /********************************************************************************/
+  /*************This is use for show CaFirm users in th cafirm admin tabs**********/
+  /********************************************************************************/
+  $scope.cafirmUserList = {};
+  $scope.getCafirmUserList = function(){
+
+  }
+  $scope.roles = {};
+  $scope.findUser = function(role){
+    console.log(role.type);
+  }
   /*****************************************************************/
   /*This is used for getting the rolelist for user role dropdown****/
   /*****************************************************************/
 
+ 
   
-  $scope.getRoleList = function(){
-     ApiCall.getRole(function(response){
+  $scope.clientRoleList = function(){
+      var obj = {};
+
+    if(loggedIn_user && loggedIn_user.caFirm){
+      obj.caFirm = loggedIn_user.caFirm;
+    }
+     ApiCall.getRole(obj, function(response){     
       $scope.roleList = response.data;
      },function(error){
 
@@ -53,7 +69,11 @@ app.controller("User_Controller",function($scope,$rootScope,$state,$localStorage
   /******************************************************/
    $scope.user = {};
   $scope.createUser = function(){
-    //$rootScope.showPreloader = true;
+    //var loggedIn_user = UserModel.getUser();
+     if(loggedIn_user && loggedIn_user.caFirm){
+      $scope.user.caFirm = loggedIn_user.caFirm;
+    }
+   // $rootScope.showPreloader = true;
     ApiCall.postUser($scope.user, function(response){
       if(response.statusCode == 200){
         Util.alertMessage('success', response.message);

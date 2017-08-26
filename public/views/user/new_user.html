@@ -4,7 +4,7 @@
     <small>Control panel</small>
   </h1>
 </section>
-<section class="content" ng-init="getRoleList()">
+<section class="content" ng-init="clientRoleList()">
 	<div class="row">
 		<div class="col-sm-8 col-md-offset-2">
 			<div class="box box-info ">
@@ -13,70 +13,134 @@
 		      </div>
 		      <form class="form-horizontal" name="addUser">
 		        <div class="box-body">
-		         <!-- 	<div class="form-group" ng-class="{'has-error':addUser.us_fname.$touched && addUser.us_fname.$invalid}">
-			          	<label for="lname" class="col-sm-3 control-label">First Name: * </label>
-						<div class="col-sm-8">
-							<input type="text" name="us_fname" class="form-control" placeholder=" First Name " ng-model="user.f_name" required ng-pattern="/^(\D)+$/">
-							<span class="help-block" ng-show="addUser.us_fname.$error.required && addUser.us_fname.$touched">First name is required</span>
-							<span class="help-block" ng-show="addUser.us_fname.$error.pattern && addUser.us_fname.$touched">Numeric not allowed</span>
-						</div>
-		          	</div>
-		          	<div class="form-group" ng-class="{'has-error':addUser.us_lname.$touched && addUser.us_lname.$invalid}">
-			          	<label for="lname" class="col-sm-3 control-label">Last Name:</label>
-						<div class="col-sm-8">
-							<input type="text" name="us_lname" ng-model="user.l_name" class="form-control" placeholder=" LastName " required ng-pattern="/^(\D)+$/">
-							<span class="help-block" ng-show="addUser.us_lname.$error.required && addUser.us_lname.$touched">Last name is required</span>
-							<span class="help-block" ng-show="addUser.us_lname.$error.pattern && addUser.us_lname.$touched">Numeric not allowed</span>
-						</div>	
-		          	</div>-->
-		          	<div class="form-group" ng-class="{'has-error':addUser.us_role.$touched && addUser.us_role.$invalid}">
+		          	<div class="form-group" ng-class="{'has-error':addUser.user_role.$touched && addUser.user_role.$invalid}">
 			          	<label for="role" class="col-sm-3 control-label">User Role:</label>
 						<div class="col-sm-8" style="padding-bottom:5px;">
-							<select class="form-control" name="us_role" ng-model="user.role" required>
+							<select class="form-control" name="user_role" ng-model="user.role" required>
 								<option value="" ng-selected>User Role</option>
 								<option ng-value="role._id" ng-repeat="role in roleList">{{role.type}}</option>
 							</select>
-							<span class="help-block" ng-show="addUser.us_role.$error.required && addUser.us_role.$touched">User Role is required</span>
+							<span class="help-block" ng-show="addUser.user_role.$error.required && addUser.user_role.$touched">User Role is required</span>
 						</div>		
 		          	</div>
-		          	
-		         <!-- 	<div class="form-group" ng-class="{'has-error':addUser.us_mobile.$touched && addUser.us_mobile.$invalid}">
-			          	<label for="mobile" class="col-sm-3 control-label">Mobile:</label>
-						<div class="col-sm-8">
-							<input type="text" name="us_mobile" ng-model="user.mobile" class="form-control" placeholder="Mobile No" required ng-pattern="/^[0-9]{10,10}$/">
-							<span class="help-block" ng-show="addUser.us_mobile.$error.required && addUser.us_mobile.$touched">Mobile no is required</span>
-							<span class="help-block" ng-show="addUser.us_mobile.$error.pattern && addUser.us_mobile.$touched">Invalid Mobile No</span>
-						</div>		
-		          	</div>-->
-		          	<div class="form-group" ng-class="{'has-error':addUser.us_name.$touched && addUser.us_name.$invalid}">
+		          	<div class="form-group" ng-class="{'has-error':addUser.user_name.$touched && addUser.user_name.$invalid}">
 			          	<label for="uname" class="col-sm-3 control-label">User Name:</label>
 						<div class="col-sm-8">
-							<input type="text" name="us_name" ng-model="user.username" class="form-control" placeholder="User Name" required>
-							<span class="help-block" ng-show="addUser.us_name.$error.required && addUser.us_name.$touched">User Name is required</span>
+							<input type="text" name="user_name" ng-model="user.username" class="form-control" placeholder="User Name" required>
+							<span class="help-block" ng-show="addUser.user_name.$error.required && addUser.user_name.$touched">User Name is required</span>
 						</div>		
 		          	</div>
-		          	<div class="form-group" ng-class="{'has-error':addUser.us_pass.$touched && addUser.us_pass.$invalid}">
+		          	<div class="form-group" ng-class="{'has-error':addUser.user_pass.$touched && addUser.user_pass.$invalid}">
 			          	<label for="pass" class="col-sm-3 control-label">PassWord:</label>
 						<div class="col-sm-8" style="padding-bottom:5px;">
-							<input type="password" name="us_pass" ng-model="user.password" ng-change="change()" class="form-control" placeholder="PassWord" required >
-							<span class="help-block" ng-show="addUser.us_pass.$error.required && addUser.us_pass.$touched">Password is required</span>
+							<input type="password" name="user_pass" ng-model="user.password" ng-change="change()" class="form-control" placeholder="PassWord" required >
+							<span class="help-block" ng-show="addUser.user_pass.$error.required && addUser.user_pass.$touched">Password is required</span>
 							
 						</div>		
 		          	</div>
-		          	<div class="form-group" ng-class="{'has-error':addUser.us_repass.$touched && addUser.us_repass.$invalid}">
+		          	<div class="form-group" ng-class="{'has-error':addUser.user_repass.$touched && addUser.user_repass.$invalid}">
 			          	<label for="pass" class="col-sm-3 control-label">ReEnter PassWord:</label>
 						<div class="col-sm-8" style="padding-bottom:5px;">
-							<input type="password" name="us_repass" ng-model="users.repass" ng-change="change()"  class="form-control" placeholder="PassWord" required >
-							<span class="help-block" ng-show="addUser.us_repass.$error.required && addUser.us_repass.$touched">Please reenter password</span>
+							<input type="password" name="user_repass" ng-model="users.repass" ng-change="change()"  class="form-control" placeholder="PassWord" required >
+							<span class="help-block" ng-show="addUser.user_repass.$error.required && addUser.user_repass.$touched">Please reenter password</span>
 						</div>		
 		          	</div>
-		          <div class="form-group" ng-class="{'has-error':addUser.us_email.$touched && addUser.us_email.$invalid}">
+		          <div class="form-group" ng-class="{'has-error':addUser.user_email.$touched && addUser.user_email.$invalid}">
 			          	<label for="lname" class="col-sm-3 control-label">Email:</label>
 						<div class="col-sm-8">
-							<input type="email" name="us_email" ng-model="user.email" class="form-control" placeholder=" Email " required>
-							<span class="help-block" ng-show="addUser.us_email.$error.required && addUser.us_email.$touched">Email is required</span>
+							<input type="email" name="user_email" ng-model="user.email" class="form-control" placeholder=" Email " required>
+							<span class="help-block" ng-show="addUser.user_email.$error.required && addUser.user_email.$touched">Email is required</span>
 						</div>	
 		          	</div>
+		          	<div class="form-group" ng-class="{'has-error':addUser.user_fname.$touched && addUser.user_fname.$invalid}">
+			          	<label for="lname" class="col-sm-3 control-label">First Name: </label>
+						<div class="col-sm-8">
+							<input type="text" name="user_fname" class="form-control" placeholder=" First Name " ng-model="user.firstname" required ng-pattern="/^(\D)+$/">
+							<span class="help-block" ng-show="addUser.user_fname.$error.required && addUser.user_fname.$touched">First name is required</span>
+							<span class="help-block" ng-show="addUser.user_fname.$error.pattern && addUser.user_fname.$touched">Numeric not allowed</span>
+						</div>
+		          	</div>
+		          	    <div class="form-group" ng-class="{'has-error':addUser.user_lname.$touched && addUser.user_lname.$invalid}">
+			          	<label for="lname" class="col-sm-3 control-label">Last Name:</label>
+						<div class="col-sm-8">
+							<input type="text" name="user_lname" ng-model="user.lastname" class="form-control" placeholder=" Last Name " required ng-pattern="/^(\D)+$/">
+							<span class="help-block" ng-show="addUser.user_lname.$error.required && addUser.user_lname.$touched">Last name is required</span>
+							<span class="help-block" ng-show="addUser.user_lname.$error.pattern && addUser.user_lname.$touched">Numeric not allowed</span>
+						</div>	
+		          	</div>
+		          		<div class="form-group" ng-class="{'has-error':addUser.user_mname.$touched && addUser.user_mname.$invalid}">
+			          	<label for="lname" class="col-sm-3 control-label">Middle Name:</label>
+						<div class="col-sm-8">
+							<input type="text" name="user_mname" ng-model="user.middlename" class="form-control" placeholder="Middle Name" ng-pattern="/^(\D)+$/">
+							<span class="help-block" ng-show="addUser.user_mname.$error.pattern && addUser.user_mname.$touched">Numeric not allowed</span>
+						</div>	
+		          	</div>
+		      
+		          	<div class="form-group" ng-class="{'has-error':addUser.user_id.$touched && addUser.user_id.$invalid}">
+			          	<label for="lname" class="col-sm-3 control-label">ID:</label>
+						<div class="col-sm-8">
+						<input type="text" name="user_id" ng-model="user.id" class="form-control" placeholder=" ID" required >
+						<span class="help-block" ng-show="addUser.user_id.$error.required && addUser.user_id.$touched">ID is required</span>
+					</div>	
+		          	</div>
+		          	<div class="form-group" ng-class="{'has-error':addUser.user_desig.$touched && addUser.user_desig.$invalid}">
+			          	<label for="lname" class="col-sm-3 control-label">Designation:</label>
+						<div class="col-sm-8">
+							<input type="text" name="user_desig" ng-model="user.designation" class="form-control" placeholder=" Designation " required>
+							<span class="help-block" ng-show="addUser.user_desig.$error.required && addUser.user_desig.$touched">Designation is required</span>
+						</div>	
+		          	</div>
+		          	<div class="form-group" ng-class="{'has-error':addUser.user_pan.$touched && addUser.user_pan.$invalid}">
+			          	<label for="pan" class="col-sm-3 control-label">Pan:</label>
+						<div class="col-sm-8">
+							<input type="text" name="user_pan" ng-model="user.pan" class="form-control" placeholder="PAN Number" required >
+							<span class="help-block" ng-show="addUser.user_pan.$error.required && addUser.user_pan.$touched">Pan is required</span>
+						</div>	
+		          	</div>
+		          	<div class="form-group" ng-class="{'has-error':addUser.user_mobile.$touched && addUser.user_mobile.$invalid}">
+			          	<label for="lname" class="col-sm-3 control-label">Mobile:</label>
+						<div class="col-sm-8">
+							<input type="text" name="user_mobile" ng-model="user.mobile" class="form-control" placeholder=" Mobile " required ng-pattern="/^[0-9]{10,10}$/">
+							<span class="help-block" ng-show="addUser.user_mobile.$error.required && addUser.user_mobile.$touched">mobile is required</span>
+							<span class="help-block" ng-show="addUser.user_mobile.$error.pattern && addUser.user_mobile.$touched">Invalid mobile number</span>
+						</div>	
+		          	</div>
+					<div class="box box-success">
+						<div class="box-header">
+							<h3 class="box-title">Address</h3>
+						</div>
+						<div class="box-body">
+							<div class="row">
+								<div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':addUser.user_at.$touched && addUser.user_at.$invalid}">
+									<input type="text" class="form-control" placeholder="At" name="user_at" ng-model="user.at" required>
+									<span class="help-block" ng-show="addUser.user_at.$error.required && addUser.user_at.$touched">This field is required</span>
+								</div>
+								<div class="col-xs-12 col-sm-6 col-md-3" ng-class="{'has-error':user.user_po.$touched && user.user_po.$invalid}">
+									<input type="text" class="form-control" placeholder="Post" name="user_po" ng-model="user.po" required>
+									<span class="help-block" ng-show="addUser.user_po.$error.required && addUser.user_po.$touched">Post is required</span>
+								</div>
+								<div class="col-xs-12 col-sm-4 col-md-3" ng-class="{'has-error':addUser.user_city.$touched && addUser.user_city.$invalid}">
+									<input type="text" class="form-control" placeholder="City" name="user_city" ng-model="user.city" required>
+									<span class="help-block" ng-show="addUser.user_city.$error.required && addUser.user_city.$touched">Please Enter City</span>
+								</div>
+								<div class="col-xs-12 col-sm-4 col-md-3" ng-class="{'has-error':addUser.user_dist.$touched && addUser.user_dist.$invalid}">
+									<input type="text" class="form-control" placeholder="Dist" name="user_dist" ng-model="user.dist" required>
+									<span class="help-block" ng-show="addUser.user_dist.$error.required && addUser.user_dist.$touched">Please Enter District</span>
+								</div>
+							</div>
+							<div class="row">	
+								<div class="col-xs-12 col-sm-4 col-md-4" ng-class="{'has-error':addUser.user_state.$touched && addUser.user_state.$invalid}">
+									<input type="text" class="form-control" placeholder="State" name="user_state" ng-model="user.state" required>
+									<span class="help-block" ng-show="addUser.user_state.$error.required && addUser.user_state.$touched">Please Enter State</span>
+								</div>
+								<div class="col-xs-12 col-sm-4 col-md-4" ng-class="{'has-error':addUser.user_country.$touched && addUser.user_country.$invalid}">
+									<input type="text" class="form-control" placeholder="Country" name="user_country" ng-model="user.country" required>
+									<span class="help-block" ng-show="addUser.user_country.$error.required && addUser.user_country.$touched">Please Enter country</span>
+								</div>
+								<div class="col-xs-12 col-sm-4 col-md-4" ng-class="{'has-error':addUser.user_pin.$touched && addUser.user_pin.$invalid}">
+									<input type="text" class="form-control" placeholder="Pin" name="user_pin" ng-model="user.pin" required>
+									<span class="help-block" ng-show="addUser.user_pin.$error.required && addUser.user_pin.$touched">Please Enter Pin</span>
+								</div>
 		        </div>
 		        <div class="box-footer">
 		          <button type="submit" class="btn btn-default"  ui-sref="user-list">Back</button>
