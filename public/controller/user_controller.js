@@ -4,11 +4,15 @@ app.controller("User_Controller",function($scope,$rootScope,$state,$localStorage
   /*************This is use for change user-list tabs**********/
   /******************************************************/
 
-  $scope.active_tab = 'allUsers';
-  console.log();
+
   $scope.tabChange = function(tab){
-    console.log();
-    $scope.active_tab = tab;
+    var data = {};
+    // getuser list based on the tab selected
+    if(tab._id){
+      data.role = tab._id;
+    }
+    $scope.getUserList(data);
+    $scope.active_tab = tab.type;
   }
 
 
@@ -18,15 +22,15 @@ app.controller("User_Controller",function($scope,$rootScope,$state,$localStorage
   /*************This is use for check user login**********/
   /******************************************************/
 
- 
+
 
   $scope.userlist = {};
-  $scope.getAllUserList = function(){
+  $scope.getUserList = function(data){
       var obj1 = {};
       if(loggedIn_user && loggedIn_user.caFirm){
       obj1.caFirm = loggedIn_user.caFirm;
     }
-
+    obj1 = angular.extend(obj1, data);
     ApiCall.getUser(obj1, function(response){
       console.log(response);
       $scope.userlist = response.data;
@@ -54,16 +58,24 @@ app.controller("User_Controller",function($scope,$rootScope,$state,$localStorage
   /*This is used for getting the rolelist for user role dropdown****/
   /*****************************************************************/
 
- 
-  
+
+
   $scope.clientRoleList = function(){
       var obj = {};
 
     if(loggedIn_user && loggedIn_user.caFirm){
       obj.caFirm = loggedIn_user.caFirm;
     }
-     ApiCall.getRole(obj, function(response){     
-      $scope.roleList = response.data;
+    $scope.roleList = [];
+     ApiCall.getRole(obj, function(response){
+       // added dummy index for all users
+       var temp = {
+         type:"All Users",
+       }
+       $scope.roleList[0] = temp;
+      $scope.roleList = $scope.roleList.concat(response.data);
+      $scope.active_tab = $scope.roleList[0].type;
+      $scope.tabChange($scope.roleList[0]);// calling with default tab change
      },function(error){
 
      })
@@ -123,11 +135,11 @@ app.controller("User_Controller",function($scope,$rootScope,$state,$localStorage
       })
     }
     /*************************************************************************************************************************/
-  
+
 
    /*******************************************************/
   /*************This is used for updating a  user****/
-  /******************************************************/ 
+  /******************************************************/
   $scope.updateUser = function(data){
     $scope.updateUserId = data._id;
     $scope.modalInstance = $uibModal.open({
