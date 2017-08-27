@@ -1,4 +1,4 @@
-/*! account_management - v0.0.0 - Sun Aug 27 2017 02:08:24 */
+/*! account_management - v0.0.0 - Sun Aug 27 2017 11:26:24 */
 var app = angular.module("acc_app", ['ui.router', 'ui.bootstrap', 'ngResource', 'ngStorage', 'ngAnimate','datePicker','ngTable','angular-js-xlsx','WebService']);
 app.config(function($stateProvider, $urlRouterProvider,$httpProvider) {
   //adding http intercepter
@@ -838,7 +838,13 @@ app.controller('RoleUpdateModalCtrl', function ($scope, $uibModalInstance,update
 
   $scope.userlist = {};
   $scope.getAllUserList = function(){
-    ApiCall.getUser(function(response){
+      var obj1 = {};
+      if(loggedIn_user && loggedIn_user.caFirm){
+      obj1.caFirm = loggedIn_user.caFirm;
+    }
+
+    ApiCall.getUser(obj1, function(response){
+      console.log(response);
       $scope.userlist = response.data;
       $scope.userData = new NgTableParams();
       $scope.userData.settings({
@@ -857,7 +863,8 @@ app.controller('RoleUpdateModalCtrl', function ($scope, $uibModalInstance,update
   }
   $scope.roles = {};
   $scope.findUser = function(role){
-    console.log(role.type);
+    $scope.roles.type = role;
+    console.log($scope.roles.type);
   }
   /*****************************************************************/
   /*This is used for getting the rolelist for user role dropdown****/
