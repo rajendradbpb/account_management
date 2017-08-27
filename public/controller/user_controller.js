@@ -22,7 +22,13 @@ app.controller("User_Controller",function($scope,$rootScope,$state,$localStorage
 
   $scope.userlist = {};
   $scope.getAllUserList = function(){
-    ApiCall.getUser(function(response){
+      var obj1 = {};
+      if(loggedIn_user && loggedIn_user.caFirm){
+      obj1.caFirm = loggedIn_user.caFirm;
+    }
+
+    ApiCall.getUser(obj1, function(response){
+      console.log(response);
       $scope.userlist = response.data;
       $scope.userData = new NgTableParams();
       $scope.userData.settings({
@@ -41,7 +47,8 @@ app.controller("User_Controller",function($scope,$rootScope,$state,$localStorage
   }
   $scope.roles = {};
   $scope.findUser = function(role){
-    console.log(role.type);
+    $scope.roles.type = role;
+    console.log($scope.roles.type);
   }
   /*****************************************************************/
   /*This is used for getting the rolelist for user role dropdown****/
